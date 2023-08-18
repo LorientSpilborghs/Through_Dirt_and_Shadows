@@ -1,49 +1,86 @@
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Player.Runtime
 {
     public class CameraController : MonoBehaviour
     {
-        void Start()
+        private void Start()
         {
-            _cameraPosition = transform.position;
+            _initialPosition = transform.position;
+            _initialPosition = transform.eulerAngles;
+            _currentZoom = _initialZoom;
+        } 
+
+        private void Update()
+        {
+            CameraMovement();
+
+            CameraZoom();
         }
 
-        void Update()
+        private void CameraMovement()
         {
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width * (1 - _screenEdge))
             {
-                _cameraPosition += transform.right * (_cameraSpeed / 50);
-                //_cameraPosition.x += _cameraSpeed / 50;
+                transform.Translate(Vector3.right * _cameraTranslationSpeed, Space.Self);
             }
-            if (Input.GetKey(KeyCode.Q))
+            else if (Input.GetKey(KeyCode.Q) || Input.mousePosition.x <= Screen.width * _screenEdge)
             {
-                _cameraPosition -= transform.right * (_cameraSpeed / 50);
-                // _cameraPosition.x -= _cameraSpeed / 50;
+                transform.Translate(Vector3.right * -_cameraTranslationSpeed, Space.Self);
             }
-            if (Input.GetKey(KeyCode.Z))
+            if (Input.GetKey(KeyCode.Z) || Input.mousePosition.y >= Screen.height * (1 - _screenEdge))
             {
-                _cameraPosition += transform.forward * (_cameraSpeed / 50);
-                // _cameraPosition.z += _cameraSpeed / 50;
+                transform.Translate(Vector3.forward * _cameraTranslationSpeed, Space.Self);
             }
-            if (Input.GetKey(KeyCode.S))
+            else if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= Screen.height * _screenEdge)
             {
-                _cameraPosition -= transform.forward * (_cameraSpeed / 50);
-                // _cameraPosition.z -= _cameraSpeed / 50;
+                transform.Translate(Vector3.forward * -_cameraTranslationSpeed, Space.Self);
             }
             if (Input.GetKey(KeyCode.E))
             {
-                transform.Rotate(0, _cameraSpeed/10, 0, Space.World); 
+                transform.Rotate(0, _cameraRotationSpeed, 0, Space.World); 
             }
-            if (Input.GetKey(KeyCode.A))
+            else if (Input.GetKey(KeyCode.A))
             {
-                transform.Rotate(0, -_cameraSpeed/10, 0, Space.World); 
+                transform.Rotate(0, -_cameraRotationSpeed, 0, Space.World); 
             }
+        }
+        
+        private void CameraZoom()
+        {
+            _currentZoom -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 1000 * _zoomSpeed;
+   
+            _currentZoom = Mathf.Clamp(_currentZoom,_zoomRange.x,_zoomRange.y);
+   
+            transform.position = new Vector3( transform.position.x, transform.position.y - (transform.position.y - (_initialPosition.y + _currentZoom)) * 0.1f, transform.position.z );
+ 
+            float x = transform.eulerAngles.x - (transform.eulerAngles.x - (_initialPosition.x + _currentZoom * _zoomRotation)) * 0.1f;
+            x = Mathf.Clamp( x, _zoomAngleRange.x, _zoomAngleRange.y );
+ 
+            transform.eulerAngles = new Vector3( x, transform.eulerAngles.y, transform.eulerAngles.z );
 
-            transform.position = _cameraPosition;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _currentZoom = _initialZoom;
+            }
         }
 
-        [SerializeField] private float _cameraSpeed;
-        private Vector3 _cameraPosition;
+        [SerializeField] private float _cameraTranslationSpeed;
+        [SerializeField] private float _cameraRotationSpeed;
+        [SerializeField] private float _screenEdge;
+        [SerializeField] private Vector2 _zoomRange;
+        [SerializeField] private Vector2 _zoomAngleRange;
+        [SerializeField] private float _initialZoom;
+        [SerializeField] private float _zoomSpeed;
+        [SerializeField] private float _zoomRotation;
+
+        private Vector3 _initialPosition;
+        private Vector3 _initialRotation;
+        private float _currentZoom;
+
+
+
     }
 }
