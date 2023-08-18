@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
-using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class SplineRootController : MonoBehaviour
@@ -32,14 +28,13 @@ public class SplineRootController : MonoBehaviour
         
         BezierKnot lastKnot = spline.Knots.ToArray()[spline.Knots.Count() - 1];
         
-        
-        
         if (_rootTimer < _totalGrowTime)
         {
             _rootTimer += Time.deltaTime;
         }
 
         spline.Knots.ToArray()[spline.Knots.Count() - 1].Position = Vector3.Lerp(_lastKnotPosition, _nextKnotPosition, _rootTimer/_totalGrowTime);
+        
         _splineExtrude.Rebuild();
     }
 
@@ -50,10 +45,12 @@ public class SplineRootController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (!Physics.Raycast(ray, out _hitData, 20)) return;
-        _nextKnotPosition = new Vector3(_hitData.point.x, Random.Range(0, 3), _hitData.point.z);
-        Spline spline = _splineContainer.Splines[0];
-        _lastKnotPosition = spline.Knots.ToArray()[spline.Knots.Count() - 1].Position;
         
+        _nextKnotPosition = new Vector3(_hitData.point.x, Random.Range(0, 3), _hitData.point.z);
+        
+        Spline spline = _splineContainer.Splines[0];
+        
+        _lastKnotPosition = spline.Knots.ToArray()[spline.Knots.Count() - 1].Position;
         
         if (!_isInterpolating)
         {
@@ -61,14 +58,12 @@ public class SplineRootController : MonoBehaviour
             _isInterpolating = true;
             _rootTimer = 0;
         }
-        
     }
     
-
     [SerializeField] private float3 _tangentIn;
     [SerializeField] private float3 _tangentOut;
+    [SerializeField] private float _totalGrowTime;
 
-    private float _totalGrowTime = 3;
     private SplineContainer _splineContainer;
     private SplineExtrude _splineExtrude;
     private Material _material;
