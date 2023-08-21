@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Splines;
 using Random = UnityEngine.Random;
 
@@ -10,11 +12,12 @@ public class SplineRootController : MonoBehaviour
     {
         _splineContainer = GetComponent<SplineContainer>();
         _splineExtrude = GetComponent<SplineExtrude>();
-        _material = GetComponent<MeshRenderer>().material;
     }
 
     private void Update()
     {
+        // AutomaticGrowth();
+        
         InterpolateLastKnot();
 
         CheckForPlayerInstruction();
@@ -27,7 +30,7 @@ public class SplineRootController : MonoBehaviour
         Spline spline = _splineContainer.Splines[0];
         
         // si la position finale est atteinte, on arrête l'interpolation
-        if (Vector3.Distance(spline.Knots.ToArray()[spline.Knots.Count() - 1].Position, _nextFinalKnotPosition) <= 0)
+        if (Vector3.Distance(spline.Knots.ToArray()[spline.Knots.Count() - 1].Position, _nextFinalKnotPosition) <= 0 || !Input.GetKey(KeyCode.Mouse0))
         {
             _isInterpolating = false;
             return;
@@ -45,10 +48,18 @@ public class SplineRootController : MonoBehaviour
         
         //direction de la tangeante à appliquer au knot courant (direction du knot précédent vers le knot courant)
         Vector3 tangentInDirection = (Vector3)lastKnot.Position - _previousKnotPosition;
-        
-        lastKnot.TangentIn = tangentInDirection.normalized;
-        lastKnot.TangentOut = -tangentInDirection.normalized;
 
+        if (_nextFinalKnotPosition.z >= 0)
+        {
+            lastKnot.TangentIn = tangentInDirection.normalized;
+            lastKnot.TangentOut = -tangentInDirection.normalized;
+        }
+        else if (_nextFinalKnotPosition.z <= 0)
+        {
+            lastKnot.TangentIn = -tangentInDirection.normalized;
+            lastKnot.TangentOut = tangentInDirection.normalized;
+        }
+        
         //on applique les modifs au knot courant
         spline.SetKnot(spline.Knots.Count() - 1, lastKnot);
         
@@ -65,23 +76,38 @@ public class SplineRootController : MonoBehaviour
 
         //s'il existe un knot avant le knot précédent, alors la tangeante du knot précédent est la direction du knot d'avant vers le knot courant. Sinon on reprend la même tangeante qu'au dessus
         // la tangeante in est en fait toujours égale à  la direction du knot précédent vers le knot suivant
-        lastKnotMinusOne.TangentIn = tangentInDirection.normalized;
-        lastKnotMinusOne.TangentOut = -tangentInDirection.normalized;
+
+        if (_nextFinalKnotPosition.z >= 0)
+        {
+            lastKnotMinusOne.TangentIn = -tangentInDirection.normalized;
+            lastKnotMinusOne.TangentOut = tangentInDirection.normalized;
+        }
+        
+        else if (_nextFinalKnotPosition.z <= 0)
+        {
+            lastKnotMinusOne.TangentIn = tangentInDirection.normalized;
+            lastKnotMinusOne.TangentOut = -tangentInDirection.normalized;
+        }
 
         spline.SetKnot(spline.Knots.Count() - 2, lastKnotMinusOne);
+        
+        if (!_isAddingKnotWhileInterpolating)
+        {
+            StartCoroutine(AddKnotWhileInterpolating(spline));
+        }
         
         _splineExtrude.Rebuild();
     }
 
     private void CheckForPlayerInstruction()
     {
-        if (!Input.GetKeyDown(KeyCode.Mouse0)) return;
+        if (!Input.GetKey(KeyCode.Mouse0)) return;
         
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (!Physics.Raycast(ray, out _hitData, 20)) return;
+        if (!Physics.Raycast(ray, out _hitData, 100)) return;
         
-        _nextFinalKnotPosition = new Vector3(_hitData.point.x, Random.Range(0, 2), _hitData.point.z);
+        _nextFinalKnotPosition = new Vector3(_hitData.point.x, _hitData.point.y + 1, _hitData.point.z);
         
         Spline spline = _splineContainer.Splines[0];
         
@@ -93,22 +119,52 @@ public class SplineRootController : MonoBehaviour
         
         if (!_isInterpolating)
         {
-            spline.Add(new BezierKnot(_previousKnotPosition, _tangentIn, _tangentOut));
+            spline.Add(new BezierKnot(_previousKnotPosition), TangentMode.AutoSmooth);
             _isInterpolating = true;
         }
     }
-    
-    [SerializeField] private float3 _tangentIn;
-    [SerializeField] private float3 _tangentOut;
-    [SerializeField] private float _distancePerSeconds;
 
+    // private void AutomaticGrowth()
+    // {
+    //     Spline spline = _splineContainer.Splines[0];
+    //
+    //     if (spline.Knots.Count() > 1 && !_isInterpolating && !_isAutoGrowing)
+    //     {
+    //         StartCoroutine(WaitForAutoGrowth(spline));
+    //     }
+    // }
+
+    // IEnumerator WaitForAutoGrowth(Spline spline)
+    // {
+    //     _isAutoGrowing = true;
+    //     yield return new WaitForSeconds(_autoGrowthPerSeconds);
+    //     spline.Add(new BezierKnot(), TangentMode.Mirrored);
+    //     _nextFinalKnotPosition = spline.Knots.ToArray()[spline.Knots.Count() - 1].Position;
+    //     _isAutoGrowing = false;
+    // }
+    
+    IEnumerator AddKnotWhileInterpolating(Spline spline)
+    {
+        _isAddingKnotWhileInterpolating = true;
+        yield return new WaitForSeconds(_knotPerSecondsWhileDragging);
+        spline.Add(new BezierKnot(_previousKnotPosition), TangentMode.AutoSmooth);
+        _isAddingKnotWhileInterpolating = false;
+    }
+    
+    [SerializeField] private float _distancePerSeconds;
+    [SerializeField] private float _knotPerSecondsWhileDragging;
+    [SerializeField] private float _growthPerSeconds;
+
+    private float3 _tangentIn;
+    private float3 _tangentOut;
     private SplineContainer _splineContainer;
     private SplineExtrude _splineExtrude;
-    private Material _material;
     private RaycastHit _hitData;
     private Vector3 _nextFinalKnotPosition;
     private Vector3 _previousKnotPosition;
     private bool _isInterpolating;
+    private bool _isAddingKnotWhileInterpolating;
+    private bool _isAutoGrowing;
     private float _normalizedDistancePerSeconds;
     private float _normalizedTargetKnotPosition;
 }

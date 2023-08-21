@@ -17,11 +17,11 @@ public class SplineRootControllerForShow : MonoBehaviour
 
         if (!Physics.Raycast(ray, out _hitData, 20)) return;
         
-        _nextKnotPosition = new Vector3(_hitData.point.x, Random.Range(0, 2), _hitData.point.z);
+        _nextKnotPosition = new Vector3(_hitData.point.x, Random.Range(0, 0.1f), _hitData.point.z);
         
         Spline spline = _splineContainer.Splines[0];
         
-        spline.Add(new BezierKnot(_nextKnotPosition));
+        spline.Add(new BezierKnot(_nextKnotPosition), TangentMode.Continuous);
         
         _splineExtrude.Rebuild();
     }
