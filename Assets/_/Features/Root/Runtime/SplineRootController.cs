@@ -1,13 +1,19 @@
+using System;
 using System.Collections;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.Splines;
-using Random = UnityEngine.Random;
+
+public class RootInfo : EventArgs
+{
+    public Vector3 m_rootTransform { get; set; }
+}
 
 public class SplineRootController : MonoBehaviour
 {
+    public EventHandler<RootInfo> onRootControlling;
+    
     private void Start()
     {
         _splineContainer = GetComponent<SplineContainer>();
@@ -44,58 +50,60 @@ public class SplineRootController : MonoBehaviour
         //lerp pour obtenir la position absolue en fonction de la position entre 0 et 1
         lastKnot.Position = Vector3.Lerp(_previousKnotPosition, _nextFinalKnotPosition, _normalizedTargetKnotPosition);
         //le knot courant doit être orienté vers la position qu'il doit atteindre
-        lastKnot.Rotation = Quaternion.LookRotation(_nextFinalKnotPosition);
+        //lastKnot.Rotation = Quaternion.LookRotation(_nextFinalKnotPosition);
         
         //direction de la tangeante à appliquer au knot courant (direction du knot précédent vers le knot courant)
-        Vector3 tangentInDirection = (Vector3)lastKnot.Position - _previousKnotPosition;
-
-        if (_nextFinalKnotPosition.z >= 0)
-        {
-            lastKnot.TangentIn = tangentInDirection.normalized;
-            lastKnot.TangentOut = -tangentInDirection.normalized;
-        }
-        else if (_nextFinalKnotPosition.z <= 0)
-        {
-            lastKnot.TangentIn = -tangentInDirection.normalized;
-            lastKnot.TangentOut = tangentInDirection.normalized;
-        }
-        
-        //on applique les modifs au knot courant
-        spline.SetKnot(spline.Knots.Count() - 1, lastKnot);
-        
-        //le knot précédent doit être actualisé en fonction de la position du knot courant
-        BezierKnot lastKnotMinusOne = spline.Knots.ToArray()[spline.Knots.Count() - 2];
-        //il doit être orienté vers le knot courant
-        lastKnotMinusOne.Rotation = Quaternion.LookRotation(lastKnot.Position);
-        
-        if (spline.Knots.Count() > 2)
-        {
-            BezierKnot lastKnotMinusTwo = spline.Knots.ToArray()[spline.Knots.Count() - 3];
-            tangentInDirection = (lastKnot.Position - lastKnotMinusTwo.Position);
-        }
-
-        //s'il existe un knot avant le knot précédent, alors la tangeante du knot précédent est la direction du knot d'avant vers le knot courant. Sinon on reprend la même tangeante qu'au dessus
-        // la tangeante in est en fait toujours égale à  la direction du knot précédent vers le knot suivant
-
-        if (_nextFinalKnotPosition.z >= 0)
-        {
-            lastKnotMinusOne.TangentIn = -tangentInDirection.normalized;
-            lastKnotMinusOne.TangentOut = tangentInDirection.normalized;
-        }
-        
-        else if (_nextFinalKnotPosition.z <= 0)
-        {
-            lastKnotMinusOne.TangentIn = tangentInDirection.normalized;
-            lastKnotMinusOne.TangentOut = -tangentInDirection.normalized;
-        }
-
-        spline.SetKnot(spline.Knots.Count() - 2, lastKnotMinusOne);
+        // Vector3 tangentInDirection = (Vector3)lastKnot.Position - _previousKnotPosition;
+        //
+        // if (_nextFinalKnotPosition.z >= 0)
+        // {
+        //     lastKnot.TangentIn = tangentInDirection.normalized;
+        //     lastKnot.TangentOut = -tangentInDirection.normalized;
+        // }
+        // else if (_nextFinalKnotPosition.z <= 0)
+        // {
+        //     lastKnot.TangentIn = -tangentInDirection.normalized;
+        //     lastKnot.TangentOut = tangentInDirection.normalized;
+        // }
+        //
+        // //on applique les modifs au knot courant
+         spline.SetKnot(spline.Knots.Count() - 1, lastKnot);
+        //
+        // if (spline.Knots.Count() > 2)
+        // {
+        //     //le knot précédent doit être actualisé en fonction de la position du knot courant
+        //     BezierKnot lastKnotMinusOne = spline.Knots.ToArray()[spline.Knots.Count() - 2];
+        //     //il doit être orienté vers le knot courant
+        //     lastKnotMinusOne.Rotation = Quaternion.LookRotation(lastKnot.Position);
+        //
+        //     if (spline.Knots.Count() > 2)
+        //     {
+        //         BezierKnot lastKnotMinusTwo = spline.Knots.ToArray()[spline.Knots.Count() - 3];
+        //         tangentInDirection = (lastKnot.Position - lastKnotMinusTwo.Position);
+        //     }
+        //
+        //     //s'il existe un knot avant le knot précédent, alors la tangeante du knot précédent est la direction du knot d'avant vers le knot courant. Sinon on reprend la même tangeante qu'au dessus
+        //     // la tangeante in est en fait toujours égale à  la direction du knot précédent vers le knot suivant
+        //
+        //     if (_nextFinalKnotPosition.z >= 0)
+        //     {
+        //         lastKnotMinusOne.TangentIn = -tangentInDirection.normalized;
+        //         lastKnotMinusOne.TangentOut = tangentInDirection.normalized;
+        //     }
+        //
+        //     else if (_nextFinalKnotPosition.z <= 0)
+        //     {
+        //         lastKnotMinusOne.TangentIn = tangentInDirection.normalized;
+        //         lastKnotMinusOne.TangentOut = -tangentInDirection.normalized;
+        //     }
+        //
+        //     spline.SetKnot(spline.Knots.Count() - 2, lastKnotMinusOne);
+        // }
         
         if (!_isAddingKnotWhileInterpolating)
         {
             StartCoroutine(AddKnotWhileInterpolating(spline));
         }
-        
         _splineExtrude.Rebuild();
     }
 
@@ -117,11 +125,15 @@ public class SplineRootController : MonoBehaviour
         
         _normalizedTargetKnotPosition = 0;
         
-        if (!_isInterpolating)
-        {
-            spline.Add(new BezierKnot(_previousKnotPosition), TangentMode.AutoSmooth);
-            _isInterpolating = true;
-        }
+        onRootControlling?.Invoke(this, new RootInfo(){m_rootTransform = _previousKnotPosition});
+
+        _isInterpolating = true;
+
+        // if (!_isInterpolating)
+        // {
+        //     spline.Add(new BezierKnot(_previousKnotPosition), TangentMode.AutoSmooth);
+        //     _isInterpolating = true;
+        // }
     }
 
     // private void AutomaticGrowth()
@@ -154,6 +166,7 @@ public class SplineRootController : MonoBehaviour
     [SerializeField] private float _distancePerSeconds;
     [SerializeField] private float _knotPerSecondsWhileDragging;
     [SerializeField] private float _growthPerSeconds;
+    [Range(0,1)][SerializeField] private float _sharpToRoundedCurves;
 
     private float3 _tangentIn;
     private float3 _tangentOut;

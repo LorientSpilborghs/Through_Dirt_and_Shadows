@@ -6,6 +6,13 @@ namespace Player.Runtime
 {
     public class CameraController : MonoBehaviour
     {
+        public SplineRootController m_splineRootController;
+
+        private void Awake()
+        {
+            m_splineRootController.onRootControlling += OnRootControlling;
+        }
+
         private void Start()
         {
             _initialPosition = transform.position;
@@ -67,8 +74,16 @@ namespace Player.Runtime
             }
         }
 
+        private void OnRootControlling(object sender, RootInfo e)
+        {
+            var position = transform.position;
+            position = new Vector3(e.m_rootTransform.x,position.y,e.m_rootTransform.z - _offSetWithRootWhileControlling);
+            transform.position = position;
+        }
+
         [SerializeField] private float _cameraTranslationSpeed;
         [SerializeField] private float _cameraRotationSpeed;
+        [SerializeField] private float _offSetWithRootWhileControlling;
         [SerializeField] private float _screenEdge;
         [SerializeField] private Vector2 _zoomRange;
         [SerializeField] private Vector2 _zoomAngleRange;
