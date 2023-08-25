@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -15,6 +13,7 @@ public class RootInfoV2 : EventArgs
 public class SplineRootControllerV2 : MonoBehaviour
 {
     public EventHandler<RootInfoV2> onRootControlling;
+    public EventHandler<EventArgs> onRootCreation;
     
     private struct KnotData
     {
@@ -113,6 +112,7 @@ public class SplineRootControllerV2 : MonoBehaviour
                 _splineContainer.Splines[^1].Add(new BezierKnot(_knotData.m_knot.Position), TangentMode.AutoSmooth);
                 _splinesList.Add(_splineContainer.Splines[^1]);
                 _splineToModify = _splineContainer.Splines[^1];
+                onRootCreation?.Invoke(this, EventArgs.Empty);
             }
             else
             {
@@ -160,8 +160,8 @@ public class SplineRootControllerV2 : MonoBehaviour
              _splineToModify.Knots.ToArray()[_splineToModify.Knots.Count() - 2].Position) < 1;
     }
     
-    [SerializeField] private float _distancePerSeconds;
-    [SerializeField] [Range(0.1f, 5f)] private float _distanceMinimum = 1;
+    [SerializeField] private float _distancePerSeconds = 2.5f;
+    [SerializeField] [Range(0.1f, 5f)] private float _distanceMinimum = 2;
 
     private List<Spline> _splinesList;
     private KnotData _knotData;
