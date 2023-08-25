@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
@@ -8,6 +9,7 @@ using UnityEngine.Splines;
 public class RootInfo : EventArgs
 {
     public Vector3 m_rootTransform { get; set; }
+    public Quaternion m_rootRotation { get; set; }
 }
 
 public class SplineRootController : MonoBehaviour
@@ -18,22 +20,76 @@ public class SplineRootController : MonoBehaviour
     {
         _splineContainer = GetComponent<SplineContainer>();
         _splineExtrude = GetComponent<SplineExtrude>();
+        _splines = new List<Spline>();
+        foreach (Spline spline in _splineContainer.Splines)
+        {
+            _splines.Add(spline);
+        }
     }
 
     private void Update()
     {
         // AutomaticGrowth();
-        
-        InterpolateLastKnot();
 
-        CheckForPlayerInstruction();
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            _knotData = GetClosestSpline(_hitData.point);
+            Debug.Log(_knotData.m_knot.Position);
+            
+            if (!IsLastKnotFromSpline(_knotData))
+            {
+                _splineContainer.AddSpline().Add(new BezierKnot(_knotData.m_knot.Position), TangentMode.AutoSmooth);
+                _splineToModify = _splineContainer.Splines[^1];
+            }
+        }
+        
+        InterpolateLastKnot(_knotData, _splineToModify);
+
+        CheckForPlayerInstruction(_knotData);
+    }
+    
+    private KnotData GetClosestSpline(Vector3 hitPosition) 
+    {
+        Spline associatedSpline = _splines[0];
+        BezierKnot closestKnot = _splines[0].ToArray()[0];
+
+        for (int i = 0; i < _splines.Count; i++)
+        {
+            BezierKnot[] currentKnots = _splines[i].Knots.ToArray();
+            for (int j = 0; j < currentKnots.Length; j++)
+            {
+                if (Vector3.Distance(currentKnots[j].Position, hitPosition)
+                    < Vector3.Distance(closestKnot.Position, hitPosition))
+                {
+                    associatedSpline = _splines[i];
+                    closestKnot = currentKnots[j];
+                }
+            }
+        }
+
+        return new KnotData(closestKnot, associatedSpline);
     }
 
-    private void InterpolateLastKnot()
+    private struct KnotData
+    {
+        public KnotData(BezierKnot knot, Spline spline)
+        {
+            m_knot = knot;
+            m_spline = spline;
+        }
+        
+        public BezierKnot m_knot;
+        public Spline m_spline;
+    }
+
+    private bool IsLastKnotFromSpline(KnotData knotData)
+    {
+        return knotData.m_spline.ToArray()[^1].Equals(knotData.m_knot);
+    }
+    
+    private void InterpolateLastKnot(KnotData knotData, Spline spline)
     {
         if (!_isInterpolating) return;
-        
-        Spline spline = _splineContainer.Splines[0];
         
         // si la position finale est atteinte, on arrête l'interpolation
         if (Vector3.Distance(spline.Knots.ToArray()[spline.Knots.Count() - 1].Position, _nextFinalKnotPosition) <= 0 || !Input.GetKey(KeyCode.Mouse0))
@@ -107,7 +163,13 @@ public class SplineRootController : MonoBehaviour
         _splineExtrude.Rebuild();
     }
 
-    private void CheckForPlayerInstruction()
+    private BezierKnot CreateNewSpline(KnotData knotData)
+    {
+        _splineContainer.AddSpline().Add(new BezierKnot(knotData.m_knot.Position), TangentMode.AutoSmooth);
+        return _splineContainer.Splines[^1].Knots.ToArray()[^1];
+    }
+
+    private void CheckForPlayerInstruction(KnotData knotData)
     {
         if (!Input.GetKey(KeyCode.Mouse0)) return;
         
@@ -116,8 +178,8 @@ public class SplineRootController : MonoBehaviour
         if (!Physics.Raycast(ray, out _hitData, 100)) return;
         
         _nextFinalKnotPosition = new Vector3(_hitData.point.x, _hitData.point.y + 1, _hitData.point.z);
-        
-        Spline spline = _splineContainer.Splines[0];
+
+        Spline spline = knotData.m_spline;
         
         _previousKnotPosition = spline.Knots.ToArray()[spline.Knots.Count() - 1].Position;
 
@@ -125,8 +187,14 @@ public class SplineRootController : MonoBehaviour
         
         _normalizedTargetKnotPosition = 0;
         
-        onRootControlling?.Invoke(this, new RootInfo(){m_rootTransform = _previousKnotPosition});
+        // onRootControlling?.Invoke(this, new RootInfo(){m_rootTransform = _previousKnotPosition,
+        //     m_rootRotation = spline.Knots.ToArray()[spline.Knots.Count() - 1].Rotation});
 
+        if (!_isInterpolating)
+        {
+            CreateNewSpline(knotData);
+        }
+        
         _isInterpolating = true;
 
         // if (!_isInterpolating)
@@ -168,13 +236,17 @@ public class SplineRootController : MonoBehaviour
     [SerializeField] private float _growthPerSeconds;
     [Range(0,1)][SerializeField] private float _sharpToRoundedCurves;
 
+    private List<Spline> _splines;
+    private KnotData _knotData;
     private float3 _tangentIn;
     private float3 _tangentOut;
     private SplineContainer _splineContainer;
     private SplineExtrude _splineExtrude;
+    private Spline _splineToModify;
     private RaycastHit _hitData;
     private Vector3 _nextFinalKnotPosition;
     private Vector3 _previousKnotPosition;
+    private List<BezierKnot> _listBezierKnot;
     private bool _isInterpolating;
     private bool _isAddingKnotWhileInterpolating;
     private bool _isAutoGrowing;
