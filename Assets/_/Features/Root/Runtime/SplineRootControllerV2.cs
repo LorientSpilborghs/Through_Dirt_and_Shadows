@@ -14,8 +14,13 @@ public class SplineRootControllerV2 : MonoBehaviour
 {
     public EventHandler<RootInfoV2> onRootControlling;
     public EventHandler<EventArgs> onRootCreation;
-    
-    private struct KnotData
+
+    public Vector3 m_nextFinalKnotPosition { get; set; }
+    public Vector3 m_previousKnotPosition { get; set; }
+    public RaycastHit m_hitData;
+    private KnotData m_knotData;
+
+    public struct KnotData
     {
         public KnotData(BezierKnot knot, Spline spline)
         {
@@ -44,8 +49,8 @@ public class SplineRootControllerV2 : MonoBehaviour
         CheckForPlayerInstruction();
         Release();
     }
-    
-    private KnotData GetClosestSpline(Vector3 hitPosition) 
+
+    public KnotData GetClosestSpline(Vector3 hitPosition) 
     {
         Spline associatedSpline = _splinesList[0];
         BezierKnot closestKnot = _splinesList[0].ToArray()[0];
@@ -75,7 +80,7 @@ public class SplineRootControllerV2 : MonoBehaviour
     {
         if (!_isInterpolating) return;
         
-        if (Vector3.Distance(_splineToModify.Knots.ToArray()[_splineToModify.Knots.Count() - 1].Position, _nextFinalKnotPosition) <= 0 || !Input.GetKey(KeyCode.Mouse0))
+        if (Vector3.Distance(_splineToModify.Knots.ToArray()[_splineToModify.Knots.Count() - 1].Position, m_nextFinalKnotPosition) <= 0 || !Input.GetKey(KeyCode.Mouse0))
         {
             _isInterpolating = false;
             return;
@@ -84,8 +89,16 @@ public class SplineRootControllerV2 : MonoBehaviour
         _normalizedTargetKnotPosition += _normalizedDistancePerSeconds * Time.deltaTime;
 
         BezierKnot lastKnot = _splineToModify.Knots.ToArray()[_splineToModify.Knots.Count() - 1];
+        
+        float newRotation = RotationUtility.LimitRotation(
+            lastKnot.Rotation.value.y,
+            _minRotation,
+            _maxRotation);
 
-        lastKnot.Position = Vector3.Lerp(_previousKnotPosition, _nextFinalKnotPosition, _normalizedTargetKnotPosition);
+        lastKnot.Rotation.value = new Vector4(
+            lastKnot.Rotation.value.x, newRotation,lastKnot.Rotation.value.z);
+        
+        lastKnot.Position = Vector3.Lerp(m_previousKnotPosition, m_nextFinalKnotPosition, _normalizedTargetKnotPosition);
         
         _splineToModify.SetKnot(_splineToModify.Knots.Count() - 1, lastKnot);
         
@@ -96,35 +109,33 @@ public class SplineRootControllerV2 : MonoBehaviour
 
     private void CheckForPlayerInstruction()
     {
-        if (!Input.GetKey(KeyCode.Mouse0)) return;
-        
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (!Physics.Raycast(ray, out _hitData, 100)) return;
+        if (!Physics.Raycast(ray, out m_hitData, 100)) return;
+        if (!Input.GetKey(KeyCode.Mouse0)) return;
         
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            _knotData = GetClosestSpline(_hitData.point);
+            m_knotData = GetClosestSpline(m_hitData.point);
             
-            if (!IsLastKnotFromSpline(_knotData))
+            if (!IsLastKnotFromSpline(m_knotData))
             {
-                _splineContainer.AddSpline().Add(new BezierKnot(_knotData.m_knot.Position), TangentMode.AutoSmooth);
-                _splineContainer.Splines[^1].Add(new BezierKnot(_knotData.m_knot.Position), TangentMode.AutoSmooth);
+                _splineContainer.AddSpline().Add(new BezierKnot(m_knotData.m_knot.Position), TangentMode.AutoSmooth);
+                _splineContainer.Splines[^1].Add(new BezierKnot(m_knotData.m_knot.Position), TangentMode.AutoSmooth);
                 _splinesList.Add(_splineContainer.Splines[^1]);
                 _splineToModify = _splineContainer.Splines[^1];
-                onRootCreation?.Invoke(this, EventArgs.Empty);
             }
             else
             {
-                _splineToModify = _knotData.m_spline;
+                _splineToModify = m_knotData.m_spline;
             }
         }
         
-        _nextFinalKnotPosition = new Vector3(_hitData.point.x, 0, _hitData.point.z);
+        m_previousKnotPosition = _splineToModify.Knots.ToArray()[_splineToModify.Knots.Count() - 1].Position;
         
-        _previousKnotPosition = _splineToModify.Knots.ToArray()[_splineToModify.Knots.Count() - 1].Position;
-
-        _normalizedDistancePerSeconds = _distancePerSeconds / Vector3.Distance(_previousKnotPosition, _nextFinalKnotPosition);
+        m_nextFinalKnotPosition = new Vector3(m_hitData.point.x, 0, m_hitData.point.z);
+        
+        _normalizedDistancePerSeconds = _distancePerSeconds / Vector3.Distance(m_previousKnotPosition, m_nextFinalKnotPosition);
         
         _normalizedTargetKnotPosition = 0;
         
@@ -140,7 +151,7 @@ public class SplineRootControllerV2 : MonoBehaviour
             return;
         }
         if (Release()) return;
-        spline.Add(new BezierKnot(_previousKnotPosition), TangentMode.AutoSmooth);
+        spline.Add(new BezierKnot(m_previousKnotPosition), TangentMode.AutoSmooth);
     }
 
     private bool Release()
@@ -160,23 +171,47 @@ public class SplineRootControllerV2 : MonoBehaviour
              _splineToModify.Knots.ToArray()[_splineToModify.Knots.Count() - 2].Position) < 1;
     }
     
+    public static class RotationUtility
+    {
+        /// <param name="rotation">
+        ///  Value of 0f to 360f.
+        ///  Rotation that will be limitted to a certain angle.
+        /// </param>
+        public static float LimitRotation(
+            float rotation,
+            float minRotation,
+            float maxRotation)
+        {
+            if (rotation > maxRotation ||
+                rotation < minRotation)
+            {
+                float rotationDistanceFromMaxValue = Mathf.Abs(Mathf.DeltaAngle(rotation, maxRotation));
+                float rotationDistanceFromMinValue = Mathf.Abs(Mathf.DeltaAngle(rotation, minRotation));
+
+                if (rotationDistanceFromMaxValue < rotationDistanceFromMinValue)
+                {
+                    return maxRotation;
+                }
+                return minRotation;
+            }
+
+            return rotation;
+        }
+    }
+    
     [SerializeField] private float _distancePerSeconds = 2.5f;
     [SerializeField] [Range(0.1f, 5f)] private float _distanceMinimum = 2;
+    [SerializeField] private float _maxRotation;
+    [SerializeField] private float _minRotation;
 
     private List<Spline> _splinesList;
-    private KnotData _knotData;
     private SplineContainer _splineContainer;
     private SplineExtrude _splineExtrude;
     private Spline _splineToModify;
-    private RaycastHit _hitData;
-    private Vector3 _nextFinalKnotPosition;
-    private Vector3 _previousKnotPosition;
     private List<BezierKnot> _listBezierKnot;
     private bool _isInterpolating;
     private bool _isAddingKnotWhileInterpolating;
     private float _normalizedDistancePerSeconds;
     private float _normalizedTargetKnotPosition;
-
-    private float currentTime;
     private bool _hasStarted;
 }
