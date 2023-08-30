@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ground_Shader
+  m_Name: M_Ground_Shader
   m_Shader: {fileID: -6465566751694194690, guid: 62f3c86016048fb4ab8214ab2f17983b,
     type: 3}
   m_Parent: {fileID: 2100000, guid: eb2c55d0a737b154dbd6204bd6a7281e, type: 2}
@@ -49,7 +49,12 @@ Material:
     m_Floats:
     - _Cell_Density: 5
     - _Is_Landscape: 0.9
+    - _Offset_1: 1
+    - _Offset_2: 1
+    - _Tiling_1: 1
     - _Vornoi_Offset: 4
     m_Colors:
-    - _UpVector_Color: {r: 0.3962264, g: 0.3408803, b: 0.30464578, a: 0}
+    - _Rock_Color: {r: 0.5276344, g: 0.64848477, b: 0.6698113, a: 0}
+    - _Top_Color: {r: 0.7735849, g: 0.67927814, b: 0.33205768, a: 0}
+    - _UpVector_Color: {r: 0.055535786, g: 0.2475233, b: 0.3018868, a: 0}
   m_BuildTextureStacks: []
