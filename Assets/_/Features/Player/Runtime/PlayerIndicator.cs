@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Player.Runtime
+namespace PlayerRuntime
 {
     public class PlayerIndicator : MonoBehaviour
     {
