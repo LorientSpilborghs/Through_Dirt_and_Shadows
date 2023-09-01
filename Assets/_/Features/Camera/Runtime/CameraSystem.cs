@@ -48,6 +48,7 @@ namespace CameraFeature.Runtime
             if (PlayerRuntime.Player.Instance.IsInterpolating)
             {
                 _resetPos = false;
+                MoveTopCameraWhileInterpolating();
                 return;
             }
             HandleCameraMovement();
@@ -165,6 +166,13 @@ namespace CameraFeature.Runtime
             if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
             float rotateSpeed = 100f;
             transform.eulerAngles += new Vector3(0, rotateDir * rotateSpeed * Time.deltaTime, 0);
+        }
+
+        private void MoveTopCameraWhileInterpolating()
+        {
+            var freeLookTransform = CameraManager.Instance.FreeLook.transform;
+            transform.position = freeLookTransform.position;
+            transform.rotation = freeLookTransform.rotation;
         }
 
 
