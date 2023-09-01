@@ -520,12 +520,12 @@ PrefabInstance:
     - target: {fileID: 1160018353420832593, guid: f6f57273f57fb6c46af3f04824aa9600,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.14227153
+      value: -0.14227158
       objectReference: {fileID: 0}
     - target: {fileID: 1160018353420832593, guid: f6f57273f57fb6c46af3f04824aa9600,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.04243839
+      value: -0.042438406
       objectReference: {fileID: 0}
     - target: {fileID: 1160018353420832593, guid: f6f57273f57fb6c46af3f04824aa9600,
         type: 3}
@@ -602,6 +602,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_ManagerCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 2906289585922365019, guid: f6f57273f57fb6c46af3f04824aa9600,
+        type: 3}
+      propertyPath: m_DefaultBlend.m_Time
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 2955271252752348490, guid: f6f57273f57fb6c46af3f04824aa9600,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -616,6 +621,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454755099690205545, guid: f6f57273f57fb6c46af3f04824aa9600,
+        type: 3}
+      propertyPath: _timeToReset
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454755099690205545, guid: f6f57273f57fb6c46af3f04824aa9600,
+        type: 3}
+      propertyPath: cameraMoveSpeed
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3788880991318163137, guid: f6f57273f57fb6c46af3f04824aa9600,
         type: 3}
@@ -722,7 +737,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 14, y: 14, z: 14}
+  m_LocalScale: {x: 500, y: 500, z: 500}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2045804387}
