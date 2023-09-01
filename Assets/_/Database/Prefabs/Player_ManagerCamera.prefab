@@ -2099,7 +2099,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8202040657219934732}
-  - component: {fileID: 3368123640858990048}
   - component: {fileID: 6468484435576830684}
   m_Layer: 0
   m_Name: Indicator
@@ -2123,21 +2122,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6933430178551713495}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3368123640858990048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9089906643344530255}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56b36f5893aeaab4b83bd1957eb53a91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_splineRootControllerV2: {fileID: 0}
-  _arrow: {fileID: 0}
-  _heightOffSet: 0.5
 --- !u!114 &6468484435576830684
 MonoBehaviour:
   m_ObjectHideFlags: 0

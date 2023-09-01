@@ -40,15 +40,15 @@ namespace CameraFeature.Runtime
             followOffset.y = followOffsetMaxY;
             _basePosition = transform.position;
             _baseRotation = transform.rotation;
-            PlayerRuntime.Player.Instance.m_onResetCameraPos = OnResetCameraPosEventHandler;
+            PlayerRuntime.Player.Instance.m_onResetCameraPos += OnResetCameraPosEventHandler;
         }
 
         private void Update()
         {
-            if (PlayerRuntime.Player.Instance.IsInterpolating)
+            if (CameraManager.Instance.PlayerCameraManager.IsInterpolating)
             {
-                _resetPos = false;
                 MoveTopCameraWhileInterpolating();
+                _resetPos = false;
                 return;
             }
             HandleCameraMovement();
