@@ -10,7 +10,8 @@ namespace InputManagerFeature.Runtime
         
         public Action<Vector3> m_onMouseMove;
         
-        public Action m_onMouseDown;
+        public Action m_onLeftMouseDown;
+        public Action m_onRightMouseDown;
         public Action m_onMouseHold;
         public Action m_onMouseUp;
         public Action m_onSpaceBarDown;
@@ -23,24 +24,25 @@ namespace InputManagerFeature.Runtime
             else Destroy(gameObject);
             _camera = Camera.main;
             
-            StartCoroutine(Wait(1));
+            StartCoroutine(HandleFpsCounter(1));
         }
 
         private void Update()
         {
             MouseWorldPosition();
             
-            OnMouseDown();
+            OnLeftMouseDown();
+            OnRightMouseDown();
             OnMouseHold();
             OnMouseUp();
             OnSpaceBarDown();
         }
 
-        private IEnumerator Wait(float secToWait)
+        private IEnumerator HandleFpsCounter(float secToWait)
         {
             yield return new WaitForSeconds(secToWait);
             FpsCount = (int)(1f / Time.unscaledDeltaTime);
-            StartCoroutine(Wait(0.5f));
+            StartCoroutine(HandleFpsCounter(0.5f));
         }
 
         private void OnGUI()
@@ -58,10 +60,16 @@ namespace InputManagerFeature.Runtime
             _previousMousePos = hit.point;
         }
 
-        private void OnMouseDown()
+        private void OnLeftMouseDown()
         {
-            if (!Input.GetKeyDown(KeyCode.Mouse0)) return; 
-            m_onMouseDown?.Invoke();
+            if (!Input.GetKeyDown(KeyCode.Mouse0)) return;
+            m_onLeftMouseDown?.Invoke();
+        }
+
+        private void OnRightMouseDown()
+        {
+            if (!Input.GetKeyDown(KeyCode.Mouse1)) return;
+            m_onRightMouseDown?.Invoke();
         }
 
         private void OnMouseHold()

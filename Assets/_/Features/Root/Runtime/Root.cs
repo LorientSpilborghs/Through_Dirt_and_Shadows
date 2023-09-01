@@ -36,13 +36,14 @@ namespace RootFeature.Runtime
         
         public void Grow(Spline spline, Vector3 positionToGo)
         {
-            _normalizedDistancePerSeconds = _distancePerSeconds / Vector3.Distance(spline.ToArray()[^1].Position, positionToGo);
+            Vector3 modifiedPositionToGo = new Vector3(positionToGo.x, _heightOfTheRoot, positionToGo.z);
+            _normalizedDistancePerSeconds = _distancePerSeconds / Vector3.Distance(spline.ToArray()[^1].Position, modifiedPositionToGo);
             _normalizedTargetKnotPosition = 0f;
             
             _normalizedTargetKnotPosition += _normalizedDistancePerSeconds * Time.deltaTime;
 
             BezierKnot lastKnot = spline.Knots.ToArray()[spline.Knots.Count() - 1];
-            lastKnot.Position = Vector3.Lerp(lastKnot.Position, positionToGo, _normalizedTargetKnotPosition);
+            lastKnot.Position = Vector3.Lerp(lastKnot.Position, modifiedPositionToGo, _normalizedTargetKnotPosition);
 
             AddKnotWhileInterpolating(spline);
             
@@ -72,6 +73,7 @@ namespace RootFeature.Runtime
             _splineExtrude.RebuildOnSplineChange = isActive;
         }
         
+        [SerializeField]private float _heightOfTheRoot;
         [SerializeField] private float _distancePerSeconds = 2.5f;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
         

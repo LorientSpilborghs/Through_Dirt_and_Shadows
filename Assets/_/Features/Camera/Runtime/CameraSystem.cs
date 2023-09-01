@@ -29,7 +29,6 @@ namespace CameraFeature.Runtime
         private Quaternion _currentRotation;
         private bool _resetPos;
         private float _resetPosDelta;
-        public AnimationCurve curve;
 
         private void Awake()
         {
