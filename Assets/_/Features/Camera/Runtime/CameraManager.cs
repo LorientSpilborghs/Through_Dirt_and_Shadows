@@ -15,23 +15,22 @@ namespace CameraFeature.Runtime
             set => _virtualCamera = value;
         }
 
-        public CinemachineFreeLook FreeLook
-        {
-            get => _cinemachineFreeLook;
-            set => _cinemachineFreeLook = value;
-        }
-
         public PlayerRuntime.Player PlayerCameraManager
         {
             get => _player;
             set => _player = value;
         }
 
+        public CinemachineFreeLook FreeLook
+        {
+            get => _cinemachineFreeLook;
+            set => _cinemachineFreeLook = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
             else Destroy(gameObject);
-            FreeLook = GetComponent<CinemachineFreeLook>();
         }
 
         private void Start()
@@ -76,9 +75,9 @@ namespace CameraFeature.Runtime
         
         [SerializeField] private Transform _anchor;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
+        [SerializeField] private CinemachineFreeLook _cinemachineFreeLook;
         
         private PlayerRuntime.Player _player;
-        private CinemachineFreeLook _cinemachineFreeLook;
         private bool _isWaitForPlayerToInitializeOver;
     }
 }
