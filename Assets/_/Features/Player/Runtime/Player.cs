@@ -18,6 +18,7 @@ namespace PlayerRuntime
         public Action m_onInterpolateEnd;
         public Action m_onMouseMove;
         public Action m_onResetCameraPos;
+        public Action m_onLeaveCameraFollow;
 
         public Vector3 PointerPosition
         {
@@ -56,7 +57,8 @@ namespace PlayerRuntime
         private void Start()
         {
             InputManager.Instance.m_onMouseMove += OnMouseMoveEventHandler;
-            InputManager.Instance.m_onMouseDown += OnMouseDownEventHandler;
+            InputManager.Instance.m_onLeftMouseDown += OnLeftMouseDownEventHandler;
+            InputManager.Instance.m_onRightMouseDown += OnRightMouseDownEventHandler;
             InputManager.Instance.m_onMouseHold += OnMouseHoldEventHandler;
             InputManager.Instance.m_onMouseUp += OnMouseUpEventHandler;
             InputManager.Instance.m_onSpaceBarDown += OnSpaceBarDownEventHandler;
@@ -78,13 +80,18 @@ namespace PlayerRuntime
             m_onMouseMove.Invoke();
         }
         
-        private void OnMouseDownEventHandler()
+        private void OnLeftMouseDownEventHandler()
         {
             SplineToModify = GetTheRightSpline();
             _rootOrigin.CanRebuild(true);
             IsInterpolating = true;
             
             m_onInterpolateStart?.Invoke();
+        }
+
+        private void OnRightMouseDownEventHandler()
+        {
+            m_onLeaveCameraFollow?.Invoke();
         }
         
         private void OnMouseHoldEventHandler()

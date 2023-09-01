@@ -13,7 +13,7 @@ namespace CameraFeature.Runtime
         private void Start()
         {
             PlayerRuntime.Player.Instance.m_onInterpolateStart += CameraStartFollowing;
-            PlayerRuntime.Player.Instance.m_onInterpolateEnd += CameraIsNotFollowing;
+            PlayerRuntime.Player.Instance.m_onLeaveCameraFollow += CameraIsNotFollowing;
         }
         
         
@@ -24,6 +24,7 @@ namespace CameraFeature.Runtime
         
         public void CameraIsNotFollowing()
         {
+            if (CameraManager.Instance.PlayerCameraManager.IsInterpolating) return;
             _cinemachineFreeLook.Priority = 0;
         }
         

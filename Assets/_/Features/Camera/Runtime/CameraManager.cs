@@ -21,6 +21,12 @@ namespace CameraFeature.Runtime
             set => _cinemachineFreeLook = value;
         }
 
+        public PlayerRuntime.Player PlayerCameraManager
+        {
+            get => _player;
+            set => _player = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -33,16 +39,16 @@ namespace CameraFeature.Runtime
             StartCoroutine(WaitForPlayerToInitialize());
             
             if (!_isWaitForPlayerToInitializeOver) return;
-            _player = GameManager.Instance.PlayerTransform.GetComponent<PlayerRuntime.Player>();
-            if (_player == null)
+            PlayerCameraManager = GameManager.Instance.PlayerTransform.GetComponent<PlayerRuntime.Player>();
+            if (PlayerCameraManager == null)
             {
                 Debug.LogError("Variable <color=cyan>PlayerTransform</color> in GameManager is null");
                 return;
             }
             
-            _player.m_onInterpolateStart += CameraStartFollowing;
-            _player.m_onInterpolate += CameraIsFollowing;
-            _player.m_onInterpolateEnd += CameraIsNotFollowing;
+            // _player.m_onInterpolateStart += CameraStartFollowing;
+            // _player.m_onInterpolate += CameraIsFollowing;
+            // _player.m_onInterpolateEnd += CameraIsNotFollowing;
 
         }
         
@@ -65,6 +71,7 @@ namespace CameraFeature.Runtime
         {
             yield return new WaitForSeconds(0.1f);
             _isWaitForPlayerToInitializeOver = true;
+            Start();
         }
         
         [SerializeField] private Transform _anchor;
