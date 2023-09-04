@@ -22,8 +22,8 @@ namespace InputManagerFeature.Runtime
         {
             if (Instance == null) Instance = this;
             else Destroy(gameObject);
-            _camera = Camera.main;
             
+            _camera = Camera.main;
             StartCoroutine(HandleFpsCounter(1));
         }
 

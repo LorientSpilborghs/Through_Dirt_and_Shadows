@@ -1,8 +1,10 @@
 using Cinemachine;
+using PlayerRuntime;
 using UnityEngine;
 
 namespace CameraFeature.Runtime
 {
+    [RequireComponent(typeof(CinemachineFreeLook))]
     public class CameraFollow : MonoBehaviour
     {
         private void Awake()
@@ -12,19 +14,33 @@ namespace CameraFeature.Runtime
 
         private void Start()
         {
-            PlayerRuntime.Player.Instance.m_onInterpolateStart += CameraStartFollowing;
-            PlayerRuntime.Player.Instance.m_onLeaveCameraFollow += CameraIsNotFollowing;
+            PlayerV2.Instance.m_onInterpolateStart += CameraStartFollowing;
+            PlayerV2.Instance.m_onInterpolate += FollowInterpolatingKnot;
+            PlayerV2.Instance.m_onInterpolationStop += CameraIsNotFollowing;
         }
-        
-        
-        public void CameraStartFollowing()
+
+        private void OnDestroy()
+        {
+            PlayerV2.Instance.m_onInterpolateStart -= CameraStartFollowing;
+            PlayerV2.Instance.m_onInterpolate -= FollowInterpolatingKnot;
+            PlayerV2.Instance.m_onInterpolationStop -= CameraIsNotFollowing;
+        }
+
+
+        private void CameraStartFollowing()
         {
             _cinemachineFreeLook.Priority = 100;
         }
         
-        public void CameraIsNotFollowing()
+        private void FollowInterpolatingKnot(Vector3 pos)
         {
-            if (CameraManager.Instance.PlayerCameraManager.IsInterpolating) return;
+            _anchor.position = pos;
+            Debug.Log("CameraFollowPos = " + pos);
+        }
+        
+        private void CameraIsNotFollowing()
+        {
+            //if (CameraManager.Instance.PlayerCameraManager.IsInterpolating) return;
             _cinemachineFreeLook.Priority = 0;
         }
         
