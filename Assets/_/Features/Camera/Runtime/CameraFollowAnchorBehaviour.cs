@@ -6,7 +6,7 @@ namespace CameraFeature.Runtime
     {
         private void Start()
         {
-            PlayerRuntime.Player.Instance.m_onInterpolate += FollowInterpolatingKnot;
+            PlayerRuntime.PlayerV2.Instance.m_onInterpolate += FollowInterpolatingKnot;
         }
 
         private void FollowInterpolatingKnot(Vector3 pos)

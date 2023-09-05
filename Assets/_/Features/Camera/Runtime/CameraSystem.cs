@@ -1,4 +1,5 @@
 using Cinemachine;
+using PlayerRuntime;
 using UnityEngine;
 
 namespace CameraFeature.Runtime
@@ -40,15 +41,15 @@ namespace CameraFeature.Runtime
             followOffset.y = followOffsetMaxY;
             _basePosition = transform.position;
             _baseRotation = transform.rotation;
-            PlayerRuntime.Player.Instance.m_onResetCameraPos = OnResetCameraPosEventHandler;
+            PlayerRuntime.PlayerV2.Instance.m_onResetCameraPos += OnResetCameraPosEventHandler;
         }
 
         private void Update()
         {
-            if (PlayerRuntime.Player.Instance.IsInterpolating)
+            if (PlayerV2.Instance.IsInterpolating)
             {
-                _resetPos = false;
                 MoveTopCameraWhileInterpolating();
+                _resetPos = false;
                 return;
             }
             HandleCameraMovement();
