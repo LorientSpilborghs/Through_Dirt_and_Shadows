@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Rock_Shader
+  m_Name: M_Concrete_Shader
   m_Shader: {fileID: -6465566751694194690, guid: 62f3c86016048fb4ab8214ab2f17983b,
     type: 3}
   m_Parent: {fileID: 0}
@@ -156,7 +156,7 @@ Material:
     - _Grass_Height_Blend: 3.42
     - _Is_Landscape: 0
     - _Metallic: 0
-    - _Noise_Scale: 1
+    - _Noise_Scale: 0.8
     - _OcclusionStrength: 1
     - _Offset: 1
     - _Offset_1: 1
@@ -177,7 +177,7 @@ Material:
     - _Top_Height_Blend: 1.08
     - _Top_Intensity: 0
     - _UpVector_Height_Blend: 1.06
-    - _UpVector_Intensity: 0.57
+    - _UpVector_Intensity: 0.5
     - _UpVector_Treshold: 0.254
     - _Vornoi_Offset: 3
     - _WorkflowMode: 1
@@ -190,5 +190,5 @@ Material:
     - _Rock_Color: {r: 0.4745098, g: 0.8562569, b: 0.9254902, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Top_Color: {r: 0.70211816, g: 0.88971627, b: 0.9245283, a: 0}
-    - _UpVector_Color: {r: 0.33962262, g: 0.2735127, b: 0.20024918, a: 0}
+    - _UpVector_Color: {r: 0.28190637, g: 0.31987312, b: 0.3301887, a: 0}
   m_BuildTextureStacks: []
