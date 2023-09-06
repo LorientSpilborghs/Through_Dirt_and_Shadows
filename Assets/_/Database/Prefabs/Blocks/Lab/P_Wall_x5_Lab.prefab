@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3696586476773885518}
   - component: {fileID: 368613699101333197}
   - component: {fileID: 473272944412228886}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 8679898705212542693}
   - component: {fileID: 4283977796450832554}
   - component: {fileID: 7941847849140736399}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 1123897571878610966}
   - component: {fileID: 6074255210192233160}
   - component: {fileID: 456444677069502919}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 2263468092216993362}
   - component: {fileID: 8221611571620937067}
   - component: {fileID: 4839297250823924212}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8769652906350244416}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: P_Wall_x5_Lab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -473,7 +473,7 @@ GameObject:
   - component: {fileID: 7464073184104533808}
   - component: {fileID: 4859126689993132638}
   - component: {fileID: 1859584807547479745}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -634,6 +634,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Wall (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eaf262af26bd2814aac91787e688ae4c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -712,6 +717,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_Wall (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eaf262af26bd2814aac91787e688ae4c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -792,6 +802,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eaf262af26bd2814aac91787e688ae4c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -871,6 +886,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Wall (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eaf262af26bd2814aac91787e688ae4c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -949,6 +969,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_Wall (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eaf262af26bd2814aac91787e688ae4c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

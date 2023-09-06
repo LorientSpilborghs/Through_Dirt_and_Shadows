@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3681472057387141003}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: P_Wall_x2_Lab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 3384002977071776984}
   - component: {fileID: 786449541395547056}
   - component: {fileID: 8172646562034521294}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 2069047780522361826}
   - component: {fileID: 8533370572921972280}
   - component: {fileID: 3317187497199912388}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,6 +318,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_CLASSIC WALL
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eaf262af26bd2814aac91787e688ae4c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -401,6 +406,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_CLASSIC WALL (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eaf262af26bd2814aac91787e688ae4c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
