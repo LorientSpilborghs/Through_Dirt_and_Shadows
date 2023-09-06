@@ -1776,7 +1776,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1436448847}
-  - component: {fileID: 1436448846}
+  - component: {fileID: 1436448848}
   m_Layer: 0
   m_Name: FogWar
   m_TagString: Untagged
@@ -1784,47 +1784,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1436448846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1436448845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5de54c084f472845b61ee9a97cb8a48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fogRevealers:
-  - revealerTransform: {fileID: 1358187274}
-    sightRange: 7
-    updateOnlyOnMove: 1
-    lastSeenAt: {x: 0, y: 0}
-  levelMidPoint: {fileID: 1885728436}
-  FogRefreshRate: 10
-  fogPlaneHeight: 0
-  fogPlaneMaterial: {fileID: 2100000, guid: 36b93ac6fcf129c449491654e397fe4a, type: 2}
-  fogColor: {r: 0.019607844, g: 0.05882353, b: 0.09803922, a: 1}
-  fogPlaneAlpha: 1
-  fogLerpSpeed: 1
-  fogPlaneTextureLerpTarget: {fileID: 0}
-  fogPlaneTextureLerpBuffer: {fileID: 0}
-  LevelDataToLoad: {fileID: 4900000, guid: 7f326e71267b1b7449ec5f246da5fea9, type: 3}
-  saveDataOnScan: 1
-  levelNameToSave: Default
-  levelDimensionX: 21
-  levelDimensionY: 21
-  unitScale: 1
-  scanSpacingPerUnit: 0.25
-  rayStartHeight: 5
-  rayMaxDistance: 10
-  obstacleLayers:
-    serializedVersion: 2
-    m_Bits: 16
-  ignoreTriggers: 1
-  drawGizmos: 1
-  LogOutOfRange: 0
 --- !u!4 &1436448847
 Transform:
   m_ObjectHideFlags: 0
@@ -1840,6 +1799,47 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1436448848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436448845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5de54c084f472845b61ee9a97cb8a48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fogRevealers:
+  - revealerTransform: {fileID: 1358187274}
+    sightRange: 2
+    updateOnlyOnMove: 1
+    lastSeenAt: {x: 0, y: 0}
+  levelMidPoint: {fileID: 1885728436}
+  FogRefreshRate: 10
+  fogPlaneHeight: 0
+  fogPlaneMaterial: {fileID: 2100000, guid: 36b93ac6fcf129c449491654e397fe4a, type: 2}
+  fogColor: {r: 0.019607844, g: 0.05882353, b: 0.09803922, a: 1}
+  fogPlaneAlpha: 1
+  fogLerpSpeed: 2.5
+  fogPlaneTextureLerpTarget: {fileID: 0}
+  fogPlaneTextureLerpBuffer: {fileID: 0}
+  LevelDataToLoad: {fileID: 0}
+  saveDataOnScan: 0
+  levelNameToSave: 
+  levelDimensionX: 100
+  levelDimensionY: 100
+  unitScale: 1
+  scanSpacingPerUnit: 0.25
+  rayStartHeight: 5
+  rayMaxDistance: 10
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  ignoreTriggers: 1
+  drawGizmos: 0
+  LogOutOfRange: 0
 --- !u!1 &1460938742 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cf87215fbb4f7ff4bb167e8004d75ec3,
@@ -1940,12 +1940,12 @@ PrefabInstance:
     - target: {fileID: 1657920501068952256, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000016282538
+      value: 0.000000016282542
       objectReference: {fileID: 0}
     - target: {fileID: 1657920501068952256, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000055622347
+      value: -0.000000005562236
       objectReference: {fileID: 0}
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
@@ -1981,6 +1981,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.0000000074471513
+      objectReference: {fileID: 0}
+    - target: {fileID: 3955214779504619161, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: _baseResources
+      value: 90000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
