@@ -12,6 +12,12 @@ namespace RootFeature.Runtime
             set => _splineContainer = value;
         }
 
+        public float DistancePerSeconds
+        {
+            get => _distancePerSeconds;
+            set => _distancePerSeconds = value;
+        }
+
         private void Awake()
         {
             _splineExtrude = GetComponent<SplineExtrude>();
@@ -20,7 +26,7 @@ namespace RootFeature.Runtime
         public void Grow(RootV2 root, Vector3 positionToGo)
         {
             Vector3 modifiedPositionToGo = new Vector3(positionToGo.x, _heightOfTheRoot, positionToGo.z);
-            _normalizedDistancePerSeconds = _distancePerSeconds / Vector3.Distance(root.Container.Spline.ToArray()[^1].Position, modifiedPositionToGo);
+            _normalizedDistancePerSeconds = DistancePerSeconds / Vector3.Distance(root.Container.Spline.ToArray()[^1].Position, modifiedPositionToGo);
             _normalizedTargetKnotPosition = 0f;
             _normalizedTargetKnotPosition += _normalizedDistancePerSeconds * Time.deltaTime;
 
