@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace ResourcesManagerFeature.Runtime
@@ -13,6 +12,11 @@ namespace ResourcesManagerFeature.Runtime
             else Destroy(gameObject);
         }
 
+        private void Start()
+        {
+            _currentResources = _baseResources;
+        }
+
         public bool UseResources(int quantity = 1)
         {
             if (quantity > _currentResources) return false;
@@ -25,6 +29,9 @@ namespace ResourcesManagerFeature.Runtime
         {
             _currentResources += quantity;
         }
+
+        [SerializeField] private int _baseResources = 500;
+        [SerializeField] private int _maxResources;
         
         private int _currentResources;
     }

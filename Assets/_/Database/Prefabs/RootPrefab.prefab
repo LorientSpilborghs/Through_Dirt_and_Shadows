@@ -51,10 +51,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _splineContainer: {fileID: 8721236178818016567}
+  _frontCollider: {fileID: 7130140536928042537}
   _heightOfTheRoot: 0
   _distancePerSeconds: 4
   _distanceBetweenKnots: 2
-  _frontCollider: {fileID: 7130140536928042537}
 --- !u!114 &913331109243674626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,5 +239,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.25
+  m_Radius: 0.15
   m_Center: {x: 0, y: 0, z: 0}
