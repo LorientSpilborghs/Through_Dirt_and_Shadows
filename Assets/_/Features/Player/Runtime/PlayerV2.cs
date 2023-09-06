@@ -89,9 +89,7 @@ namespace PlayerRuntime
         private void OnLeftMouseDownEventHandler()
         {
             RootToModify = GetTheRightRoot();
-            // RootToModify.CanRebuild(true);
             IsInterpolating = true;
-            
             m_onInterpolateStart?.Invoke();
         }
 
@@ -102,16 +100,15 @@ namespace PlayerRuntime
         
         private void OnMouseHoldEventHandler()
         {
-            RootToModify.Grow(RootToModify, PointerPosition);
+            if (_frontColliderBehaviour.IsBlocked) return;
             
+            RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
-            Debug.Log("Knot = " + (Vector3)RootToModify.Container.Spline[^1].Position);
         }
         
         private void OnMouseUpEventHandler()
         {
             RootToModify.DeleteIfTooClose(RootToModify);
-            // RootToModify.CanRebuild(false);
             IsInterpolating = false;
             
             m_onInterpolateEnd?.Invoke();
@@ -161,29 +158,6 @@ namespace PlayerRuntime
             return newRoot;
         }
         
-        // private Mesh CreateNewMeshAsset()
-        // {
-        //     var mesh = new Mesh();
-        //     mesh.name = name;
-        //     var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-        //     var sceneDataDir = "Assets";
-        //
-        //     if (!string.IsNullOrEmpty(scene.path))
-        //     {
-        //         var dir = Path.GetDirectoryName(scene.path);
-        //         sceneDataDir = $"{dir}/{Path.GetFileNameWithoutExtension(scene.path)}";
-        //         if (!Directory.Exists(sceneDataDir))
-        //             Directory.CreateDirectory(sceneDataDir);
-        //     }
-        //
-        //     var path = UnityEditor.AssetDatabase.GenerateUniqueAssetPath($"{sceneDataDir}/SplineExtrude_{mesh.name}.asset");
-        //     UnityEditor.AssetDatabase.CreateAsset(mesh, path);
-        //     mesh = UnityEditor.AssetDatabase.LoadAssetAtPath<Mesh>(path);
-        //     UnityEditor.EditorGUIUtility.PingObject(mesh);
-        //     
-        //     return mesh;
-        // }
-        
         #endregion
 
         
@@ -200,8 +174,8 @@ namespace PlayerRuntime
         #region Private and Protected Members
         
         [SerializeField] private GameObject _rootPrefab;
+        [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
         [Space]
-        
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;
         private RootV2 _rootToModify;

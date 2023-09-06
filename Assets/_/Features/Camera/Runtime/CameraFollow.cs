@@ -25,8 +25,7 @@ namespace CameraFeature.Runtime
             PlayerV2.Instance.m_onInterpolate -= FollowInterpolatingKnot;
             PlayerV2.Instance.m_onInterpolationStop -= CameraIsNotFollowing;
         }
-
-
+        
         private void CameraStartFollowing()
         {
             _cinemachineFreeLook.Priority = 100;
@@ -35,12 +34,11 @@ namespace CameraFeature.Runtime
         private void FollowInterpolatingKnot(Vector3 pos)
         {
             _anchor.position = pos;
-            Debug.Log("CameraFollowPos = " + pos);
         }
         
         private void CameraIsNotFollowing()
         {
-            //if (CameraManager.Instance.PlayerCameraManager.IsInterpolating) return;
+            if (CameraManager.Instance.PlayerCameraManager.IsInterpolating) return;
             _cinemachineFreeLook.Priority = 0;
         }
         
