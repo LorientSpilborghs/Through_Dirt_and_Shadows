@@ -89,8 +89,8 @@ namespace InputManagerFeature.Runtime
             if (!Input.GetKeyDown(KeyCode.Space)) return;
             m_onSpaceBarDown?.Invoke();
         }
-
-
+        
+        
         [SerializeField] private LayerMask _layerMask;
         private bool _isPushing;
         private Camera _camera;

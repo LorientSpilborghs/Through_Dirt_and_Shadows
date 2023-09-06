@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using InputManagerFeature.Runtime;
+using ResourcesManagerFeature.Runtime;
 using RootFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -14,11 +15,12 @@ namespace PlayerRuntime
         
         public static PlayerV2 Instance { get; private set; }
 
-        public Action m_onInterpolateStart;
+        public Action<Vector3> m_onCameraBlendingStart;
         public Action<Vector3> m_onInterpolate;
         public Action m_onInterpolateEnd;
         public Action m_onResetCameraPos;
-        public Action m_onInterpolationStop;
+        public Action m_onCameraBlendingStop;
+        public Func<bool> m_isAllowedToGrow;
 
         public Vector3 PointerPosition
         {
@@ -89,29 +91,27 @@ namespace PlayerRuntime
         private void OnLeftMouseDownEventHandler()
         {
             RootToModify = GetTheRightRoot();
-            // RootToModify.CanRebuild(true);
+            m_onCameraBlendingStart?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
-            
-            m_onInterpolateStart?.Invoke();
         }
 
         private void OnRightMouseDownEventHandler()
         {
-            m_onInterpolationStop?.Invoke();
+            m_onCameraBlendingStop?.Invoke();
         }
         
         private void OnMouseHoldEventHandler()
         {
+            if (_frontColliderBehaviour.IsBlocked) return;
+            if (m_isAllowedToGrow?.Invoke() is false) return;
+            if (!UseResourcesWhileGrowing()) return;
             RootToModify.Grow(RootToModify, PointerPosition);
-            
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
-            Debug.Log("Knot = " + (Vector3)RootToModify.Container.Spline[^1].Position);
         }
         
         private void OnMouseUpEventHandler()
         {
             RootToModify.DeleteIfTooClose(RootToModify);
-            // RootToModify.CanRebuild(false);
             IsInterpolating = false;
             
             m_onInterpolateEnd?.Invoke();
@@ -160,29 +160,15 @@ namespace PlayerRuntime
             
             return newRoot;
         }
-        
-        // private Mesh CreateNewMeshAsset()
-        // {
-        //     var mesh = new Mesh();
-        //     mesh.name = name;
-        //     var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-        //     var sceneDataDir = "Assets";
-        //
-        //     if (!string.IsNullOrEmpty(scene.path))
-        //     {
-        //         var dir = Path.GetDirectoryName(scene.path);
-        //         sceneDataDir = $"{dir}/{Path.GetFileNameWithoutExtension(scene.path)}";
-        //         if (!Directory.Exists(sceneDataDir))
-        //             Directory.CreateDirectory(sceneDataDir);
-        //     }
-        //
-        //     var path = UnityEditor.AssetDatabase.GenerateUniqueAssetPath($"{sceneDataDir}/SplineExtrude_{mesh.name}.asset");
-        //     UnityEditor.AssetDatabase.CreateAsset(mesh, path);
-        //     mesh = UnityEditor.AssetDatabase.LoadAssetAtPath<Mesh>(path);
-        //     UnityEditor.EditorGUIUtility.PingObject(mesh);
-        //     
-        //     return mesh;
-        // }
+
+        private bool UseResourcesWhileGrowing()
+        {
+            Vector3 pos1 = RootToModify.Container.Spline.Knots.ToArray()[^2].Position;
+            Vector3 pos2 = RootToModify.Container.Spline.Knots.ToArray()[^1].Position;
+            
+            return !(Vector3.Distance(pos1, pos2) > _distanceBetweenResourcesUsage) 
+                   || ResourcesManager.Instance.UseResources(RootToModify.Container.Spline.Knots.Count());
+        }
         
         #endregion
 
@@ -200,8 +186,9 @@ namespace PlayerRuntime
         #region Private and Protected Members
         
         [SerializeField] private GameObject _rootPrefab;
+        [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
+        [SerializeField] private float _distanceBetweenResourcesUsage = 2;
         [Space]
-        
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;
         private RootV2 _rootToModify;
