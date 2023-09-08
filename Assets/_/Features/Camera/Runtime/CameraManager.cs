@@ -15,7 +15,7 @@ namespace CameraFeature.Runtime
             set => _virtualCamera = value;
         }
 
-        public PlayerRuntime.Player PlayerCameraManager
+        public PlayerRuntime.PlayerV2 PlayerCameraManager
         {
             get => _player;
             set => _player = value;
@@ -38,7 +38,7 @@ namespace CameraFeature.Runtime
             StartCoroutine(WaitForPlayerToInitialize());
             
             if (!_isWaitForPlayerToInitializeOver) return;
-            PlayerCameraManager = GameManager.Instance.PlayerTransform.GetComponent<PlayerRuntime.Player>();
+            PlayerCameraManager = GameManager.Instance.PlayerTransform.GetComponent<PlayerRuntime.PlayerV2>();
             if (PlayerCameraManager == null)
             {
                 Debug.LogError("Variable <color=cyan>PlayerTransform</color> in GameManager is null");
@@ -77,7 +77,7 @@ namespace CameraFeature.Runtime
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
         [SerializeField] private CinemachineFreeLook _cinemachineFreeLook;
         
-        private PlayerRuntime.Player _player;
+        private PlayerRuntime.PlayerV2 _player;
         private bool _isWaitForPlayerToInitializeOver;
     }
 }
