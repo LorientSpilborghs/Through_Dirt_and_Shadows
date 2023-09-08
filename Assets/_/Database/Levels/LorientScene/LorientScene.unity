@@ -2806,7 +2806,7 @@ PrefabInstance:
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9402717
+      value: 0.9402716
       objectReference: {fileID: 0}
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
@@ -2816,12 +2816,12 @@ PrefabInstance:
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 3.8058948e-16
+      value: -0.000000028022281
       objectReference: {fileID: 0}
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -1.2884209e-16
+      value: 0.000000010145463
       objectReference: {fileID: 0}
     - target: {fileID: 1923951179073719459, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
@@ -2848,6 +2848,11 @@ PrefabInstance:
       propertyPath: _fogRevealerPrefab
       value: 
       objectReference: {fileID: 1185364598}
+    - target: {fileID: 8455009551266148299, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: _heightOfTheRootAtStart
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

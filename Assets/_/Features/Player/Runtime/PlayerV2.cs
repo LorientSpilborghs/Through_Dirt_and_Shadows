@@ -66,7 +66,7 @@ namespace PlayerRuntime
             InputManager.Instance.m_onMouseUp += OnMouseUpEventHandler;
             InputManager.Instance.m_onSpaceBarDown += OnSpaceBarDownEventHandler;
 
-            AddNewRoot(Vector3.zero + Vector3.up * _heightOfTheRoot);
+            AddNewRoot(Vector3.zero + Vector3.up * _heightOfTheRootAtStart);
         }
 
         private void OnDestroy()
@@ -209,7 +209,7 @@ namespace PlayerRuntime
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
         [SerializeField] private int _resourcesCostMultiplier = 1;
         [SerializeField] private int _resourcesUsageForNewRoot = 1;
-        [SerializeField] private float _heightOfTheRoot;
+        [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
         [Space]
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;

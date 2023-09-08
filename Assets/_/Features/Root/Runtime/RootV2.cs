@@ -40,12 +40,13 @@ namespace RootFeature.Runtime
 
         public void Grow(RootV2 root, Vector3 positionToGo)
         {
-            _normalizedDistancePerSeconds = DistancePerSeconds / Vector3.Distance(root.Container.Spline.ToArray()[^1].Position, positionToGo);
+            Vector3 modifiedPositionToGo = new Vector3(positionToGo.x, _heightOfTheRoot, positionToGo.z);
+            _normalizedDistancePerSeconds = DistancePerSeconds / Vector3.Distance(root.Container.Spline.ToArray()[^1].Position, modifiedPositionToGo);
             _normalizedTargetKnotPosition = 0f;
             _normalizedTargetKnotPosition += _normalizedDistancePerSeconds * Time.deltaTime;
 
             BezierKnot lastKnot = root.Container.Spline.Knots.ToArray()[root.Container.Spline.Knots.Count() - 1];
-            lastKnot.Position = Vector3.Lerp(lastKnot.Position, positionToGo, _normalizedTargetKnotPosition);
+            lastKnot.Position = Vector3.Lerp(lastKnot.Position, modifiedPositionToGo, _normalizedTargetKnotPosition);
             
             AddKnotWhileInterpolating(root);
             root.Container.Spline.SetKnot(root.Container.Spline.Knots.Count() - 1, lastKnot);
@@ -107,7 +108,7 @@ namespace RootFeature.Runtime
         [SerializeField] private float _distancePerSeconds = 2.5f;
         [SerializeField] private float _minimumDistancePerSeconds = 1f;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
-        [SerializeField] private GameObject _fogOfWarRevealer;
+        [SerializeField] private float _heightOfTheRoot = 0.5f;
         
         private SplineExtrude _splineExtrude;
         private CollisionForSpeedModifier _collisionForSpeedModifier;
