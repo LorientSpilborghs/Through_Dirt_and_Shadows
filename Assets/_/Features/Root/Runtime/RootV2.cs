@@ -80,12 +80,12 @@ namespace RootFeature.Runtime
         private void LowerSpeed()
         {
             print("slow");
-            StartCoroutine(ChangeSpeed(_distancePerSeconds, _minimumDistancePerSeconds, 0.1f));
+            StartCoroutine(ChangeSpeed(_distancePerSeconds, _minimumDistancePerSeconds, _timeBeforeReachingMinimumSpeed));
         }
 
         private void ResetSpeed()
         {
-            StartCoroutine(ChangeSpeed(_distancePerSeconds, _maxDistancePerSeconds, 0.1f));
+            StartCoroutine(ChangeSpeed(_distancePerSeconds, _maxDistancePerSeconds, _timeBeforeReachingMinimumSpeed));
         }
 
         private IEnumerator ChangeSpeed(float v_start, float v_end, float duration)
@@ -107,6 +107,7 @@ namespace RootFeature.Runtime
         [Space]
         [SerializeField] private float _distancePerSeconds = 2.5f;
         [SerializeField] private float _minimumDistancePerSeconds = 1f;
+        [SerializeField] private float _timeBeforeReachingMinimumSpeed = 0.1f;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
         [SerializeField] private float _heightOfTheRoot = 0.5f;
         
