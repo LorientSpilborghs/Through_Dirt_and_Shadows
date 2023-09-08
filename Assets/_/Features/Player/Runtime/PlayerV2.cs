@@ -20,8 +20,9 @@ namespace PlayerRuntime
         public Action m_onInterpolateEnd;
         public Action m_onResetCameraPos;
         public Action m_onCameraBlendingStop;
+        public Action m_onNewKnotInstanciate;
         public Func<bool> m_isAllowedToGrow;
-
+        
         public Vector3 PointerPosition
         {
             get => _pointerPosition;
@@ -90,7 +91,7 @@ namespace PlayerRuntime
         
         private void OnLeftMouseDownEventHandler()
         {
-            RootToModify = GetTheRightRoot();
+            RootToModify = GetTheRightRoot() ?? RootToModify;
             m_onCameraBlendingStart?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
         }
@@ -104,7 +105,7 @@ namespace PlayerRuntime
         {
             if (_frontColliderBehaviour.IsBlocked) return;
             if (m_isAllowedToGrow?.Invoke() is false) return;
-            if (!UseResourcesWhileGrowing()) return;
+            if (!UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
         }
@@ -142,8 +143,17 @@ namespace PlayerRuntime
         
             CurrentClosestKnot = closestKnot;
             if (onlySetKnot) return null;
-            
-            return IsLastKnotFromSpline(closestKnot, root) ? root : AddNewRoot((Vector3)CurrentClosestKnot.Position);
+
+            if (IsLastKnotFromSpline(closestKnot, root))
+            {
+                return root;
+            }
+            else
+            {
+                return UseResourcesWhileGrowing(_resourcesUsageForNewRoot)
+                    ? AddNewRoot((Vector3)CurrentClosestKnot.Position)
+                    : null;
+            }
         }
         
         private RootV2 AddNewRoot(Vector3 position)
@@ -161,13 +171,13 @@ namespace PlayerRuntime
             return newRoot;
         }
 
-        private bool UseResourcesWhileGrowing()
+        private bool UseResourcesWhileGrowing(int resourcesUsage)
         {
             Vector3 pos1 = RootToModify.Container.Spline.Knots.ToArray()[^2].Position;
             Vector3 pos2 = RootToModify.Container.Spline.Knots.ToArray()[^1].Position;
             
-            return !(Vector3.Distance(pos1, pos2) > _distanceBetweenResourcesUsage) 
-                   || ResourcesManager.Instance.UseResources(RootToModify.Container.Spline.Knots.Count());
+            return !(Vector3.Distance(pos1, pos2) > RootToModify.DistanceBetweenKnots) 
+                   || ResourcesManager.Instance.UseResources(resourcesUsage);
         }
         
         #endregion
@@ -187,7 +197,8 @@ namespace PlayerRuntime
         
         [SerializeField] private GameObject _rootPrefab;
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
-        [SerializeField] private float _distanceBetweenResourcesUsage = 2;
+        [SerializeField] private int _resourcesCostMultiplier = 1;
+        [SerializeField] private int _resourcesUsageForNewRoot = 1;
         [Space]
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;

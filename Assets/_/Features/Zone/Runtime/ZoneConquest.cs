@@ -43,6 +43,10 @@ namespace ZoneFeature.Runtime
 
         private void OnDrawGizmos()
         {
+            if (_completed)
+            {
+                Gizmos.color = Color.green;
+            }
             Gizmos.DrawWireSphere(transform.position, 5);
         }
 
