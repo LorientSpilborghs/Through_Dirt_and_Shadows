@@ -766,12 +766,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
---- !u!4 &556034356 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 788574132767005660, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
-    type: 3}
-  m_PrefabInstance: {fileID: 3065812814864291781}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &569728190 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2df367660f714414f8654ad7526a8367,
@@ -1831,37 +1825,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2df367660f714414f8654ad7526a8367, type: 3}
---- !u!1 &1185364598
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1185364599}
-  m_Layer: 0
-  m_Name: FogRevealer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1185364599
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1185364598}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 556034356}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1250075257 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5703126869214985650, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
@@ -2796,12 +2759,12 @@ PrefabInstance:
     - target: {fileID: 1657920501068952256, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000016282542
+      value: -0.000000016282538
       objectReference: {fileID: 0}
     - target: {fileID: 1657920501068952256, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000005562236
+      value: 0.0000000055622347
       objectReference: {fileID: 0}
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
@@ -2811,17 +2774,17 @@ PrefabInstance:
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.34042522
+      value: 0.34042525
       objectReference: {fileID: 0}
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000028022281
+      value: 0.000000011607213
       objectReference: {fileID: 0}
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000010145463
+      value: -0.0000000042023887
       objectReference: {fileID: 0}
     - target: {fileID: 1923951179073719459, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
@@ -2838,28 +2801,9 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.0000000074471513
       objectReference: {fileID: 0}
-    - target: {fileID: 8455009551266148299, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
-        type: 3}
-      propertyPath: _heightOfTheRoot
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8455009551266148299, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
-        type: 3}
-      propertyPath: _fogRevealerPrefab
-      value: 
-      objectReference: {fileID: 1185364598}
-    - target: {fileID: 8455009551266148299, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
-        type: 3}
-      propertyPath: _heightOfTheRootAtStart
-      value: 0.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 788574132767005660, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1185364599}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54cb37a705b7bd64c9d88b8bfdd71272, type: 3}
 --- !u!1001 &7297173897457342520
@@ -2995,29 +2939,9 @@ PrefabInstance:
       objectReference: {fileID: 1885728436}
     - target: {fileID: 2399447840096293766, guid: 25731d621583acd4ba8a1709fc8c884b,
         type: 3}
-      propertyPath: fogRevealers.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2399447840096293766, guid: 25731d621583acd4ba8a1709fc8c884b,
-        type: 3}
-      propertyPath: fogRevealers.Array.data[1].sightRange
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2399447840096293766, guid: 25731d621583acd4ba8a1709fc8c884b,
-        type: 3}
-      propertyPath: fogRevealers.Array.data[1].updateOnlyOnMove
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2399447840096293766, guid: 25731d621583acd4ba8a1709fc8c884b,
-        type: 3}
       propertyPath: fogRevealers.Array.data[0].revealerTransform
       value: 
       objectReference: {fileID: 1250075257}
-    - target: {fileID: 2399447840096293766, guid: 25731d621583acd4ba8a1709fc8c884b,
-        type: 3}
-      propertyPath: fogRevealers.Array.data[1].revealerTransform
-      value: 
-      objectReference: {fileID: 1185364599}
     - target: {fileID: 7985607776401718611, guid: 25731d621583acd4ba8a1709fc8c884b,
         type: 3}
       propertyPath: m_Name

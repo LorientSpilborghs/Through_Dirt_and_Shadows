@@ -79,13 +79,14 @@ namespace RootFeature.Runtime
 
         private void LowerSpeed()
         {
-            print("slow");
+            _isSlow = true;
             StartCoroutine(ChangeSpeed(_distancePerSeconds, _minimumDistancePerSeconds, _timeBeforeReachingMinimumSpeed));
         }
 
         private void ResetSpeed()
         {
-            StartCoroutine(ChangeSpeed(_distancePerSeconds, _maxDistancePerSeconds, _timeBeforeReachingMinimumSpeed));
+            _isSlow = false;
+            StartCoroutine(DelayBeforeSpeedChange());
         }
 
         private IEnumerator ChangeSpeed(float v_start, float v_end, float duration)
@@ -101,6 +102,13 @@ namespace RootFeature.Runtime
                 _distancePerSeconds = v_end;
             }
         }
+        
+        private IEnumerator DelayBeforeSpeedChange()
+        {
+            yield return new WaitForSeconds(_timeOfImmunityBeforeSpeedChange);
+            if (_isSlow) yield break;
+            StartCoroutine(ChangeSpeed(_distancePerSeconds, _maxDistancePerSeconds, _timeBeforeReachingMinimumSpeed));
+        }
 
         [SerializeField] private SplineContainer _splineContainer;
         [SerializeField] private Collider _frontCollider;
@@ -108,6 +116,7 @@ namespace RootFeature.Runtime
         [SerializeField] private float _distancePerSeconds = 2.5f;
         [SerializeField] private float _minimumDistancePerSeconds = 1f;
         [SerializeField] private float _timeBeforeReachingMinimumSpeed = 0.1f;
+        [SerializeField] private float _timeOfImmunityBeforeSpeedChange = 1;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
         [SerializeField] private float _heightOfTheRoot = 0.5f;
         
@@ -116,5 +125,6 @@ namespace RootFeature.Runtime
         private float _normalizedDistancePerSeconds;
         private float _normalizedTargetKnotPosition;
         private float _maxDistancePerSeconds;
+        private bool _isSlow;
     }
 }

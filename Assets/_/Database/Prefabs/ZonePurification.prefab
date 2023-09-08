@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7928842578531323344}
   - component: {fileID: 4079502191656334870}
   m_Layer: 13
-  m_Name: ZoneConquest
+  m_Name: ZonePurification
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gaugePercentageOverTime: 0.1
-  _timeBetweenConquer: 1
+  _timeBetweenPurification: 0
 --- !u!135 &7928842578531323344
 SphereCollider:
   m_ObjectHideFlags: 0

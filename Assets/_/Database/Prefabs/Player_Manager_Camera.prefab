@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 94560021526285820}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.34042522, y: -0.000000028022281, z: 0.000000010145463, w: 0.9402716}
+  m_LocalRotation: {x: 0.34042522, y: 3.8058948e-16, z: -1.2884209e-16, w: 0.9402717}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -668,6 +668,7 @@ MonoBehaviour:
   _frontColliderBehaviour: {fileID: 1450449442410881056}
   _resourcesCostMultiplier: 1
   _resourcesUsageForNewRoot: 1
+  _heightOfTheRootAtStart: 0.5
 --- !u!1 &4529346449832118140
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,6 +1190,37 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 5243905940951909893}
+--- !u!1 &5607467570435024008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5161333128407632605}
+  m_Layer: 0
+  m_Name: FogRevealer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5161333128407632605
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5607467570435024008}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 788574132767005660}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5822225949435903353
 GameObject:
   m_ObjectHideFlags: 0
@@ -1221,6 +1253,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5703126869214985650}
+  - {fileID: 5161333128407632605}
   m_Father: {fileID: 4359738300409802401}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6036896235197262288
@@ -1298,7 +1331,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6718435548733609992}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30604523, y: -0.000000023165903, z: 0.0000000074471513, w: 0.952017}
+  m_LocalRotation: {x: 0.30604523, y: 0.000000023165908, z: -0.0000000074471527, w: 0.952017}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1703,7 +1736,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8138409669114487374}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.32326585, y: -0.000000016282538, z: 0.0000000055622347, w: 0.9463082}
+  m_LocalRotation: {x: 0.32326585, y: 0.000000016282542, z: -0.000000005562236, w: 0.9463082}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

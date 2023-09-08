@@ -3,40 +3,40 @@ using UnityEngine;
 
 namespace ZoneFeature.Runtime
 {
-    public class ZoneConquest : Zone
+    public class ZonePurification : Zone
     {
         private void Start()
         {
-            PlayerV2.Instance.m_onInterpolate += Conquering;
+            PlayerV2.Instance.m_onInterpolate += Purifying;
         }
 
         private void OnDestroy()
         {
-            PlayerV2.Instance.m_onInterpolate -= Conquering;
+            PlayerV2.Instance.m_onInterpolate -= Purifying;
         }
 
         protected override void OnEnterZone()
         {
-            _canConquer = true;
+            _canPurify = true;
         }
 
         protected override void OnExitZone()
         {
-            _canConquer = false;
+            _canPurify = false;
         }
 
-        private void Conquering(Vector3 pos)
+        private void Purifying(Vector3 pos)
         {
-            if (!_canConquer || _completed) return;
+            if (!_canPurify || _completed) return;
 
             _currentTime += Time.deltaTime;
-            if (!(_currentTime >= _timeBetweenConquer)) return;
+            if (!(_currentTime >= _timeBetweenPurification)) return;
             
             _gauge += _gaugePercentageOverTime;
             if (_gauge >= 1)
             {
                 _completed = true;
-                PlayerV2.Instance.m_onInterpolate -= Conquering;
+                PlayerV2.Instance.m_onInterpolate -= Purifying;
             }
             _currentTime = 0;
         }
@@ -51,10 +51,10 @@ namespace ZoneFeature.Runtime
         }
 
         [SerializeField] [Range(0,1)] private float _gaugePercentageOverTime;
-        [SerializeField] private float _timeBetweenConquer;
+        [SerializeField] private float _timeBetweenPurification;
         
         private float _gauge;
-        private bool _canConquer;
+        private bool _canPurify;
         private bool _completed;
         
         private float _currentTime;
