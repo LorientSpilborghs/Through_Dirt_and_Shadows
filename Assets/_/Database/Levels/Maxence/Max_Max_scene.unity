@@ -1800,6 +1800,74 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.7098925
   m_Center: {x: 0.12771487, y: 0, z: -0.009239435}
+--- !u!1001 &1480099509
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.758
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.74
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.656906
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7807656
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.6248241
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -77.339
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 353421d90401f1346b18c61759f0e8c8,
+        type: 3}
+      propertyPath: m_Name
+      value: SM_Debris_4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 353421d90401f1346b18c61759f0e8c8, type: 3}
 --- !u!4 &1660513163 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2df367660f714414f8654ad7526a8367,
@@ -1877,22 +1945,22 @@ PrefabInstance:
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9402717
+      value: 0.9402716
       objectReference: {fileID: 0}
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.34042522
+      value: 0.34042525
       objectReference: {fileID: 0}
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 3.8058948e-16
+      value: 0.000000011607213
       objectReference: {fileID: 0}
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -1.2884209e-16
+      value: -0.0000000042023887
       objectReference: {fileID: 0}
     - target: {fileID: 1923951179073719459, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
@@ -2698,3 +2766,4 @@ SceneRoots:
   - {fileID: 5819660497024405204}
   - {fileID: 1705226054}
   - {fileID: 1680917158}
+  - {fileID: 1480099509}
