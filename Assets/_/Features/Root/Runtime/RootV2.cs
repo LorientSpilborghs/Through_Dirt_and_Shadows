@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -106,10 +104,10 @@ namespace RootFeature.Runtime
         [SerializeField] private SplineContainer _splineContainer;
         [SerializeField] private Collider _frontCollider;
         [Space]
-        [SerializeField] private float _heightOfTheRoot;
         [SerializeField] private float _distancePerSeconds = 2.5f;
         [SerializeField] private float _minimumDistancePerSeconds = 1f;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
+        [SerializeField] private GameObject _fogOfWarRevealer;
         
         private SplineExtrude _splineExtrude;
         private CollisionForSpeedModifier _collisionForSpeedModifier;

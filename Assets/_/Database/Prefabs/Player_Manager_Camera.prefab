@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 94560021526285820}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.34042522, y: 3.8058948e-16, z: -1.2884209e-16, w: 0.9402717}
+  m_LocalRotation: {x: 0.34042522, y: -0.000000028022281, z: 0.000000010145463, w: 0.9402716}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82bc3c5d6026a744eaaece05f3128aeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _range: 1.2
+  _range: 0.5
 --- !u!1 &721505392709193635
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,6 +363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa0410eb99231a47a70a9cf46fb71c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseResources: 9999999
+  _maxResources: 0
 --- !u!1 &2500277289337296056
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,6 +666,8 @@ MonoBehaviour:
   _rootPrefab: {fileID: 6682276744045735708, guid: 6a103b6e633c65f42bb3947794ae203e,
     type: 3}
   _frontColliderBehaviour: {fileID: 1450449442410881056}
+  _resourcesCostMultiplier: 1
+  _resourcesUsageForNewRoot: 1
 --- !u!1 &4529346449832118140
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,7 +1298,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6718435548733609992}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30604523, y: 0.000000023165908, z: -0.0000000074471527, w: 0.952017}
+  m_LocalRotation: {x: 0.30604523, y: -0.000000023165903, z: 0.0000000074471513, w: 0.952017}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

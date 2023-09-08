@@ -107,6 +107,7 @@ namespace PlayerRuntime
             if (m_isAllowedToGrow?.Invoke() is false) return;
             if (!UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
+            // SpawnFogRevealerPrefab();
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
         }
         
@@ -179,6 +180,15 @@ namespace PlayerRuntime
             return !(Vector3.Distance(pos1, pos2) > RootToModify.DistanceBetweenKnots) 
                    || ResourcesManager.Instance.UseResources(resourcesUsage);
         }
+
+        // private void SpawnFogRevealerPrefab()
+        // {
+        //     Vector3 pos1 = RootToModify.Container.Spline.Knots.ToArray()[^2].Position;
+        //     Vector3 pos2 = RootToModify.Container.Spline.Knots.ToArray()[^1].Position;
+        //     
+        //     if (Vector3.Distance(pos1, pos2) < RootToModify.DistanceBetweenKnots) return;
+        //     Instantiate(_fogRevealerPrefab, RootToModify.Container.Spline[^1].Position, Quaternion.identity);
+        // }
         
         #endregion
 
@@ -199,6 +209,7 @@ namespace PlayerRuntime
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
         [SerializeField] private int _resourcesCostMultiplier = 1;
         [SerializeField] private int _resourcesUsageForNewRoot = 1;
+        [SerializeField] private GameObject _fogRevealerPrefab;
         [Space]
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;
