@@ -7,7 +7,7 @@ namespace RootFeature.Runtime
     {
         public Action m_onEnterSlowZone;
         public Action m_onExitSlowZone;
-        
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.tag is not "Slow") return;

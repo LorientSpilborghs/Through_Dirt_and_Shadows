@@ -180,15 +180,6 @@ namespace PlayerRuntime
             return !(Vector3.Distance(pos1, pos2) > RootToModify.DistanceBetweenKnots) 
                    || ResourcesManager.Instance.UseResources(resourcesUsage);
         }
-
-        // private void SpawnFogRevealerPrefab()
-        // {
-        //     Vector3 pos1 = RootToModify.Container.Spline.Knots.ToArray()[^2].Position;
-        //     Vector3 pos2 = RootToModify.Container.Spline.Knots.ToArray()[^1].Position;
-        //     
-        //     if (Vector3.Distance(pos1, pos2) < RootToModify.DistanceBetweenKnots) return;
-        //     Instantiate(_fogRevealerPrefab, RootToModify.Container.Spline[^1].Position, Quaternion.identity);
-        // }
         
         #endregion
 
