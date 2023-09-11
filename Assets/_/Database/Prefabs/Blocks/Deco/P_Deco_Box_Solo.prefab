@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6277002247475909781}
   - component: {fileID: 3347265130669420333}
   - component: {fileID: 7966909640831156896}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1033406949014761258}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: P_Deco_Box_Solo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,6 +205,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_BOX1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5abe60d5a5ab4d54ead1d0fa05704b25,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
