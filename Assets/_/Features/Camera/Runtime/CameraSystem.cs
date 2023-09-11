@@ -53,10 +53,10 @@ namespace CameraFeature.Runtime
                 return;
             }
             HandleCameraMovement();
-            if (useEdgeScrolling)
-            {
-                HandleCameraMovementEdgeScrolling();
-            }
+            // if (useEdgeScrolling)
+            // {
+            //     HandleCameraMovementEdgeScrolling();
+            // }
 
             if (useDragPan)
             {

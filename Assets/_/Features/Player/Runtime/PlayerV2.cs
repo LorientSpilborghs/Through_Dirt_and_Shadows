@@ -20,7 +20,7 @@ namespace PlayerRuntime
         public Action m_onInterpolateEnd;
         public Action m_onResetCameraPos;
         public Action m_onCameraBlendingStop;
-        public Action m_onNewKnotInstanciate;
+        public Action m_onNewKnotInstantiate;
         public Func<bool> m_isAllowedToGrow;
         
         public Vector3 PointerPosition
@@ -65,7 +65,7 @@ namespace PlayerRuntime
             InputManager.Instance.m_onMouseHold += OnMouseHoldEventHandler;
             InputManager.Instance.m_onMouseUp += OnMouseUpEventHandler;
             InputManager.Instance.m_onSpaceBarDown += OnSpaceBarDownEventHandler;
-
+            
             AddNewRoot(Vector3.zero + Vector3.up * _heightOfTheRootAtStart);
         }
 
@@ -107,8 +107,8 @@ namespace PlayerRuntime
             if (m_isAllowedToGrow?.Invoke() is false) return;
             if (!UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
-            // SpawnFogRevealerPrefab();
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
+            if (IsMaxDistanceBetweenKnots()) m_onNewKnotInstantiate?.Invoke();
         }
         
         private void OnMouseUpEventHandler()
@@ -168,16 +168,12 @@ namespace PlayerRuntime
             newRoot.Container.Spline.Add(new BezierKnot(position), TangentMode.AutoSmooth);
             
             _rootsList.Add(newRoot);
-            
             return newRoot;
         }
 
         private bool UseResourcesWhileGrowing(int resourcesUsage)
         {
-            Vector3 pos1 = RootToModify.Container.Spline.Knots.ToArray()[^2].Position;
-            Vector3 pos2 = RootToModify.Container.Spline.Knots.ToArray()[^1].Position;
-            
-            return !(Vector3.Distance(pos1, pos2) > RootToModify.DistanceBetweenKnots) 
+            return !(IsMaxDistanceBetweenKnots()) 
                    || ResourcesManager.Instance.UseResources(resourcesUsage);
         }
         
@@ -189,6 +185,14 @@ namespace PlayerRuntime
         private bool IsLastKnotFromSpline(BezierKnot knot, RootV2 root)
         {
             return root.Container.Spline.ToArray()[^1].Equals(knot);
+        }
+
+        private bool IsMaxDistanceBetweenKnots()
+        {
+            Vector3 pos1 = RootToModify.Container.Spline.Knots.ToArray()[^2].Position;
+            Vector3 pos2 = RootToModify.Container.Spline.Knots.ToArray()[^1].Position;
+
+            return Vector3.Distance(pos1, pos2) > RootToModify.DistanceBetweenKnots;
         }
         
         #endregion
