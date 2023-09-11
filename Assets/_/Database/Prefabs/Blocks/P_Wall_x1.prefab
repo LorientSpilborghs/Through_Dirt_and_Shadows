@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 2725602545516232038}
   - component: {fileID: 1056640097602510740}
   - component: {fileID: 3903587849711108569}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 8828372912184424347}
   - component: {fileID: 1725082812628614984}
   - component: {fileID: 4752543657316227276}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +352,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6001540531947729682}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: P_Wall_x1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -450,6 +450,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: eaf262af26bd2814aac91787e688ae4c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
