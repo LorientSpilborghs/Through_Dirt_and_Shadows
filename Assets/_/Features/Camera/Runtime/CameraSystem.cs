@@ -41,7 +41,7 @@ namespace CameraFeature.Runtime
             followOffset.y = followOffsetMaxY;
             _basePosition = transform.position;
             _baseRotation = transform.rotation;
-            PlayerRuntime.PlayerV2.Instance.m_onResetCameraPos += OnResetCameraPosEventHandler;
+            PlayerV2.Instance.m_onResetCameraPos += OnResetCameraPosEventHandler;
         }
 
         private void Update()
@@ -52,6 +52,7 @@ namespace CameraFeature.Runtime
                 _resetPos = false;
                 return;
             }
+            if (CameraManager.Instance.IsInThirdPerson) return;
             HandleCameraMovement();
             // if (useEdgeScrolling)
             // {
@@ -228,15 +229,15 @@ namespace CameraFeature.Runtime
         private void HandleCameraZoom_LowerY()
         {
             float zoomAmount = 3f;
-            if (Input.mouseScrollDelta.y > 0)
-            {
-                followOffset.y -= zoomAmount;
-            }
-
-            if (Input.mouseScrollDelta.y < 0)
-            {
-                followOffset.y += zoomAmount;
-            }
+            // if (Input.mouseScrollDelta.y > 0)
+            // {
+            //     followOffset.y -= zoomAmount;
+            // }
+            //
+            // if (Input.mouseScrollDelta.y < 0)
+            // {
+            //     followOffset.y += zoomAmount;
+            // }
 
             followOffset.y = Mathf.Clamp(followOffset.y, followOffsetMinY, followOffsetMaxY);
             float zoomSpeed = 10f;

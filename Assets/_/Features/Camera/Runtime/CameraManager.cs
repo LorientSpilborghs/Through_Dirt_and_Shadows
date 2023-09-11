@@ -1,6 +1,7 @@
 using System.Collections;
 using Cinemachine;
 using GameManagerFeature.Runtime;
+using PlayerRuntime;
 using UnityEngine;
 
 namespace CameraFeature.Runtime
@@ -15,7 +16,7 @@ namespace CameraFeature.Runtime
             set => _virtualCamera = value;
         }
 
-        public PlayerRuntime.PlayerV2 PlayerCameraManager
+        public PlayerV2 PlayerCameraManager
         {
             get => _player;
             set => _player = value;
@@ -25,6 +26,18 @@ namespace CameraFeature.Runtime
         {
             get => _cinemachineFreeLook;
             set => _cinemachineFreeLook = value;
+        }
+
+        public bool IsInThirdPerson
+        {
+            get => _isInThirdPerson;
+            set => _isInThirdPerson = value;
+        }
+
+        public Transform CameraSystem
+        {
+            get => _cameraSystem;
+            set => _cameraSystem = value;
         }
 
         private void Awake()
@@ -38,7 +51,7 @@ namespace CameraFeature.Runtime
             StartCoroutine(WaitForPlayerToInitialize());
             
             if (!_isWaitForPlayerToInitializeOver) return;
-            PlayerCameraManager = GameManager.Instance.PlayerTransform.GetComponent<PlayerRuntime.PlayerV2>();
+            PlayerCameraManager = GameManager.Instance.PlayerTransform.GetComponent<PlayerV2>();
             if (PlayerCameraManager == null)
             {
                 Debug.LogError("Variable <color=cyan>PlayerTransform</color> in GameManager is null");
@@ -48,8 +61,10 @@ namespace CameraFeature.Runtime
             // _player.m_onInterpolateStart += CameraStartFollowing;
             // _player.m_onInterpolate += CameraIsFollowing;
             // _player.m_onInterpolateEnd += CameraIsNotFollowing;
-
+            PlayerV2.Instance.m_isInThirdPerson += isInThirdPerson;
         }
+        
+        
         
         public void CameraStartFollowing()
         {
@@ -72,12 +87,19 @@ namespace CameraFeature.Runtime
             _isWaitForPlayerToInitializeOver = true;
             Start();
         }
+
+        private bool isInThirdPerson()
+        {
+            return _isInThirdPerson;
+        }
         
         [SerializeField] private Transform _anchor;
+        [SerializeField] private Transform _cameraSystem;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
         [SerializeField] private CinemachineFreeLook _cinemachineFreeLook;
         
-        private PlayerRuntime.PlayerV2 _player;
+        private PlayerV2 _player;
         private bool _isWaitForPlayerToInitializeOver;
+        private bool _isInThirdPerson;
     }
 }

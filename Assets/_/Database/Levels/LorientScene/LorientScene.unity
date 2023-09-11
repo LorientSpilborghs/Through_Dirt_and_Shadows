@@ -2743,11 +2743,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1345139259826252197, guid: e595254a72cdb1c4c8cf14b97f71456e,
-        type: 3}
-      propertyPath: _knotsNeedForPurification
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 5649631765897801034, guid: e595254a72cdb1c4c8cf14b97f71456e,
         type: 3}
       propertyPath: m_Name
@@ -2866,16 +2861,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1657920501068952256, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.000000016282542
-      objectReference: {fileID: 0}
-    - target: {fileID: 1657920501068952256, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.000000005562236
-      objectReference: {fileID: 0}
     - target: {fileID: 1765612906109223894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -2911,10 +2896,35 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.0000000074471513
       objectReference: {fileID: 0}
-    - target: {fileID: 7961821910632425314, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+    - target: {fileID: 7282820621149785666, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
-      propertyPath: m_RendererIndex
+      propertyPath: m_CameraCutEvent.m_PersistentCalls.m_Calls.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282820621149785666, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: m_CameraActivatedEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282820621149785666, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: m_CameraCutEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282820621149785666, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: m_CameraCutEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282820621149785666, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: m_CameraActivatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7282820621149785666, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: m_CameraActivatedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

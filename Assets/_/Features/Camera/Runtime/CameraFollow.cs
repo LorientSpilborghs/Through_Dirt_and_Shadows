@@ -17,7 +17,7 @@ namespace CameraFeature.Runtime
             PlayerV2.Instance.m_onCameraBlendingStart += CameraStartFollowing;
             PlayerV2.Instance.m_onInterpolate += FollowInterpolatingKnot;
             PlayerV2.Instance.m_onCameraBlendingStop += CameraIsNotFollowing;
-            PlayerV2.Instance.m_isAllowedToGrow += IsCameraBlendingOver;
+            PlayerV2.Instance.m_isCameraBlendingOver += IsCameraBlendingOverEventHandler;
         }
 
         private void OnDestroy()
@@ -25,13 +25,16 @@ namespace CameraFeature.Runtime
             PlayerV2.Instance.m_onCameraBlendingStart -= CameraStartFollowing;
             PlayerV2.Instance.m_onInterpolate -= FollowInterpolatingKnot;
             PlayerV2.Instance.m_onCameraBlendingStop -= CameraIsNotFollowing;
-            PlayerV2.Instance.m_isAllowedToGrow -= IsCameraBlendingOver;
+            PlayerV2.Instance.m_isCameraBlendingOver -= IsCameraBlendingOverEventHandler;
         }
         
         private void CameraStartFollowing(Vector3 pos)
         {
-            _cinemachineFreeLook.Priority = 100;
             _anchor.position = pos;
+            _cinemachineFreeLook.Priority = 100;
+            CameraManager.Instance.IsInThirdPerson = true;
+            CameraManager.Instance.VirtualCamera.LookAt = null;
+            CameraManager.Instance.VirtualCamera.Follow = null;
         }
         
         private void FollowInterpolatingKnot(Vector3 pos)
@@ -43,9 +46,12 @@ namespace CameraFeature.Runtime
         {
             if (CameraManager.Instance.PlayerCameraManager.IsInterpolating) return;
             _cinemachineFreeLook.Priority = 0;
+            CameraManager.Instance.IsInThirdPerson = false;
+            CameraManager.Instance.VirtualCamera.LookAt = CameraManager.Instance.CameraSystem.transform;
+            CameraManager.Instance.VirtualCamera.Follow = CameraManager.Instance.CameraSystem.transform;
         }
 
-        private bool IsCameraBlendingOver()
+        private bool IsCameraBlendingOverEventHandler()
         {
             return !_cinemachineBrain.IsBlending;
         }

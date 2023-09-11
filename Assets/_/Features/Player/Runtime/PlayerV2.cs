@@ -21,7 +21,8 @@ namespace PlayerRuntime
         public Action m_onResetCameraPos;
         public Action m_onCameraBlendingStop;
         public Action m_onNewKnotInstantiate;
-        public Func<bool> m_isAllowedToGrow;
+        public Func<bool> m_isCameraBlendingOver;
+        public Func<bool> m_isInThirdPerson;
         
         public Vector3 PointerPosition
         {
@@ -91,6 +92,7 @@ namespace PlayerRuntime
         
         private void OnLeftMouseDownEventHandler()
         {
+            if (m_isCameraBlendingOver?.Invoke() is false) return;
             RootToModify = GetTheRightRoot() ?? RootToModify;
             m_onCameraBlendingStart?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
@@ -104,7 +106,8 @@ namespace PlayerRuntime
         private void OnMouseHoldEventHandler()
         {
             if (_frontColliderBehaviour.IsBlocked) return;
-            if (m_isAllowedToGrow?.Invoke() is false) return;
+            if (m_isCameraBlendingOver?.Invoke() is false) return;
+            if (m_isInThirdPerson?.Invoke() is false) return;
             if (!UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
