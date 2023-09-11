@@ -70,6 +70,7 @@ namespace RootFeature.Runtime
             if (Vector3.Distance(pos1 , pos2) < DistanceBetweenKnots) return;
             
             root.Container.Spline.Add(new BezierKnot(pos2), TangentMode.AutoSmooth);
+            InstantiateIvy(pos2);
         }
 
         private void UpdateFrontColliderPosition()
@@ -110,6 +111,15 @@ namespace RootFeature.Runtime
             StartCoroutine(ChangeSpeed(_distancePerSeconds, _maxDistancePerSeconds, _timeBeforeReachingMinimumSpeed));
         }
 
+        private void InstantiateIvy(Vector3 pos)
+        {
+            int knots = _splineContainer.Spline.Count % 10;
+            if(knots % 5 == 0) 
+            {
+                Instantiate(_ivyPrefab, pos, Quaternion.identity);
+            }
+        }
+
         [SerializeField] private SplineContainer _splineContainer;
         [SerializeField] private Collider _frontCollider;
         [Space]
@@ -119,6 +129,7 @@ namespace RootFeature.Runtime
         [SerializeField] private float _timeOfImmunityBeforeSpeedChange = 1;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
         [SerializeField] private float _heightOfTheRoot = 0.5f;
+        [SerializeField] private GameObject _ivyPrefab;
         
         private SplineExtrude _splineExtrude;
         private CollisionForSpeedModifier _collisionForSpeedModifier;

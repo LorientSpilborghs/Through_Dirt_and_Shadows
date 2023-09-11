@@ -55,10 +55,12 @@ MonoBehaviour:
   _frontCollider: {fileID: 7130140536928042537}
   _distancePerSeconds: 4
   _minimumDistancePerSeconds: 2.8
-  _timeBeforeReachingMinimumSpeed: 0.5
+  _timeBeforeReachingMinimumSpeed: 0.1
   _timeOfImmunityBeforeSpeedChange: 2
   _distanceBetweenKnots: 2
-  _heightOfTheRoot: 0.5
+  _heightOfTheRoot: 0.25
+  _ivyPrefab: {fileID: 8817654888820332245, guid: 529f1beb6432c684caa5f0d8d8bb895c,
+    type: 3}
 --- !u!114 &913331109243674626
 MonoBehaviour:
   m_ObjectHideFlags: 0

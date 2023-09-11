@@ -5,40 +5,26 @@ namespace ZoneFeature.Runtime
 {
     public class ZonePurification : Zone
     {
-        private void Start()
-        {
-            PlayerV2.Instance.m_onInterpolate += Purifying;
-        }
-
-        private void OnDestroy()
-        {
-            PlayerV2.Instance.m_onInterpolate -= Purifying;
-        }
-
         protected override void OnEnterZone()
         {
-            _canPurify = true;
+            PlayerV2.Instance.m_onNewKnotInstantiate += Purifying;
         }
 
         protected override void OnExitZone()
         {
-            _canPurify = false;
+            PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
         }
 
-        private void Purifying(Vector3 pos)
+        private void Purifying()
         {
-            if (!_canPurify || _completed) return;
+            if (_completed) return;
 
-            _currentTime += Time.deltaTime;
-            if (!(_currentTime >= _timeBetweenPurification)) return;
+            _currentKnotInTheZone++;
+
+            if (_currentKnotInTheZone < _knotsNeedForPurification) return;
             
-            _gauge += _gaugePercentageOverTime;
-            if (_gauge >= 1)
-            {
-                _completed = true;
-                PlayerV2.Instance.m_onInterpolate -= Purifying;
-            }
-            _currentTime = 0;
+            _completed = true;
+            PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
         }
 
         private void OnDrawGizmos()
@@ -50,13 +36,11 @@ namespace ZoneFeature.Runtime
             Gizmos.DrawWireSphere(transform.position, 5);
         }
 
-        [SerializeField] [Range(0,1)] private float _gaugePercentageOverTime;
-        [SerializeField] private float _timeBetweenPurification;
+        [SerializeField] private int _knotsNeedForPurification;
         
-        private float _gauge;
+        private int _currentKnotInTheZone;
         private bool _canPurify;
         private bool _completed;
         
-        private float _currentTime;
     }
 }
