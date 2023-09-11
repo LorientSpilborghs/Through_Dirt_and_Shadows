@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4489047247665674315}
   - component: {fileID: 1551176724931996446}
   - component: {fileID: 1556283186163562839}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5486123597573820326}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: P_Deco_FullDesk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,6 +200,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_FULLDESK
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cf207994bc3cafd4caa17a192a087629,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
