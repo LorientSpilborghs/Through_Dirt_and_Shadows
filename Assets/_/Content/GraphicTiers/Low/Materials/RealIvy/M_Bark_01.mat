@@ -2,31 +2,22 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 8
+  serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Leave_01_02
-  m_Shader: {fileID: 4800000, guid: 93a04fae32c89c748b20fdb0ecc06f21, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _ADD_PRECOMPUTED_VELOCITY
-  - _ALPHATEST_ON
-  - _DISABLE_SSR_TRANSPARENT
-  - _DOUBLESIDED_ON
+  m_Name: M_Bark_01
+  m_Shader: {fileID: 4800000, guid: 81c3cfe57e493354cbac862e743a81ac, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 2475
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2010
   stringTagMap:
     MotionVector: User
-    RenderType: TransparentCutout
   disabledShaderPasses:
-  - TransparentBackface
-  m_LockedProperties: 
+  - MOTIONVECTORS
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -35,7 +26,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoTexture:
-        m_Texture: {fileID: 2800000, guid: e338ec647b891ef4dbe34254d6ee5d83, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6e9d3f1e2b5c9274fa0899a7ea119a13, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -58,12 +49,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _HeightMap:
-        m_Texture: {fileID: 2800000, guid: 0ce9ccadf2229da46a3db3f82d66f7d1, type: 3}
+    - _HeightTexture:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Leave_02_hm:
-        m_Texture: {fileID: 2800000, guid: 0ce9ccadf2229da46a3db3f82d66f7d1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 07e9ed43db3ae544186bdaeb8c249423, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -83,7 +74,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTexture:
-        m_Texture: {fileID: 2800000, guid: 769fa11550a7a57418a4263d6fd4e555, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3ae958ea86aa6c74ba38c4457d674643, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -99,7 +90,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularTexture:
-        m_Texture: {fileID: 2800000, guid: a5d79873231ab8746aa2241d10a0770f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 88888d9eb7319704b9bf5c29ff3a1b61, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
@@ -114,25 +105,22 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Ints: []
     m_Floats:
-    - _AddPrecomputedVelocity: 1
     - _AlphaCutoff: 0.5
-    - _AlphaCutoffEnable: 1
+    - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 0
     - _AlphaSrcBlend: 1
     - _Amplitude: 0.35
     - _BlendMode: 0
     - _BumpScale: 1
     - _Center: -0.5
-    - _CullMode: 0
-    - _CullModeForward: 0
-    - _Cutoff: 0.5
+    - _CullMode: 2
+    - _CullModeForward: 2
+    - _Cutoff: 0.65
     - _DetailNormalMapScale: 1
-    - _DoubleSidedEnable: 1
-    - _DoubleSidedNormalMode: 0
+    - _DoubleSidedEnable: 0
+    - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
-    - _EnableFogOnTransparent: 1
     - _Float0: 2.1
     - _Float1: 0.075
     - _Float10: 1
@@ -152,44 +140,40 @@ Material:
     - _OcclusionStrength: 1
     - _Offset: 0
     - _Parallax: 0.02
-    - _ParallaxIntensity: 0
+    - _ParallaxIntensity: 0.0111
     - _Radius: 0.2
     - _ReceivesSSR: 1
-    - _ReceivesSSRTransparent: 0
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _Smoothness: 0.407
+    - _Smoothness: 0.323
     - _SmoothnessTextureChannel: 0
-    - _Specular: 0.23
+    - _Specular: 0.6
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _StencilRef: 0
-    - _StencilRefDepth: 8
-    - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 10
-    - _StencilRefMV: 40
-    - _StencilWriteMask: 6
-    - _StencilWriteMaskDepth: 8
-    - _StencilWriteMaskDistortionVec: 4
-    - _StencilWriteMaskGBuffer: 14
-    - _StencilWriteMaskMV: 40
-    - _SupportDecals: 1
+    - _StencilRefDepth: 0
+    - _StencilRefDistortionVec: 64
+    - _StencilRefGBuffer: 2
+    - _StencilRefMV: 128
+    - _StencilWriteMask: 3
+    - _StencilWriteMaskDepth: 32
+    - _StencilWriteMaskDistortionVec: 64
+    - _StencilWriteMaskGBuffer: 3
+    - _StencilWriteMaskMV: 128
     - _SurfaceType: 0
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 2
     - _TransparentSortPriority: 0
-    - _TransparentZWrite: 1
     - _UVSec: 0
     - _UseShadowThreshold: 0
-    - _ZTestDepthEqualForOpaque: 3
-    - _ZTestGBuffer: 3
+    - _ZTestDepthEqualForOpaque: 4
+    - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
-    - __ParallaxIntensity: 0.01
+    - __Specular: 0
     - __dirty: 0
     m_Colors:
-    - _Color: {r: 0.8392157, g: 0.67058825, b: 0.49411765, a: 1}
-    - _DoubleSidedConstants: {r: -1, g: -1, b: -1, a: 0}
-    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Vector0: {r: 0, g: 0, b: 0, a: 0}
-  m_BuildTextureStacks: []
