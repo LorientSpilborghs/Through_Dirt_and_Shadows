@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3409698438769032719}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: P_Deco_Wall_Shelf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,6 +99,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_Deco_Wall_Shelf
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fe04c3a0a5582d148ae8642fa079355b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
