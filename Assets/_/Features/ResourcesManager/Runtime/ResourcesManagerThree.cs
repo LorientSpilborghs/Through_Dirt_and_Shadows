@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace ResourcesManagerFeature.Runtime
 {
-    public class ResourcesManager : MonoBehaviour
+    public class ResourcesManagerThree : MonoBehaviour
     {
-        public static ResourcesManager Instance { get; private set; }
+        public static ResourcesManagerThree Instance { get; private set; }
 
         private void Awake()
         {
@@ -31,7 +31,6 @@ namespace ResourcesManagerFeature.Runtime
         }
 
         [SerializeField] private int _baseResources = 500;
-        [SerializeField] private int _maxResources;
         
         private int _currentResources;
     }

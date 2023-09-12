@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 94560021526285820}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.34042522, y: 3.8058948e-16, z: -1.2884209e-16, w: 0.9402717}
+  m_LocalRotation: {x: 0.34042525, y: 0.000000011607213, z: -0.0000000042023887, w: 0.9402716}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _range: 0.5
+  _angle: 15
 --- !u!1 &721505392709193635
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,7 +366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseResources: 9999999
-  _maxResources: 0
+  _resourcesTypes: 0
 --- !u!1 &2500277289337296056
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,7 +700,7 @@ Transform:
   m_GameObject: {fileID: 4529346449832118140}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.030047422, y: -3.317361, z: -6.4347963}
+  m_LocalPosition: {x: 0, y: -3.317361, z: -6.4347963}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -947,7 +948,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7522630151158035668}
   - component: {fileID: 5132660395530551170}
-  m_Layer: 0
+  - component: {fileID: 6526894737714670866}
+  - component: {fileID: 6717251355175052260}
+  m_Layer: 14
   m_Name: CameraSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -963,7 +966,7 @@ Transform:
   m_GameObject: {fileID: 5220778731855483139}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.030047422, y: -3.317361, z: 3.5652037}
+  m_LocalPosition: {x: 0, y: -3.317361, z: 3.5652037}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -984,7 +987,7 @@ MonoBehaviour:
   cinemachineVirtualCamera: {fileID: 6264762346755306349}
   useEdgeScrolling: 0
   useDragPan: 0
-  cameraMoveSpeed: 20
+  cameraMoveSpeed: 2000
   fieldOfViewMax: 50
   fieldOfViewMin: 10
   followOffsetMin: 5
@@ -992,6 +995,54 @@ MonoBehaviour:
   followOffsetMinY: 2
   followOffsetMaxY: 10
   _timeToReset: 1.2
+--- !u!135 &6526894737714670866
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5220778731855483139}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &6717251355175052260
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5220778731855483139}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1 &5368253867431384820
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1196,7 @@ Transform:
   m_GameObject: {fileID: 5400354353363712114}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.030047422, y: -3.317361, z: -6.4347963}
+  m_LocalPosition: {x: 0, y: -3.317361, z: -6.4347963}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1332,7 +1383,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6718435548733609992}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30604523, y: 0.000000023165908, z: -0.0000000074471527, w: 0.952017}
+  m_LocalRotation: {x: 0.30604523, y: -0.000000023165903, z: 0.0000000074471513, w: 0.952017}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1434,7 +1485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d689e0457a43ba646a80a20662639814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _anchor: {fileID: 2257964669031711042}
+  _anchor: {fileID: 0}
   _cinemachineBrain: {fileID: 7282820621149785666}
 --- !u!114 &8419546936941196319
 MonoBehaviour:

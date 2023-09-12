@@ -15,8 +15,9 @@ namespace PlayerRuntime
             _closestKnot = player.IsInterpolating ? player.RootToModify.Container.Spline[^1].Position : player.CurrentClosestKnot.Position;
             Vector3 mousePosition = player.PointerPosition;
             Vector3 direction = (_closestKnot - mousePosition).normalized;
-            _targetIndicatorPrefab.transform.position = Vector3.Scale(_closestKnot + (-direction * _indicatorDistance), new Vector3 (1,0,1) + Vector3.up * _yAxisOffset);
-            _targetIndicatorPrefab.transform.rotation = Quaternion.LookRotation(direction);
+            Vector3 targetPosition = new Vector3(direction.x, 0, direction.z);
+            _targetIndicatorPrefab.transform.position = Vector3.Scale(_closestKnot + (-targetPosition * _indicatorDistance), new Vector3 (1,0,1) + Vector3.up * _yAxisOffset);
+            _targetIndicatorPrefab.transform.rotation = Quaternion.LookRotation(targetPosition);
         }
         
         [SerializeField] private GameObject _targetIndicatorPrefab;
