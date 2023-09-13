@@ -56,7 +56,7 @@ MonoBehaviour:
   _distancePerSeconds: 4
   _minimumDistancePerSeconds: 2.8
   _timeBeforeReachingMinimumSpeed: 0.1
-  _timeOfImmunityBeforeSpeedChange: 2
+  _timeBeforeRecoveringBaseSpeed: 0.5
   _distanceBetweenKnots: 2
   _heightOfTheRoot: 0.25
   _ivyPrefab: {fileID: 3050088836504759671, guid: 13e4634dafa677646b30fe8ab6f59e10,
@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Sides: 8
   m_SegmentsPerUnit: 4
   m_Capped: 1
-  m_Radius: 0.1
+  m_Radius: 0.18
   m_Range: {x: 0, y: 1}
 --- !u!114 &3351727091959212854
 MonoBehaviour:
