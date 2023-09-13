@@ -1,5 +1,6 @@
 using PlayerRuntime;
 using UnityEngine;
+using UnityEngine.Splines;
 
 namespace ZoneFeature.Runtime
 {
