@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14d7701cd56353b42a02be1296fa2511, type: 3}
-  m_Name: Preset_GroundIvy_01
+  m_Name: Preset_GroundIvy_02
   m_EditorClassIdentifier: 
   presetName: 
   ivyParameters:
@@ -20,7 +20,7 @@ MonoBehaviour:
     maxBranchs: 8
     layerMask:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 3584
     minDistanceToSurface: 0.01
     maxDistanceToSurface: 0.03
     DTSFrequency: 1
@@ -54,10 +54,8 @@ MonoBehaviour:
     LMUVPadding: 0.002
     branchesMaterial: {fileID: 2100000, guid: efea4de683f8a2c41addd6f490ad4814, type: 2}
     leavesPrefabs:
-    - {fileID: 8649792681698546789, guid: a1481c75c4fba8d418a6a8b4d9e7e471, type: 3}
-    - {fileID: 8649792681698546789, guid: eb28809c77f257b4cbb63d953613d573, type: 3}
+    - {fileID: 2968559698799655562, guid: ef231edac00a2fc4bb4dbad96f9d6995, type: 3}
     leavesProb:
-    - 1
     - 1
     generateBranches: 1
     generateLeaves: 1
