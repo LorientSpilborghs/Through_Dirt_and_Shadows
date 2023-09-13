@@ -21,6 +21,7 @@ namespace PlayerRuntime
         public Action m_onResetCameraPos;
         public Action m_onCameraBlendingStop;
         public Action m_onNewKnotInstantiate;
+        public Action m_onNewKnotSelected;
         public Func<bool> m_isCameraBlendingOver;
         public Func<bool> m_isInThirdPerson;
         
@@ -93,13 +94,16 @@ namespace PlayerRuntime
         private void OnMouseMoveEventHandler(Vector3 pos)
         {
             PointerPosition = pos;
-            GetTheRightRoot(true);
+            if (IsInterpolating) return;
+            RootToModify = GetTheRightRoot() ?? RootToModify;
+            m_onNewKnotSelected?.Invoke();
+            // GetTheRightRoot(true);
         }
         
         private void OnLeftMouseDownEventHandler()
         {
             if (m_isCameraBlendingOver?.Invoke() is false) return;
-            RootToModify = GetTheRightRoot() ?? RootToModify;
+            // RootToModify = GetTheRightRoot() ?? RootToModify;
             m_onCameraBlendingStart?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
         }
@@ -160,7 +164,7 @@ namespace PlayerRuntime
             }
             else
             {
-                return UseResourcesWhileGrowing(_resourcesUsageForNewRoot)
+                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier)
                     ? AddNewRoot((Vector3)CurrentClosestKnot.Position)
                     : null;
             }
@@ -212,7 +216,6 @@ namespace PlayerRuntime
         [SerializeField] private GameObject _rootPrefab;
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
         [SerializeField] private int _resourcesCostMultiplier = 1;
-        [SerializeField] private int _resourcesUsageForNewRoot = 1;
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
         [Space]
         private List<RootV2> _rootsList = new();
