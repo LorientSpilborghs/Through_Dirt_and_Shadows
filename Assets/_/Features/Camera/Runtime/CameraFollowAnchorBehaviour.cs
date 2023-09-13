@@ -9,9 +9,9 @@ namespace CameraFeature.Runtime
             PlayerRuntime.PlayerV2.Instance.m_onInterpolate += FollowInterpolatingKnot;
         }
 
-        private void FollowInterpolatingKnot(Vector3 pos)
+        private void FollowInterpolatingKnot(Vector3 lastKnotPos)
         {
-            transform.position = pos;
+            transform.position = lastKnotPos;
         }
     }
 }

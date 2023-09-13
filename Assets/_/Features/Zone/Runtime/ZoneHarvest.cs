@@ -29,7 +29,7 @@ namespace ZoneFeature.Runtime
             int newTotalResources = _totalResources - _resourcesCollectOverTime;
             
             if (_totalResources < _resourcesCollectOverTime) { count = _totalResources; newTotalResources = 0; }
-            ResourcesManagerOne.Instance.AddResources(count);
+            ResourcesManager.Instance.AddResources(count);
             _totalResources = newTotalResources;
             
             return true;

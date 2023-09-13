@@ -6,7 +6,6 @@ using ResourcesManagerFeature.Runtime;
 using RootFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Splines;
-using Resources = ResourcesManagerFeature.Runtime.Resources;
 
 namespace PlayerRuntime
 {
@@ -47,6 +46,12 @@ namespace PlayerRuntime
         {
             get => _rootToModify;
             set => _rootToModify = value;
+        }
+
+        public int ResourcesCostMultiplier
+        {
+            get => _resourcesCostMultiplier;
+            set => _resourcesCostMultiplier = value;
         }
 
         #endregion
@@ -109,7 +114,7 @@ namespace PlayerRuntime
             if (_frontColliderBehaviour.IsBlocked) return;
             if (m_isCameraBlendingOver?.Invoke() is false) return;
             if (m_isInThirdPerson?.Invoke() is false) return;
-            if (!UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier)) return;
+            if (!UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * ResourcesCostMultiplier)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             if (IsMaxDistanceBetweenKnots()) m_onNewKnotInstantiate?.Invoke();
@@ -178,7 +183,7 @@ namespace PlayerRuntime
         private bool UseResourcesWhileGrowing(int resourcesUsage)
         {
             return !(IsMaxDistanceBetweenKnots()) 
-                   || ResourcesManagerOne.Instance.UseResources(resourcesUsage);
+                   || ResourcesManager.Instance.UseResources(resourcesUsage);
         }
         
         #endregion
