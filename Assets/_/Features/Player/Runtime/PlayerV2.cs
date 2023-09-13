@@ -6,6 +6,7 @@ using ResourcesManagerFeature.Runtime;
 using RootFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Splines;
+using Resources = ResourcesManagerFeature.Runtime.Resources;
 
 namespace PlayerRuntime
 {
@@ -177,7 +178,7 @@ namespace PlayerRuntime
         private bool UseResourcesWhileGrowing(int resourcesUsage)
         {
             return !(IsMaxDistanceBetweenKnots()) 
-                   || ResourcesManager.Instance.UseResources(resourcesUsage);
+                   || ResourcesManagerOne.Instance.UseResources(resourcesUsage);
         }
         
         #endregion
