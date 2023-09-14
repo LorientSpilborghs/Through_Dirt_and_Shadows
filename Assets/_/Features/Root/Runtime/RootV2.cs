@@ -74,7 +74,7 @@ namespace RootFeature.Runtime
 
             foreach (var ivy in _ivyPreset)
             {
-                if (Random.Range(ivy._randomInBetweenXY.x, ivy._randomInBetweenXY.y) != ivy._randomInBetweenXY.x)
+                if (Random.Range(ivy._randomInBetweenXY.x, ivy._randomInBetweenXY.y) == ivy._randomInBetweenXY.x)
                 {
                     InstantiateIvy(pos2, ivy);
                 }

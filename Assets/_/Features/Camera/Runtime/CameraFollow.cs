@@ -16,6 +16,7 @@ namespace CameraFeature.Runtime
         {
             PlayerV2.Instance.m_onCameraBlendingStart += CameraStartFollowing;
             PlayerV2.Instance.m_onInterpolate += FollowInterpolatingKnot;
+            PlayerV2.Instance.m_isInterpolating += SetFreeLookCamera;
             PlayerV2.Instance.m_onCameraBlendingStop += CameraIsNotFollowing;
             PlayerV2.Instance.m_isCameraBlendingOver += IsCameraBlendingOverEventHandler;
         }
@@ -56,10 +57,11 @@ namespace CameraFeature.Runtime
             return !_cinemachineBrain.IsBlending;
         }
 
-        private void SetFreeLookCamera()
+        private void SetFreeLookCamera(bool isInterpolating)
         {
-            _cinemachineFreeLook.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
-            _cinemachineFreeLook.m_BindingMode = CinemachineTransposer.BindingMode.SimpleFollowWithWorldUp;
+            _cinemachineFreeLook.m_BindingMode = isInterpolating 
+                ? CinemachineTransposer.BindingMode.SimpleFollowWithWorldUp
+                : CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
         }
         
         [SerializeField] private CinemachineBrain _cinemachineBrain;

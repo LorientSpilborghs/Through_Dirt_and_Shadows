@@ -17,11 +17,11 @@ namespace PlayerRuntime
 
         public Action<Vector3> m_onCameraBlendingStart;
         public Action<Vector3> m_onInterpolate;
-        public Action m_onInterpolateEnd;
         public Action m_onResetCameraPos;
         public Action m_onCameraBlendingStop;
         public Action m_onNewKnotInstantiate;
         public Action<bool> m_onNewKnotSelected;
+        public Action<bool> m_isInterpolating;
         public Func<bool> m_isCameraBlendingOver;
         public Func<bool> m_isInThirdPerson;
         
@@ -115,6 +115,7 @@ namespace PlayerRuntime
             RootToModify = GetTheRightRoot() ?? RootToModify;
             m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
             IsInterpolating = true;
+            m_isInterpolating?.Invoke(true);
         }
 
         private void OnRightMouseDownEventHandler()
@@ -137,8 +138,7 @@ namespace PlayerRuntime
         {
             RootToModify.DeleteIfTooClose(RootToModify);
             IsInterpolating = false;
-            
-            m_onInterpolateEnd?.Invoke();
+            m_isInterpolating?.Invoke(false);
         }
         
         private void OnSpaceBarDownEventHandler()
