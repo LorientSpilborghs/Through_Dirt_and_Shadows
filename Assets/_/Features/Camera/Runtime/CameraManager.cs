@@ -40,6 +40,12 @@ namespace CameraFeature.Runtime
             set => _cameraSystem = value;
         }
 
+        public Transform FollowCameraAnchor
+        {
+            get => _followCameraAnchor;
+            set => _followCameraAnchor = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -97,6 +103,7 @@ namespace CameraFeature.Runtime
         [SerializeField] private Transform _cameraSystem;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
         [SerializeField] private CinemachineFreeLook _cinemachineFreeLook;
+        [SerializeField] private Transform _followCameraAnchor;
         
         private PlayerV2 _player;
         private bool _isWaitForPlayerToInitializeOver;

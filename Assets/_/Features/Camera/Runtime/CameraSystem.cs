@@ -19,6 +19,7 @@ namespace CameraFeature.Runtime
         
         [Space]
         [SerializeField] private float _timeToReset = 1f;
+        [SerializeField] private float _rotationSpeed = 100;
         
         private bool dragPanMoveActive;
         private Vector2 lastMousePosition;
@@ -31,7 +32,7 @@ namespace CameraFeature.Runtime
         private bool _resetPos;
         private float _resetPosDelta;
         private Rigidbody _rigidbody;
-
+        
         private void Awake()
         {
             followOffset = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
@@ -54,7 +55,9 @@ namespace CameraFeature.Runtime
                 _resetPos = false;
                 return;
             }
-            if (CameraManager.Instance.IsInThirdPerson) return;
+
+            HandleCameraRotation(CameraManager.Instance.IsInThirdPerson);
+
             HandleCameraMovement();
             // if (useEdgeScrolling)
             // {
@@ -66,7 +69,6 @@ namespace CameraFeature.Runtime
                 HandleCameraMovementDragPan();
             }
 
-            HandleCameraRotation();
             //HandleCameraZoom_FieldOfView();
             //HandleCameraZoom_MoveForward();
             HandleCameraZoom_LowerY();
@@ -163,13 +165,16 @@ namespace CameraFeature.Runtime
             transform.position += moveDir * (moveSpeed * Time.deltaTime);
         }
 
-        private void HandleCameraRotation()
+        private void HandleCameraRotation(bool isInThirdPerson)
         {
+            Transform transformToRotate = new RectTransform();
+            
+            transformToRotate = isInThirdPerson ? CameraManager.Instance.FollowCameraAnchor.transform : transform;
+            
             float rotateDir = 0f;
             if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
             if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
-            float rotateSpeed = 100f;
-            transform.eulerAngles += new Vector3(0, rotateDir * rotateSpeed * Time.deltaTime, 0);
+            transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
         }
 
         private void MoveTopCameraWhileInterpolating()

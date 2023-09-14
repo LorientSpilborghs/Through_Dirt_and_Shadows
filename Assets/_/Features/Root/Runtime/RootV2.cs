@@ -71,10 +71,14 @@ namespace RootFeature.Runtime
             if (Vector3.Distance(pos1 , pos2) < DistanceBetweenKnots) return;
             
             root.Container.Spline.Add(new BezierKnot(pos2), TangentMode.AutoSmooth);
-            if (Random.Range(_randomInBetweenXY.x,_randomInBetweenXY.y) != _randomInBetweenXY.x) return;
-            
-            var index = Random.Range(0, _ivyPreset.Length - 1);
-            InstantiateIvy(pos2, _ivyPreset[index]);
+
+            foreach (var ivy in _ivyPreset)
+            {
+                if (Random.Range(ivy._randomInBetweenXY.x, ivy._randomInBetweenXY.y) != ivy._randomInBetweenXY.x)
+                {
+                    InstantiateIvy(pos2, ivy);
+                }
+            }
         }
 
         private void UpdateFrontColliderPosition()
@@ -138,7 +142,6 @@ namespace RootFeature.Runtime
         [SerializeField] private float _heightOfTheRoot = 0.5f;
         [Space]
         [SerializeField] private Ivy[] _ivyPreset;
-        [SerializeField] private Vector2Int _randomInBetweenXY;
         
         private SplineExtrude _splineExtrude;
         private CollisionForSpeedModifier _collisionForSpeedModifier;

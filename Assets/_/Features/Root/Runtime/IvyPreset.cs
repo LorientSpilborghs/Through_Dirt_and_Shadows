@@ -9,5 +9,6 @@ namespace RootFeature.Runtime
     {
         public GameObject _ivyPrefab;
         public float _height;
+        public Vector2Int _randomInBetweenXY;
     }
 }
