@@ -55,6 +55,12 @@ namespace CameraFeature.Runtime
         {
             return !_cinemachineBrain.IsBlending;
         }
+
+        private void SetFreeLookCamera()
+        {
+            _cinemachineFreeLook.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
+            _cinemachineFreeLook.m_BindingMode = CinemachineTransposer.BindingMode.SimpleFollowWithWorldUp;
+        }
         
         [SerializeField] private CinemachineBrain _cinemachineBrain;
         private CinemachineFreeLook _cinemachineFreeLook;

@@ -289,6 +289,7 @@ MonoBehaviour:
   _cameraSystem: {fileID: 7522630151158035668}
   _virtualCamera: {fileID: 6264762346755306349}
   _cinemachineFreeLook: {fileID: 8419546936941196319}
+  _followCameraAnchor: {fileID: 2257964669031711042}
 --- !u!1 &839854688559439286
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,6 +1111,7 @@ MonoBehaviour:
   followOffsetMinY: 2
   followOffsetMaxY: 10
   _timeToReset: 1.2
+  _rotationSpeed: 100
 --- !u!135 &6526894737714670866
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1736,7 +1738,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d689e0457a43ba646a80a20662639814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _followAnchor: {fileID: 2257964669031711042}
   _cinemachineBrain: {fileID: 7282820621149785666}
 --- !u!114 &8419546936941196319
 MonoBehaviour:
