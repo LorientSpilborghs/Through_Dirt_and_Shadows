@@ -106,7 +106,7 @@ namespace RootFeature.Runtime
         
         private IEnumerator DelayBeforeSpeedChange()
         {
-            yield return new WaitForSeconds(_timeOfImmunityBeforeSpeedChange);
+            yield return new WaitForSeconds(_timeBeforeRecoveringBaseSpeed);
             if (_isSlow) yield break;
             StartCoroutine(ChangeSpeed(_distancePerSeconds, _maxDistancePerSeconds, _timeBeforeReachingMinimumSpeed));
         }
@@ -126,7 +126,7 @@ namespace RootFeature.Runtime
         [SerializeField] private float _distancePerSeconds = 2.5f;
         [SerializeField] private float _minimumDistancePerSeconds = 1f;
         [SerializeField] private float _timeBeforeReachingMinimumSpeed = 0.1f;
-        [SerializeField] private float _timeOfImmunityBeforeSpeedChange = 1;
+        [SerializeField] private float _timeBeforeRecoveringBaseSpeed = 0.5f;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
         [SerializeField] private float _heightOfTheRoot = 0.5f;
         [SerializeField] private GameObject _ivyPrefab;

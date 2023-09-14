@@ -30,6 +30,7 @@ namespace CameraFeature.Runtime
         private Quaternion _currentRotation;
         private bool _resetPos;
         private float _resetPosDelta;
+        private Rigidbody _rigidbody;
 
         private void Awake()
         {
@@ -42,6 +43,7 @@ namespace CameraFeature.Runtime
             _basePosition = transform.position;
             _baseRotation = transform.rotation;
             PlayerV2.Instance.m_onResetCameraPos += OnResetCameraPosEventHandler;
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         private void Update()
@@ -99,9 +101,9 @@ namespace CameraFeature.Runtime
             if (Input.GetKey(KeyCode.S)) inputDir.z = -1f;
             if (Input.GetKey(KeyCode.Q)) inputDir.x = -1f;
             if (Input.GetKey(KeyCode.D)) inputDir.x = +1f;
-            Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
 
-            transform.position += moveDir * (cameraMoveSpeed * Time.deltaTime);
+            Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
+            _rigidbody.velocity =  moveDir * (cameraMoveSpeed * Time.deltaTime);
         }
 
         private void HandleCameraMovementEdgeScrolling()

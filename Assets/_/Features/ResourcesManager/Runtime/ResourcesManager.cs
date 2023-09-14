@@ -6,6 +6,12 @@ namespace ResourcesManagerFeature.Runtime
     {
         public static ResourcesManager Instance { get; private set; }
 
+        public int CurrentResources
+        {
+            get => _currentResources;
+            set => _currentResources = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -14,24 +20,23 @@ namespace ResourcesManagerFeature.Runtime
 
         private void Start()
         {
-            _currentResources = _baseResources;
+            CurrentResources = _baseResources;
         }
 
         public bool UseResources(int quantity = 1)
         {
-            if (quantity > _currentResources) return false;
+            if (quantity > CurrentResources) return false;
 
-            _currentResources -= quantity;
+            CurrentResources -= quantity;
             return true;
         }
 
         public void AddResources(int quantity = 1)
         {
-            _currentResources += quantity;
+            CurrentResources += quantity;
         }
 
         [SerializeField] private int _baseResources = 500;
-        [SerializeField] private int _maxResources;
         
         private int _currentResources;
     }

@@ -28,18 +28,18 @@ namespace CameraFeature.Runtime
             PlayerV2.Instance.m_isCameraBlendingOver -= IsCameraBlendingOverEventHandler;
         }
         
-        private void CameraStartFollowing(Vector3 pos)
+        private void CameraStartFollowing(Vector3 lastKnotPos)
         {
-            _anchor.position = pos;
+            _followAnchor.position = lastKnotPos;
             _cinemachineFreeLook.Priority = 100;
             CameraManager.Instance.IsInThirdPerson = true;
             CameraManager.Instance.VirtualCamera.LookAt = null;
             CameraManager.Instance.VirtualCamera.Follow = null;
         }
         
-        private void FollowInterpolatingKnot(Vector3 pos)
+        private void FollowInterpolatingKnot(Vector3 lastKnotPos)
         {
-            _anchor.position = pos;
+            _followAnchor.position = lastKnotPos;
         }
         
         private void CameraIsNotFollowing()
@@ -56,7 +56,7 @@ namespace CameraFeature.Runtime
             return !_cinemachineBrain.IsBlending;
         }
         
-        [SerializeField] private Transform _anchor;
+        [SerializeField] private Transform _followAnchor;
         [SerializeField] private CinemachineBrain _cinemachineBrain;
         private CinemachineFreeLook _cinemachineFreeLook;
     }
