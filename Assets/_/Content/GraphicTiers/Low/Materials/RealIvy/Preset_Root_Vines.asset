@@ -10,53 +10,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14d7701cd56353b42a02be1296fa2511, type: 3}
-  m_Name: Preset_GroundIvy_02
+  m_Name: Preset_Root_Vines
   m_EditorClassIdentifier: 
   presetName: 
   ivyParameters:
-    stepSize: 0.08
+    stepSize: 0.03
     randomSeed: 0
     branchProvability: 0.05
-    maxBranchs: 8
+    maxBranchs: 3
     layerMask:
       serializedVersion: 2
-      m_Bits: 3584
+      m_Bits: 1024
     minDistanceToSurface: 0.01
     maxDistanceToSurface: 0.03
     DTSFrequency: 1
     DTSRandomness: 0.2
-    directionFrequency: 0.5
-    directionAmplitude: 15
+    directionFrequency: 0.7
+    directionAmplitude: 25
     directionRandomness: 2
     gravity: {x: 0, y: -1, z: 0}
     grabProvabilityOnFall: 1
     stiffness: 0.03
     optAngleBias: 15
-    leaveEvery: 5
+    leaveEvery: 2
     randomLeaveEvery: 1
     buffer32Bits: 0
     halfgeom: 1
     sides: 3
-    minRadius: 0.03
-    maxRadius: 0.005
+    minRadius: 0.05
+    maxRadius: 0.03
     radiusVarFreq: 1
     radiusVarOffset: 0
     tipInfluence: 0.5
     uvScale: {x: 0.5, y: 10}
     uvOffset: {x: 0, y: 0}
-    minScale: 1.5
-    maxScale: 2.3
+    minScale: 0.7
+    maxScale: 1.5
     globalOrientation: 1
     globalRotation: {x: -0, y: -1, z: -0}
     rotation: {x: 30, y: 180, z: 0}
     randomRotation: {x: 80, y: 84, z: 96}
     offset: {x: 0, y: 0, z: 0}
     LMUVPadding: 0.002
-    branchesMaterial: {fileID: 2100000, guid: efea4de683f8a2c41addd6f490ad4814, type: 2}
-    leavesPrefabs:
-    - {fileID: 2968559698799655562, guid: ef231edac00a2fc4bb4dbad96f9d6995, type: 3}
-    leavesProb:
-    - 1
+    branchesMaterial: {fileID: 2100000, guid: 99777008b23e32c4480942c26c673d71, type: 2}
+    leavesPrefabs: []
+    leavesProb: []
     generateBranches: 1
-    generateLeaves: 1
+    generateLeaves: 0
     generateLightmapUVs: 0
