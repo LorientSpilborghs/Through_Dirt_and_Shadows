@@ -10,9 +10,9 @@ namespace UiFeature.Runtime
     {
         private void Start()
         {
-            PlayerV2.Instance.m_onNewKnotInstantiate += UpdateHealthText;
-            PlayerV2.Instance.m_onNewKnotInstantiate += UpdateGrowCostTextOnMouseDown;
-            PlayerV2.Instance.m_onNewKnotSelected += UpdateGrowCostTextOnMouse;
+            PlayerV2.Instance.m_onNewKnotSelected += UpdateGrowCostTextOnMouseOver;
+            ResourcesManager.Instance.m_onResourcesChange += UpdateGrowCostTextOnMouseHold;
+            ResourcesManager.Instance.m_onResourcesChange += UpdateHealthText;
             StartCoroutine(WaitForInitialize());
         }
 
@@ -21,18 +21,18 @@ namespace UiFeature.Runtime
             _health.text = $"Current Health = {ResourcesManager.Instance.CurrentResources}";
         }
         
-        private void UpdateGrowCostTextOnMouse(bool isLastKnotFromSpline)
+        private void UpdateGrowCostTextOnMouseOver(bool isLastKnotFromSpline)
         {
             if (PlayerV2.Instance.IsInterpolating) return;
             _growCost.text = isLastKnotFromSpline 
-                ? $"{(PlayerV2.Instance.CurrentClosestSpline.Count - 1) * PlayerV2.Instance.CurrentClosestSpline.Count / PlayerV2.Instance.ResourcesCostDivider}" 
-                : $"{2 * PlayerV2.Instance.ResourcesCostDivider}";
+                ? $"{(PlayerV2.Instance.CurrentClosestSpline.Count - 1) * PlayerV2.Instance.CurrentClosestSpline.Count / ResourcesManager.Instance.ResourcesCostDivider}" 
+                : $"{2 * ResourcesManager.Instance.ResourcesCostDivider}";
         }
 
-        private void UpdateGrowCostTextOnMouseDown()
+        private void UpdateGrowCostTextOnMouseHold()
         {
             _growCost.text = 
-                $"{(PlayerV2.Instance.RootToModify.Container.Spline.Count - 1) * PlayerV2.Instance.RootToModify.Container.Spline.Count / PlayerV2.Instance.ResourcesCostDivider}";
+                $"{(PlayerV2.Instance.RootToModify.Container.Spline.Count - 1) * PlayerV2.Instance.RootToModify.Container.Spline.Count / ResourcesManager.Instance.ResourcesCostDivider}";
         }
 
         private IEnumerator WaitForInitialize()

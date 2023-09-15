@@ -48,12 +48,6 @@ namespace PlayerRuntime
             set => _rootToModify = value;
         }
 
-        public int ResourcesCostDivider
-        {
-            get => _resourcesCostDivider;
-            set => _resourcesCostDivider = value;
-        }
-
         public Spline CurrentClosestSpline
         {
             get => _currentClosestSpline;
@@ -128,7 +122,9 @@ namespace PlayerRuntime
                 RootToModify = GetTheRightRoot() ?? RootToModify;
             }
             if (_frontColliderBehaviour.IsBlocked) return;
-            if (!UseResourcesWhileGrowing(((RootToModify.Container.Spline.Count - 1) * RootToModify.Container.Spline.Count) / ResourcesCostDivider)) return;
+            if (!UseResourcesWhileGrowing(((RootToModify.Container.Spline.Count - 1) 
+                                           * RootToModify.Container.Spline.Count) 
+                                          / ResourcesManager.Instance.ResourcesCostDivider)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
@@ -176,9 +172,8 @@ namespace PlayerRuntime
             }
             else
             {
-                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostDivider)
-                    ? AddNewRoot((Vector3)CurrentClosestKnot.Position)
-                    : null;
+                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * ResourcesManager.Instance.ResourcesCostDivider) 
+                    ? AddNewRoot((Vector3)CurrentClosestKnot.Position) : null;
             }
         }
         
@@ -227,7 +222,6 @@ namespace PlayerRuntime
         
         [SerializeField] private GameObject _rootPrefab;
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
-        [SerializeField] private int _resourcesCostDivider = 1;
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
         [Space]
         private List<RootV2> _rootsList = new();

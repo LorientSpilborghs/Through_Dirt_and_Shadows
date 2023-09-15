@@ -107,7 +107,7 @@ namespace CameraFeature.Runtime
             if (Input.GetKey(KeyCode.D)) inputDir.x = +1f;
 
             Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
-            _rigidbody.velocity =  moveDir * (cameraMoveSpeed * Time.deltaTime);
+            _rigidbody.velocity = Time.fixedDeltaTime * cameraMoveSpeed * moveDir;
         }
 
         private void HandleCameraMovementEdgeScrolling()
@@ -182,7 +182,7 @@ namespace CameraFeature.Runtime
         private void MoveTopCameraWhileInterpolating()
         {
             var freeLookTransform = CameraManager.Instance.FreeLook.transform;
-            transform.position = freeLookTransform.position;
+            transform.position = new Vector3(freeLookTransform.position.x,transform.position.y,freeLookTransform.position.z);
             transform.rotation = freeLookTransform.rotation;
         }
 
