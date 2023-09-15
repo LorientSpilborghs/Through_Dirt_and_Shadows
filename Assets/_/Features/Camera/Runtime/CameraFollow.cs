@@ -30,7 +30,7 @@ namespace CameraFeature.Runtime
         
         private void CameraStartFollowing(Vector3 lastKnotPos)
         {
-            _followAnchor.position = lastKnotPos;
+            CameraManager.Instance.FollowCameraAnchor.position = lastKnotPos;
             _cinemachineFreeLook.Priority = 100;
             CameraManager.Instance.IsInThirdPerson = true;
             CameraManager.Instance.VirtualCamera.LookAt = null;
@@ -39,7 +39,7 @@ namespace CameraFeature.Runtime
         
         private void FollowInterpolatingKnot(Vector3 lastKnotPos)
         {
-            _followAnchor.position = lastKnotPos;
+            CameraManager.Instance.FollowCameraAnchor.position = lastKnotPos;
         }
         
         private void CameraIsNotFollowing()
@@ -55,8 +55,13 @@ namespace CameraFeature.Runtime
         {
             return !_cinemachineBrain.IsBlending;
         }
+
+        private void SetFreeLookCamera()
+        {
+            _cinemachineFreeLook.m_BindingMode = CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
+            _cinemachineFreeLook.m_BindingMode = CinemachineTransposer.BindingMode.SimpleFollowWithWorldUp;
+        }
         
-        [SerializeField] private Transform _followAnchor;
         [SerializeField] private CinemachineBrain _cinemachineBrain;
         private CinemachineFreeLook _cinemachineFreeLook;
     }

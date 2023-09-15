@@ -60,6 +60,7 @@ namespace RootFeature.Runtime
                 && root.Container.Spline.Count() > 2)
             {
                 root.Container.Spline.Remove(root.Container.Spline.ToArray()[^1]);
+                _splineExtrude.Rebuild();
             }
         }
         
@@ -70,7 +71,14 @@ namespace RootFeature.Runtime
             if (Vector3.Distance(pos1 , pos2) < DistanceBetweenKnots) return;
             
             root.Container.Spline.Add(new BezierKnot(pos2), TangentMode.AutoSmooth);
-            InstantiateIvy(pos2);
+
+            foreach (var ivy in _ivyPreset)
+            {
+                if (Random.Range(ivy._randomInBetweenXY.x, ivy._randomInBetweenXY.y) != ivy._randomInBetweenXY.x)
+                {
+                    InstantiateIvy(pos2, ivy);
+                }
+            }
         }
 
         private void UpdateFrontColliderPosition()
@@ -111,13 +119,16 @@ namespace RootFeature.Runtime
             StartCoroutine(ChangeSpeed(_distancePerSeconds, _maxDistancePerSeconds, _timeBeforeReachingMinimumSpeed));
         }
 
-        private void InstantiateIvy(Vector3 pos)
+        private void InstantiateIvy(Vector3 pos, Ivy ivyPreset)
         {
-            int knots = _splineContainer.Spline.Count % 10;
-            if(knots % 5 == 0) 
-            {
-                Instantiate(_ivyPrefab, pos, Quaternion.identity);
-            }
+            // int knots = _splineContainer.Spline.Count % 10;
+            // if(knots % 5 == 0)
+            // {
+            //     var index = Random.Range(0, _ivyPrefab.Length - 1);
+            //     Instantiate(_ivyPrefab[index], pos + new Vector3(0,_heightOfTheIvy,0), Quaternion.identity);
+            // }
+            
+            Instantiate(ivyPreset._ivyPrefab, pos + new Vector3(0,ivyPreset._height,0), Quaternion.identity);
         }
 
         [SerializeField] private SplineContainer _splineContainer;
@@ -129,7 +140,8 @@ namespace RootFeature.Runtime
         [SerializeField] private float _timeBeforeRecoveringBaseSpeed = 0.5f;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
         [SerializeField] private float _heightOfTheRoot = 0.5f;
-        [SerializeField] private GameObject _ivyPrefab;
+        [Space]
+        [SerializeField] private Ivy[] _ivyPreset;
         
         private SplineExtrude _splineExtrude;
         private CollisionForSpeedModifier _collisionForSpeedModifier;

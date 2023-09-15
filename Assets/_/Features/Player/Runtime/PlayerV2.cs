@@ -21,7 +21,7 @@ namespace PlayerRuntime
         public Action m_onResetCameraPos;
         public Action m_onCameraBlendingStop;
         public Action m_onNewKnotInstantiate;
-        public Action m_onNewKnotSelected;
+        public Action<bool> m_onNewKnotSelected;
         public Func<bool> m_isCameraBlendingOver;
         public Func<bool> m_isInThirdPerson;
         
@@ -53,6 +53,18 @@ namespace PlayerRuntime
         {
             get => _resourcesCostMultiplier;
             set => _resourcesCostMultiplier = value;
+        }
+
+        public Spline CurrentClosestSpline
+        {
+            get => _currentClosestSpline;
+            set => _currentClosestSpline = value;
+        }
+
+        public RootV2 CurrentClosestRoot
+        {
+            get => _currentClosestRoot;
+            set => _currentClosestRoot = value;
         }
 
         #endregion
@@ -94,17 +106,14 @@ namespace PlayerRuntime
         private void OnMouseMoveEventHandler(Vector3 pos)
         {
             PointerPosition = pos;
-            if (IsInterpolating) return;
-            RootToModify = GetTheRightRoot() ?? RootToModify;
-            m_onNewKnotSelected?.Invoke();
-            // GetTheRightRoot(true);
+            GetTheRightRoot(true);
         }
         
         private void OnLeftMouseDownEventHandler()
         {
             if (m_isCameraBlendingOver?.Invoke() is false) return;
-            // RootToModify = GetTheRightRoot() ?? RootToModify;
-            m_onCameraBlendingStart?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
+            RootToModify = GetTheRightRoot() ?? RootToModify;
+            m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
             IsInterpolating = true;
         }
 
@@ -154,8 +163,11 @@ namespace PlayerRuntime
                     root = _rootsList[i];
                 }
             }
-        
             CurrentClosestKnot = closestKnot;
+            CurrentClosestSpline = root.Container.Spline;
+            
+            m_onNewKnotSelected?.Invoke(IsLastKnotFromSpline(closestKnot, root));
+            
             if (onlySetKnot) return null;
 
             if (IsLastKnotFromSpline(closestKnot, root))
@@ -164,7 +176,7 @@ namespace PlayerRuntime
             }
             else
             {
-                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier)
+                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier) 
                     ? AddNewRoot((Vector3)CurrentClosestKnot.Position)
                     : null;
             }
@@ -195,7 +207,7 @@ namespace PlayerRuntime
         
         #region Utils
         
-        private bool IsLastKnotFromSpline(BezierKnot knot, RootV2 root)
+        private static bool IsLastKnotFromSpline(BezierKnot knot, RootV2 root)
         {
             return root.Container.Spline.ToArray()[^1].Equals(knot);
         }
@@ -221,7 +233,9 @@ namespace PlayerRuntime
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;
         private RootV2 _rootToModify;
+        private RootV2 _currentClosestRoot;
         private BezierKnot _currentClosestKnot;
+        private Spline _currentClosestSpline;
         private bool _isInterpolating;
 
         #endregion
