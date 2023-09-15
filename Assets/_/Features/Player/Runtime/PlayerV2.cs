@@ -21,7 +21,6 @@ namespace PlayerRuntime
         public Action m_onCameraBlendingStop;
         public Action m_onNewKnotInstantiate;
         public Action<bool> m_onNewKnotSelected;
-        public Action<bool> m_isInterpolating;
         public Func<bool> m_isCameraBlendingOver;
         public Func<bool> m_isInThirdPerson;
         
@@ -105,6 +104,7 @@ namespace PlayerRuntime
         
         private void OnMouseMoveEventHandler(Vector3 pos)
         {
+            if (m_isCameraBlendingOver?.Invoke() is false) return;
             PointerPosition = pos;
             GetTheRightRoot(true);
         }
@@ -113,7 +113,6 @@ namespace PlayerRuntime
         {
             if (m_isCameraBlendingOver?.Invoke() is false) return;
             m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
-            RootToModify = GetTheRightRoot() ?? RootToModify;
         }
 
         private void OnRightMouseDownEventHandler()
@@ -123,21 +122,23 @@ namespace PlayerRuntime
         
         private void OnMouseHoldEventHandler()
         {
+            if (m_isInThirdPerson?.Invoke()is false) return;
+            if (!_isInterpolating)
+            {
+                RootToModify = GetTheRightRoot() ?? RootToModify;
+            }
             if (_frontColliderBehaviour.IsBlocked) return;
-            if (m_isCameraBlendingOver?.Invoke() is false) return;
             if (!UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * ResourcesCostMultiplier)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
-            IsInterpolating = true;
-            m_isInterpolating?.Invoke(true);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
+            IsInterpolating = true;
             if (IsMaxDistanceBetweenKnots()) m_onNewKnotInstantiate?.Invoke();
         }
         
         private void OnMouseUpEventHandler()
         {
-            RootToModify.DeleteIfTooClose(RootToModify);
             IsInterpolating = false;
-            m_isInterpolating?.Invoke(false);
+            RootToModify?.DeleteIfTooClose(RootToModify);
         }
         
         private void OnSpaceBarDownEventHandler()
