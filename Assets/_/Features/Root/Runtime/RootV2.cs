@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -60,6 +61,8 @@ namespace RootFeature.Runtime
                 && root.Container.Spline.Count() > 2)
             {
                 root.Container.Spline.Remove(root.Container.Spline.ToArray()[^1]);
+                ResourcesManager.Instance.AddResources((root.Container.Spline.Count - 1) 
+                    * root.Container.Spline.Count / ResourcesManager.Instance.ResourcesCostDivider);
                 _splineExtrude.Rebuild();
             }
         }
@@ -74,7 +77,7 @@ namespace RootFeature.Runtime
 
             foreach (var ivy in _ivyPreset)
             {
-                if (Random.Range(ivy._randomInBetweenXY.x, ivy._randomInBetweenXY.y) != ivy._randomInBetweenXY.x)
+                if (Random.Range(ivy._randomInBetweenXY.x, ivy._randomInBetweenXY.y) == ivy._randomInBetweenXY.x)
                 {
                     InstantiateIvy(pos2, ivy);
                 }

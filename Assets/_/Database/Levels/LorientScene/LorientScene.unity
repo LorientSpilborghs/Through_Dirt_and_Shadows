@@ -3057,11 +3057,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Manager_Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 4045662787356037814, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.317361
+      objectReference: {fileID: 0}
+    - target: {fileID: 4045662787356037814, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.4347963
+      objectReference: {fileID: 0}
     - target: {fileID: 4558180940991918630, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: _health
       value: 
       objectReference: {fileID: 1273267287}
+    - target: {fileID: 5132660395530551170, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: cameraMoveSpeed
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8455009551266148299, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: _resourcesCostDivider
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

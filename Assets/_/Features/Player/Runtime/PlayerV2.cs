@@ -17,7 +17,6 @@ namespace PlayerRuntime
 
         public Action<Vector3> m_onCameraBlendingStart;
         public Action<Vector3> m_onInterpolate;
-        public Action m_onInterpolateEnd;
         public Action m_onResetCameraPos;
         public Action m_onCameraBlendingStop;
         public Action m_onNewKnotInstantiate;
@@ -47,12 +46,6 @@ namespace PlayerRuntime
         {
             get => _rootToModify;
             set => _rootToModify = value;
-        }
-
-        public int ResourcesCostMultiplier
-        {
-            get => _resourcesCostMultiplier;
-            set => _resourcesCostMultiplier = value;
         }
 
         public Spline CurrentClosestSpline
@@ -105,6 +98,7 @@ namespace PlayerRuntime
         
         private void OnMouseMoveEventHandler(Vector3 pos)
         {
+            if (m_isCameraBlendingOver?.Invoke() is false) return;
             PointerPosition = pos;
             GetTheRightRoot(true);
         }
@@ -112,9 +106,7 @@ namespace PlayerRuntime
         private void OnLeftMouseDownEventHandler()
         {
             if (m_isCameraBlendingOver?.Invoke() is false) return;
-            RootToModify = GetTheRightRoot() ?? RootToModify;
             m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
-            IsInterpolating = true;
         }
 
         private void OnRightMouseDownEventHandler()
@@ -124,21 +116,25 @@ namespace PlayerRuntime
         
         private void OnMouseHoldEventHandler()
         {
+            if (m_isInThirdPerson?.Invoke()is false) return;
+            if (!_isInterpolating)
+            {
+                RootToModify = GetTheRightRoot() ?? RootToModify;
+            }
             if (_frontColliderBehaviour.IsBlocked) return;
-            if (m_isCameraBlendingOver?.Invoke() is false) return;
-            if (m_isInThirdPerson?.Invoke() is false) return;
-            if (!UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * ResourcesCostMultiplier)) return;
+            if (!UseResourcesWhileGrowing(((RootToModify.Container.Spline.Count - 1) 
+                                           * RootToModify.Container.Spline.Count) 
+                                          / ResourcesManager.Instance.ResourcesCostDivider)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
+            IsInterpolating = true;
             if (IsMaxDistanceBetweenKnots()) m_onNewKnotInstantiate?.Invoke();
         }
         
         private void OnMouseUpEventHandler()
         {
-            RootToModify.DeleteIfTooClose(RootToModify);
             IsInterpolating = false;
-            
-            m_onInterpolateEnd?.Invoke();
+            RootToModify?.DeleteIfTooClose(RootToModify);
         }
         
         private void OnSpaceBarDownEventHandler()
@@ -176,9 +172,8 @@ namespace PlayerRuntime
             }
             else
             {
-                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier) 
-                    ? AddNewRoot((Vector3)CurrentClosestKnot.Position)
-                    : null;
+                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * ResourcesManager.Instance.ResourcesCostDivider) 
+                    ? AddNewRoot((Vector3)CurrentClosestKnot.Position) : null;
             }
         }
         
@@ -227,7 +222,6 @@ namespace PlayerRuntime
         
         [SerializeField] private GameObject _rootPrefab;
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
-        [SerializeField] private int _resourcesCostMultiplier = 1;
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
         [Space]
         private List<RootV2> _rootsList = new();
