@@ -112,10 +112,8 @@ namespace PlayerRuntime
         private void OnLeftMouseDownEventHandler()
         {
             if (m_isCameraBlendingOver?.Invoke() is false) return;
-            RootToModify = GetTheRightRoot() ?? RootToModify;
             m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
-            IsInterpolating = true;
-            m_isInterpolating?.Invoke(true);
+            RootToModify = GetTheRightRoot() ?? RootToModify;
         }
 
         private void OnRightMouseDownEventHandler()
@@ -127,9 +125,10 @@ namespace PlayerRuntime
         {
             if (_frontColliderBehaviour.IsBlocked) return;
             if (m_isCameraBlendingOver?.Invoke() is false) return;
-            if (m_isInThirdPerson?.Invoke() is false) return;
             if (!UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * ResourcesCostMultiplier)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
+            IsInterpolating = true;
+            m_isInterpolating?.Invoke(true);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             if (IsMaxDistanceBetweenKnots()) m_onNewKnotInstantiate?.Invoke();
         }
@@ -176,7 +175,7 @@ namespace PlayerRuntime
             }
             else
             {
-                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier) 
+                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier)
                     ? AddNewRoot((Vector3)CurrentClosestKnot.Position)
                     : null;
             }

@@ -49,14 +49,16 @@ namespace CameraFeature.Runtime
 
         private void Update()
         {
-            if (PlayerV2.Instance.IsInterpolating)
+            if (PlayerV2.Instance.m_isInThirdPerson?.Invoke() is true)
             {
                 MoveTopCameraWhileInterpolating();
                 _resetPos = false;
+                if (PlayerV2.Instance.m_isCameraBlendingOver?.Invoke() is false) return;
+                HandleCameraRotation(true);
                 return;
             }
 
-            HandleCameraRotation(CameraManager.Instance.IsInThirdPerson);
+            HandleCameraRotation(false);
 
             HandleCameraMovement();
             // if (useEdgeScrolling)

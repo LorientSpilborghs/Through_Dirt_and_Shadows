@@ -16,7 +16,6 @@ namespace CameraFeature.Runtime
         {
             PlayerV2.Instance.m_onCameraBlendingStart += CameraStartFollowing;
             PlayerV2.Instance.m_onInterpolate += FollowInterpolatingKnot;
-            PlayerV2.Instance.m_isInterpolating += SetFreeLookCamera;
             PlayerV2.Instance.m_onCameraBlendingStop += CameraIsNotFollowing;
             PlayerV2.Instance.m_isCameraBlendingOver += IsCameraBlendingOverEventHandler;
         }
@@ -32,8 +31,8 @@ namespace CameraFeature.Runtime
         private void CameraStartFollowing(Vector3 lastKnotPos)
         {
             CameraManager.Instance.FollowCameraAnchor.position = lastKnotPos;
+            CameraManager.Instance.FollowCameraAnchor.transform.LookAt(PlayerV2.Instance.PointerPosition);
             _cinemachineFreeLook.Priority = 100;
-            CameraManager.Instance.IsInThirdPerson = true;
             CameraManager.Instance.VirtualCamera.LookAt = null;
             CameraManager.Instance.VirtualCamera.Follow = null;
         }
@@ -47,7 +46,6 @@ namespace CameraFeature.Runtime
         {
             if (CameraManager.Instance.PlayerCameraManager.IsInterpolating) return;
             _cinemachineFreeLook.Priority = 0;
-            CameraManager.Instance.IsInThirdPerson = false;
             CameraManager.Instance.VirtualCamera.LookAt = CameraManager.Instance.CameraSystem.transform;
             CameraManager.Instance.VirtualCamera.Follow = CameraManager.Instance.CameraSystem.transform;
         }
@@ -55,13 +53,6 @@ namespace CameraFeature.Runtime
         private bool IsCameraBlendingOverEventHandler()
         {
             return !_cinemachineBrain.IsBlending;
-        }
-
-        private void SetFreeLookCamera(bool isInterpolating)
-        {
-            _cinemachineFreeLook.m_BindingMode = isInterpolating 
-                ? CinemachineTransposer.BindingMode.SimpleFollowWithWorldUp
-                : CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
         }
         
         [SerializeField] private CinemachineBrain _cinemachineBrain;
