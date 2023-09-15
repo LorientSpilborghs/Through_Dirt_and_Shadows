@@ -25,13 +25,14 @@ namespace UiFeature.Runtime
         {
             if (PlayerV2.Instance.IsInterpolating) return;
             _growCost.text = isLastKnotFromSpline 
-                ? $"{PlayerV2.Instance.CurrentClosestSpline.Count * PlayerV2.Instance.ResourcesCostMultiplier}" 
-                : $"{2 * PlayerV2.Instance.ResourcesCostMultiplier}";
+                ? $"{(PlayerV2.Instance.CurrentClosestSpline.Count - 1) * PlayerV2.Instance.CurrentClosestSpline.Count / PlayerV2.Instance.ResourcesCostDivider}" 
+                : $"{2 * PlayerV2.Instance.ResourcesCostDivider}";
         }
 
         private void UpdateGrowCostTextOnMouseDown()
         {
-            _growCost.text = $"{PlayerV2.Instance.RootToModify.Container.Spline.Count * PlayerV2.Instance.ResourcesCostMultiplier}";
+            _growCost.text = 
+                $"{(PlayerV2.Instance.RootToModify.Container.Spline.Count - 1) * PlayerV2.Instance.RootToModify.Container.Spline.Count / PlayerV2.Instance.ResourcesCostDivider}";
         }
 
         private IEnumerator WaitForInitialize()

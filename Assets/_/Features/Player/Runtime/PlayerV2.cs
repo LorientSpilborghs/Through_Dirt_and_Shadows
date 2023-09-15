@@ -48,10 +48,10 @@ namespace PlayerRuntime
             set => _rootToModify = value;
         }
 
-        public int ResourcesCostMultiplier
+        public int ResourcesCostDivider
         {
-            get => _resourcesCostMultiplier;
-            set => _resourcesCostMultiplier = value;
+            get => _resourcesCostDivider;
+            set => _resourcesCostDivider = value;
         }
 
         public Spline CurrentClosestSpline
@@ -128,7 +128,7 @@ namespace PlayerRuntime
                 RootToModify = GetTheRightRoot() ?? RootToModify;
             }
             if (_frontColliderBehaviour.IsBlocked) return;
-            if (!UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * ResourcesCostMultiplier)) return;
+            if (!UseResourcesWhileGrowing(((RootToModify.Container.Spline.Count - 1) * RootToModify.Container.Spline.Count) / ResourcesCostDivider)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
@@ -176,7 +176,7 @@ namespace PlayerRuntime
             }
             else
             {
-                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostMultiplier)
+                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostDivider)
                     ? AddNewRoot((Vector3)CurrentClosestKnot.Position)
                     : null;
             }
@@ -227,7 +227,7 @@ namespace PlayerRuntime
         
         [SerializeField] private GameObject _rootPrefab;
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
-        [SerializeField] private int _resourcesCostMultiplier = 1;
+        [SerializeField] private int _resourcesCostDivider = 1;
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
         [Space]
         private List<RootV2> _rootsList = new();
