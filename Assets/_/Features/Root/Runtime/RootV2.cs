@@ -13,17 +13,23 @@ namespace RootFeature.Runtime
             get => _splineContainer;
             set => _splineContainer = value;
         }
-
-        public float DistancePerSeconds
-        {
-            get => _distancePerSeconds;
-            set => _distancePerSeconds = value;
-        }
-
+        
         public float DistanceBetweenKnots
         {
             get => _distanceBetweenKnots;
             set => _distanceBetweenKnots = value;
+        }
+
+        public int InitialGrowCost
+        {
+            get => _initialGrowCost;
+            set => _initialGrowCost = value;
+        }
+
+        public float SpeedPercentage
+        {
+            get => _speedPercentage;
+            set => _speedPercentage = value;
         }
 
         private void Awake()
@@ -42,7 +48,7 @@ namespace RootFeature.Runtime
         public void Grow(RootV2 root, Vector3 positionToGo)
         {
             Vector3 modifiedPositionToGo = new Vector3(positionToGo.x, _heightOfTheRoot, positionToGo.z);
-            _normalizedDistancePerSeconds = DistancePerSeconds / Vector3.Distance(root.Container.Spline.ToArray()[^1].Position, modifiedPositionToGo);
+            _normalizedDistancePerSeconds = (_distancePerSeconds * SpeedPercentage) / Vector3.Distance(root.Container.Spline.ToArray()[^1].Position, modifiedPositionToGo);
             _normalizedTargetKnotPosition = 0f;
             _normalizedTargetKnotPosition += _normalizedDistancePerSeconds * Time.deltaTime;
 
@@ -74,6 +80,7 @@ namespace RootFeature.Runtime
             if (Vector3.Distance(pos1 , pos2) < DistanceBetweenKnots) return;
             
             root.Container.Spline.Add(new BezierKnot(pos2), TangentMode.AutoSmooth);
+            SpeedPercentage -= 1f / _maximumNumberOfKnot;
 
             foreach (var ivy in _ivyPreset)
             {
@@ -143,6 +150,7 @@ namespace RootFeature.Runtime
         [SerializeField] private float _timeBeforeRecoveringBaseSpeed = 0.5f;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
         [SerializeField] private float _heightOfTheRoot = 0.5f;
+        [SerializeField] private int _maximumNumberOfKnot = 50;
         [Space]
         [SerializeField] private Ivy[] _ivyPreset;
         
@@ -152,5 +160,7 @@ namespace RootFeature.Runtime
         private float _normalizedTargetKnotPosition;
         private float _maxDistancePerSeconds;
         private bool _isSlow;
+        private int _initialGrowCost;
+        private float _speedPercentage = 1;
     }
 }

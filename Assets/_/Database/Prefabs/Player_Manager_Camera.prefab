@@ -484,6 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseResources: 9999999
+  _resourcesCostDivider: 1
 --- !u!1 &2500277289337296056
 GameObject:
   m_ObjectHideFlags: 0
@@ -785,7 +786,6 @@ MonoBehaviour:
   _rootPrefab: {fileID: 6682276744045735708, guid: 6a103b6e633c65f42bb3947794ae203e,
     type: 3}
   _frontColliderBehaviour: {fileID: 1450449442410881056}
-  _resourcesCostDivider: 5
   _heightOfTheRootAtStart: 0.5
 --- !u!1 &4529346449832118140
 GameObject:
@@ -1103,7 +1103,7 @@ MonoBehaviour:
   cinemachineVirtualCamera: {fileID: 6264762346755306349}
   useEdgeScrolling: 0
   useDragPan: 0
-  cameraMoveSpeed: 2000
+  cameraMoveSpeed: 1000
   fieldOfViewMax: 50
   fieldOfViewMin: 10
   followOffsetMin: 5

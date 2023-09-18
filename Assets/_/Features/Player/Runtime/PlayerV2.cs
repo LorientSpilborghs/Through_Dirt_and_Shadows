@@ -79,7 +79,7 @@ namespace PlayerRuntime
             InputManager.Instance.m_onMouseUp += OnMouseUpEventHandler;
             InputManager.Instance.m_onSpaceBarDown += OnSpaceBarDownEventHandler;
             
-            AddNewRoot(Vector3.zero + Vector3.up * _heightOfTheRootAtStart);
+            RootToModify = AddNewRoot(Vector3.zero + Vector3.up * _heightOfTheRootAtStart);
         }
 
         private void OnDestroy()
@@ -100,13 +100,20 @@ namespace PlayerRuntime
         {
             if (m_isCameraBlendingOver?.Invoke() is false) return;
             PointerPosition = pos;
+            if (m_isInThirdPerson?.Invoke() is true)
+            {
+                _currentClosestKnot = RootToModify.Container.Spline[^1];
+                return;
+            }
             GetTheRightRoot(true);
         }
         
         private void OnLeftMouseDownEventHandler()
         {
-            if (m_isCameraBlendingOver?.Invoke() is false) return;
+            if (m_isCameraBlendingOver?.Invoke() is false || m_isInThirdPerson?.Invoke() is true) return;
             m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
+            // Move this to MouseHold for previous controller
+            RootToModify = GetTheRightRoot() ?? RootToModify;
         }
 
         private void OnRightMouseDownEventHandler()
@@ -117,13 +124,14 @@ namespace PlayerRuntime
         private void OnMouseHoldEventHandler()
         {
             if (m_isInThirdPerson?.Invoke()is false) return;
-            if (!_isInterpolating)
-            {
-                RootToModify = GetTheRightRoot() ?? RootToModify;
-            }
+            // if (!_isInterpolating && m_isInThirdPerson?.Invoke() is false)
+            // {
+            //     RootToModify = GetTheRightRoot() ?? RootToModify;
+            // }
             if (_frontColliderBehaviour.IsBlocked) return;
-            if (!UseResourcesWhileGrowing(((RootToModify.Container.Spline.Count - 1) 
-                                           * RootToModify.Container.Spline.Count) 
+            if (RootToModify.SpeedPercentage <= 0) return;
+            if (!UseResourcesWhileGrowing((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
+                                           * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
                                           / ResourcesManager.Instance.ResourcesCostDivider)) return;
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
@@ -180,6 +188,10 @@ namespace PlayerRuntime
         private RootV2 AddNewRoot(Vector3 position)
         {
             RootV2 newRoot = Instantiate(_rootPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<RootV2>();
+            if (RootToModify is not null)
+            {
+                newRoot.InitialGrowCost = RootToModify.Container.Spline.Count;
+            }
             Mesh mesh = new Mesh();
             mesh.isReadable.Equals(true);
             newRoot.GetComponent<MeshFilter>().mesh = mesh;
