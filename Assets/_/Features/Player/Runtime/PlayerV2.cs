@@ -60,6 +60,12 @@ namespace PlayerRuntime
             set => _currentClosestRoot = value;
         }
 
+        public int CurrentClosestKnotIndex
+        {
+            get => _currentClosestKnotIndex;
+            set => _currentClosestKnotIndex = value;
+        }
+
         #endregion
         
         #region Unity API
@@ -154,6 +160,7 @@ namespace PlayerRuntime
         {
             RootV2 root = _rootsList[0];
             BezierKnot closestKnot = root.Container.Spline.ToArray()[^1];
+            int closestKnotIndex = 0;
         
             for (int i = 0; i < _rootsList.Count; i++)
             {
@@ -164,11 +171,14 @@ namespace PlayerRuntime
                     if (dist1 > dist2) continue;
         
                     closestKnot = _rootsList[i].Container.Spline.ToArray()[j];
+                    closestKnotIndex = j;
                     root = _rootsList[i];
                 }
             }
             CurrentClosestKnot = closestKnot;
+            CurrentClosestKnotIndex = closestKnotIndex;
             CurrentClosestSpline = root.Container.Spline;
+            CurrentClosestRoot = root;
             
             m_onNewKnotSelected?.Invoke(IsLastKnotFromSpline(closestKnot, root));
             
@@ -180,7 +190,7 @@ namespace PlayerRuntime
             }
             else
             {
-                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * ResourcesManager.Instance.ResourcesCostDivider) 
+                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count + _supplementalCostForNewRoot / ResourcesManager.Instance.ResourcesCostDivider) 
                     ? AddNewRoot((Vector3)CurrentClosestKnot.Position) : null;
             }
         }
@@ -190,7 +200,7 @@ namespace PlayerRuntime
             RootV2 newRoot = Instantiate(_rootPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<RootV2>();
             if (RootToModify is not null)
             {
-                newRoot.InitialGrowCost = RootToModify.Container.Spline.Count;
+                newRoot.InitialGrowCost = CurrentClosestKnotIndex + CurrentClosestRoot.InitialGrowCost;
             }
             Mesh mesh = new Mesh();
             mesh.isReadable.Equals(true);
@@ -235,12 +245,14 @@ namespace PlayerRuntime
         [SerializeField] private GameObject _rootPrefab;
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
+        [SerializeField] private int _supplementalCostForNewRoot;
         [Space]
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;
         private RootV2 _rootToModify;
         private RootV2 _currentClosestRoot;
         private BezierKnot _currentClosestKnot;
+        private int _currentClosestKnotIndex;
         private Spline _currentClosestSpline;
         private bool _isInterpolating;
 
