@@ -46,7 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 320980b4d66b28d4d84c6d29e31686bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _knotsNeedForPurification: 5
+  _knotsNeedForPurification: 10
+  _ivyPreset:
+  - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
+  - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
+  - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
+  - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
+  - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
 --- !u!135 &7928842578531323344
 SphereCollider:
   m_ObjectHideFlags: 0

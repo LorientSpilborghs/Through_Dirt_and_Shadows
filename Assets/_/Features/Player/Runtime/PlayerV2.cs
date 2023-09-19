@@ -190,7 +190,7 @@ namespace PlayerRuntime
             }
             else
             {
-                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count + _supplementalCostForNewRoot / ResourcesManager.Instance.ResourcesCostDivider) 
+                return UseResourcesWhileGrowing(IsGettingCostReduction()) 
                     ? AddNewRoot((Vector3)CurrentClosestKnot.Position) : null;
             }
         }
@@ -236,6 +236,20 @@ namespace PlayerRuntime
 
             return Vector3.Distance(pos1, pos2) > RootToModify.DistanceBetweenKnots;
         }
+
+        private int IsGettingCostReduction()
+        {
+            if (RootToModify.Container.Spline.Count < _minimumNumberOfKnotsForCostReduction)
+            {
+                return RootToModify.Container.Spline.Count +
+                       _supplementalCostForNewRoot / ResourcesManager.Instance.ResourcesCostDivider;
+            }
+            else
+            {
+                return RootToModify.Container.Spline.Count + _supplementalCostForNewRoot -
+                       _costReduction / ResourcesManager.Instance.ResourcesCostDivider;
+            }
+        }
         
         #endregion
         
@@ -244,8 +258,12 @@ namespace PlayerRuntime
         
         [SerializeField] private GameObject _rootPrefab;
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
+        [Space]
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
+        [Space]
         [SerializeField] private int _supplementalCostForNewRoot;
+        [SerializeField] private int _minimumNumberOfKnotsForCostReduction;
+        [SerializeField] private int _costReduction;
         [Space]
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;
