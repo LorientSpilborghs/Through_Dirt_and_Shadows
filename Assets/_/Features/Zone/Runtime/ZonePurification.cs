@@ -1,9 +1,6 @@
-using System;
 using PlayerRuntime;
 using RootFeature.Runtime;
 using UnityEngine;
-using UnityEngine.Splines;
-using Random = UnityEngine.Random;
 
 namespace ZoneFeature.Runtime
 {

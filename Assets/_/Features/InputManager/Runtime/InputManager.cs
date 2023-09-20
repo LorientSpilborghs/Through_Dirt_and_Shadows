@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using GameManagerFeature.Runtime;
 using UnityEngine;
 
 namespace InputManagerFeature.Runtime
@@ -15,6 +16,7 @@ namespace InputManagerFeature.Runtime
         public Action m_onMouseHold;
         public Action m_onMouseUp;
         public Action m_onSpaceBarDown;
+        public Action m_onEscapeKeyDown;
 
         public int FpsCount;
 
@@ -29,6 +31,8 @@ namespace InputManagerFeature.Runtime
 
         private void Update()
         {
+            OnEscapeKeyDown();
+            if (GameManager.Instance.IsGamePause) return;
             MouseWorldPosition();
             
             OnLeftMouseDown();
@@ -89,10 +93,15 @@ namespace InputManagerFeature.Runtime
             if (!Input.GetKeyDown(KeyCode.Space)) return;
             m_onSpaceBarDown?.Invoke();
         }
+
+        private void OnEscapeKeyDown()
+        {
+            if (!Input.GetKeyDown(KeyCode.Escape)) return;
+            m_onEscapeKeyDown?.Invoke();
+        }
         
         
         [SerializeField] private LayerMask _layerMask;
-        private bool _isPushing;
         private Camera _camera;
         private Vector3 _previousMousePos;
     }

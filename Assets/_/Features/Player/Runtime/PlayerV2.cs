@@ -20,6 +20,7 @@ namespace PlayerRuntime
         public Action m_onResetCameraPos;
         public Action m_onCameraBlendingStop;
         public Action m_onNewKnotInstantiate;
+        public Action m_onPauseMenu;
         public Action<bool> m_onNewKnotSelected;
         public Func<bool> m_isCameraBlendingOver;
         public Func<bool> m_isInThirdPerson;
@@ -84,6 +85,7 @@ namespace PlayerRuntime
             InputManager.Instance.m_onMouseHold += OnMouseHoldEventHandler;
             InputManager.Instance.m_onMouseUp += OnMouseUpEventHandler;
             InputManager.Instance.m_onSpaceBarDown += OnSpaceBarDownEventHandler;
+            InputManager.Instance.m_onEscapeKeyDown += OnEscapeKeyDownEventHandler;
             
             RootToModify = AddNewRoot(Vector3.zero + Vector3.up * _heightOfTheRootAtStart);
         }
@@ -96,6 +98,7 @@ namespace PlayerRuntime
             InputManager.Instance.m_onMouseHold -= OnMouseHoldEventHandler;
             InputManager.Instance.m_onMouseUp -= OnMouseUpEventHandler;
             InputManager.Instance.m_onSpaceBarDown -= OnSpaceBarDownEventHandler;
+            InputManager.Instance.m_onEscapeKeyDown -= OnEscapeKeyDownEventHandler;
         }
         
         #endregion
@@ -154,6 +157,11 @@ namespace PlayerRuntime
         private void OnSpaceBarDownEventHandler()
         {
             m_onResetCameraPos?.Invoke();
+        }
+
+        private void OnEscapeKeyDownEventHandler()
+        {
+            m_onPauseMenu?.Invoke();
         }
         
         private RootV2 GetTheRightRoot(bool onlySetKnot = false)

@@ -12,6 +12,12 @@ namespace GameManagerFeature.Runtime
             set => _playerTransform = value;
         }
 
+        public bool IsGamePause
+        {
+            get => _isGamePause;
+            set => _isGamePause = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -24,5 +30,6 @@ namespace GameManagerFeature.Runtime
         }
 
         private Transform _playerTransform;
+        private bool _isGamePause;
     }
 }

@@ -8,6 +8,20 @@ namespace UiFeature.Runtime
 {
     public class UiManager : MonoBehaviour
     {
+        public static UiManager Instance { get; private set; }
+        
+        public GameObject PauseMenuUI
+        {
+            get => _pauseMenuUI;
+            set => _pauseMenuUI = value;
+        }
+        
+        private void Awake()
+        {
+            if (Instance == null) Instance = this;
+            else Destroy(gameObject);
+        }
+        
         private void Start()
         {
             PlayerV2.Instance.m_onNewKnotSelected += UpdateGrowCostTextOnMouseOver;
@@ -45,6 +59,7 @@ namespace UiFeature.Runtime
         
         [SerializeField] private TextMeshProUGUI _health;
         [SerializeField] private TextMeshProUGUI _growCost;
+        [SerializeField] private GameObject _pauseMenuUI;
 
         private PlayerV2 _player;
     }
