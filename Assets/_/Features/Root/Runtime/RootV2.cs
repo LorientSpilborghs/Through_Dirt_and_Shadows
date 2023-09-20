@@ -40,9 +40,15 @@ namespace RootFeature.Runtime
 
         private void Start()
         {
-            _maxDistancePerSeconds = _distancePerSeconds;
             _collisionForSpeedModifier.m_onEnterSlowZone += LowerSpeed;
             _collisionForSpeedModifier.m_onExitSlowZone += ResetSpeed;
+            _maxDistancePerSeconds = _distancePerSeconds;
+        }
+
+        private void OnDestroy()
+        {
+            _collisionForSpeedModifier.m_onEnterSlowZone -= LowerSpeed;
+            _collisionForSpeedModifier.m_onExitSlowZone -= ResetSpeed;        
         }
 
         public void Grow(RootV2 root, Vector3 positionToGo)
@@ -58,19 +64,22 @@ namespace RootFeature.Runtime
             AddKnotWhileInterpolating(root);
             root.Container.Spline.SetKnot(root.Container.Spline.Knots.Count() - 1, lastKnot);
             _splineExtrude.Rebuild();
-            UpdateFrontColliderPosition();
+            _frontCollider.transform.position = Container.Spline[^1].Position;
+            UpdateHeadOfTheRootTransform(positionToGo);
         }
 
         public void DeleteIfTooClose(RootV2 root)
         {
-            if (Vector3.Distance(root.Container.Spline.ToArray()[^1].Position, root.Container.Spline.ToArray()[^2].Position) < 1 
-                && root.Container.Spline.Count() > 2)
-            {
-                root.Container.Spline.Remove(root.Container.Spline.ToArray()[^1]);
-                ResourcesManager.Instance.AddResources((root.Container.Spline.Count - 1) 
-                    * root.Container.Spline.Count / ResourcesManager.Instance.ResourcesCostDivider);
-                _splineExtrude.Rebuild();
-            }
+            if (!(Vector3.Distance(root.Container.Spline.ToArray()[^1].Position,
+                    root.Container.Spline.ToArray()[^2].Position) < 0.1)
+                || root.Container.Spline.Count() <= 2) return;
+            
+            root.Container.Spline.Remove(root.Container.Spline.ToArray()[^1]);
+            ResourcesManager.Instance.AddResources((root.Container.Spline.Count - 1) 
+                * root.Container.Spline.Count / ResourcesManager.Instance.ResourcesCostDivider);
+            _splineExtrude.Rebuild();
+            _frontCollider.transform.position = Container.Spline[^1].Position;
+            _rootHeadPrefab.transform.position = Container.Spline[^1].Position;
         }
         
         private void AddKnotWhileInterpolating(RootV2 root)
@@ -90,10 +99,12 @@ namespace RootFeature.Runtime
                 }
             }
         }
-
-        private void UpdateFrontColliderPosition()
+        
+        private void UpdateHeadOfTheRootTransform(Vector3 direction)
         {
-            _frontCollider.transform.position = Container.Spline[^1].Position;
+            _rootHeadPrefab.transform.position = Container.Spline[^1].Position;
+            Vector3 newDirection = new Vector3(direction.x, _rootHeadPrefab.transform.position.y, direction.z);
+            _rootHeadPrefab.transform.LookAt(newDirection,Vector3.up);
         }
 
         private void LowerSpeed()
@@ -143,6 +154,7 @@ namespace RootFeature.Runtime
 
         [SerializeField] private SplineContainer _splineContainer;
         [SerializeField] private Collider _frontCollider;
+        [SerializeField] private GameObject _rootHeadPrefab;
         [Space]
         [SerializeField] private float _distancePerSeconds = 2.5f;
         [SerializeField] private float _minimumDistancePerSeconds = 1f;

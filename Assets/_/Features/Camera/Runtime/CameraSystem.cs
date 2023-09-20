@@ -170,13 +170,24 @@ namespace CameraFeature.Runtime
         private void HandleCameraRotation(bool isInThirdPerson)
         {
             Transform transformToRotate = new RectTransform();
-            
-            transformToRotate = isInThirdPerson ? CameraManager.Instance.FollowCameraAnchor.transform : transform;
-            
-            float rotateDir = 0f;
-            if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
-            if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
-            transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
+
+            if (isInThirdPerson)
+            {
+                transformToRotate = CameraManager.Instance.FollowCameraAnchor.transform;
+                float rotateDir = 0f;
+                if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
+                if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
+                transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
+                transform.rotation = transformToRotate.rotation;
+            }
+            else
+            {
+                transformToRotate = transform;
+                float rotateDir = 0f;
+                if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
+                if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
+                transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
+            }
         }
 
         private void MoveTopCameraWhileInterpolating()

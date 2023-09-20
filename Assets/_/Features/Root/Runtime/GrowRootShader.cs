@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GrowRoot : MonoBehaviour
 {
@@ -11,7 +10,6 @@ public class GrowRoot : MonoBehaviour
     [Range(0, 1)] public float m_minGrow;
     [Range(0, 1)] public float m_maxGrow;
     
-    // Start is called before the first frame update
     void Start()
     {
         for (int i = 0; i < m_growRootsMeshes.Count; i++)
@@ -27,7 +25,6 @@ public class GrowRoot : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
