@@ -24,6 +24,8 @@ namespace UiFeature.Runtime
         
         private void Start()
         {
+            _player = PlayerV2.Instance;
+            _resourcesManager = ResourcesManager.Instance;
             PlayerV2.Instance.m_onNewKnotSelected += UpdateGrowCostTextOnMouseOver;
             ResourcesManager.Instance.m_onResourcesChange += UpdateGrowCostTextOnMouseHold;
             ResourcesManager.Instance.m_onResourcesChange += UpdateHealthText;
@@ -32,22 +34,33 @@ namespace UiFeature.Runtime
 
         private void UpdateHealthText()
         {
-            _health.text = $"Current Health = {ResourcesManager.Instance.CurrentResources}";
+            _health.text = $"Current Health = {_resourcesManager.CurrentResources}";
         }
         
         private void UpdateGrowCostTextOnMouseOver(bool isLastKnotFromSpline)
         {
-            if (PlayerV2.Instance.IsInterpolating) return;
-            _growCost.text = isLastKnotFromSpline 
-                ? $"{(PlayerV2.Instance.CurrentClosestSpline.Count - 1 + PlayerV2.Instance.CurrentClosestRoot.InitialGrowCost) * (PlayerV2.Instance.CurrentClosestSpline.Count + PlayerV2.Instance.CurrentClosestRoot.InitialGrowCost) / ResourcesManager.Instance.ResourcesCostDivider}" 
-                : $"{(PlayerV2.Instance.CurrentClosestKnotIndex - 1 + PlayerV2.Instance.CurrentClosestRoot.InitialGrowCost) * (PlayerV2.Instance.CurrentClosestKnotIndex + PlayerV2.Instance.CurrentClosestRoot.InitialGrowCost) / ResourcesManager.Instance.ResourcesCostDivider}";
+            if (isLastKnotFromSpline)
+            {
+                _growCost.text =
+                    $"{(_player.CurrentClosestSpline.Count - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestSpline.Count + _player.CurrentClosestRoot.InitialGrowCost) / _resourcesManager.ResourcesCostDivider}";
+            }
+            else if (_player.CurrentClosestKnotIndex <
+                     _player.CurrentClosestRoot.MinimumNumberOfKnotsForCostReduction)
+            {
+                _growCost.text =
+                    $"{(_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) + _player.CurrentClosestRoot.SupplementalCostForNewRoot / _resourcesManager.ResourcesCostDivider}";
+            }
+            else 
+            {
+                _growCost.text = $"{((_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) + _player.CurrentClosestRoot.SupplementalCostForNewRoot - _player.CurrentClosestRoot.CostReduction) / _resourcesManager.ResourcesCostDivider}";
+            }
         }
 
         private void UpdateGrowCostTextOnMouseHold()
         {
-            if (!PlayerV2.Instance.IsInterpolating) return;
+            if (!_player.IsInterpolating) return;
             _growCost.text = 
-                $"{(PlayerV2.Instance.RootToModify.Container.Spline.Count - 1 + PlayerV2.Instance.RootToModify.InitialGrowCost) * (PlayerV2.Instance.RootToModify.Container.Spline.Count + PlayerV2.Instance.RootToModify.InitialGrowCost) / ResourcesManager.Instance.ResourcesCostDivider}";
+                $"{(_player.RootToModify.Container.Spline.Count - 1 + _player.RootToModify.InitialGrowCost) * (_player.RootToModify.Container.Spline.Count + _player.RootToModify.InitialGrowCost) / _resourcesManager.ResourcesCostDivider}";
         }
 
         private IEnumerator WaitForInitialize()
@@ -62,5 +75,6 @@ namespace UiFeature.Runtime
         [SerializeField] private GameObject _pauseMenuUI;
 
         private PlayerV2 _player;
+        private ResourcesManager _resourcesManager;
     }
 }

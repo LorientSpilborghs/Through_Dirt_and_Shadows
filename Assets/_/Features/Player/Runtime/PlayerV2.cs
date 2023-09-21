@@ -115,6 +115,7 @@ namespace PlayerRuntime
                 return;
             }
             GetTheRightRoot(true);
+            Debug.Log(_currentClosestKnotIndex);
         }
         
         private void OnLeftMouseDownEventHandler()
@@ -210,6 +211,7 @@ namespace PlayerRuntime
             {
                 newRoot.InitialGrowCost = CurrentClosestKnotIndex + CurrentClosestRoot.InitialGrowCost;
             }
+            
             Mesh mesh = new Mesh();
             mesh.isReadable.Equals(true);
             newRoot.GetComponent<MeshFilter>().mesh = mesh;
@@ -247,15 +249,17 @@ namespace PlayerRuntime
 
         private int IsGettingCostReduction()
         {
-            if (RootToModify.Container.Spline.Count < _minimumNumberOfKnotsForCostReduction)
+            if (RootToModify.Container.Spline.Count < RootToModify.MinimumNumberOfKnotsForCostReduction)
             {
-                return RootToModify.Container.Spline.Count +
-                       _supplementalCostForNewRoot / ResourcesManager.Instance.ResourcesCostDivider;
+                return (RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
+                       * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
+                       + RootToModify.SupplementalCostForNewRoot / ResourcesManager.Instance.ResourcesCostDivider;
             }
             else
             {
-                return RootToModify.Container.Spline.Count + _supplementalCostForNewRoot -
-                       _costReduction / ResourcesManager.Instance.ResourcesCostDivider;
+                return ((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
+                       * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost)
+                       + RootToModify.SupplementalCostForNewRoot - RootToModify.CostReduction) / ResourcesManager.Instance.ResourcesCostDivider;
             }
         }
         
@@ -268,10 +272,6 @@ namespace PlayerRuntime
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
         [Space]
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
-        [Space]
-        [SerializeField] private int _supplementalCostForNewRoot;
-        [SerializeField] private int _minimumNumberOfKnotsForCostReduction;
-        [SerializeField] private int _costReduction;
         [Space]
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;

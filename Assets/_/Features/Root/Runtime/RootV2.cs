@@ -32,6 +32,24 @@ namespace RootFeature.Runtime
             set => _speedPercentage = value;
         }
 
+        public int MinimumNumberOfKnotsForCostReduction
+        {
+            get => _minimumNumberOfKnotsForCostReduction;
+            set => _minimumNumberOfKnotsForCostReduction = value;
+        }
+
+        public int SupplementalCostForNewRoot
+        {
+            get => _supplementalCostForNewRoot;
+            set => _supplementalCostForNewRoot = value;
+        }
+
+        public int CostReduction
+        {
+            get => _costReduction;
+            set => _costReduction = value;
+        }
+
         private void Awake()
         {
             _splineExtrude = GetComponent<SplineExtrude>();
@@ -89,7 +107,10 @@ namespace RootFeature.Runtime
             if (Vector3.Distance(pos1 , pos2) < DistanceBetweenKnots) return;
             
             root.Container.Spline.Add(new BezierKnot(pos2), TangentMode.AutoSmooth);
-            SpeedPercentage -= 1f / _maximumNumberOfKnot;
+            if (root.Container.Spline.Count >= _minimumNumberOfKnotsForCostReduction)
+            {
+                SpeedPercentage -= 1f / (_maximumNumberOfKnot - _minimumNumberOfKnotsForCostReduction);
+            }
 
             foreach (var ivy in _ivyPreset)
             {
@@ -156,13 +177,17 @@ namespace RootFeature.Runtime
         [SerializeField] private Collider _frontCollider;
         [SerializeField] private GameObject _rootHeadPrefab;
         [Space]
+        [SerializeField] private int _maximumNumberOfKnot = 50;
+        [SerializeField] private int _supplementalCostForNewRoot;
+        [SerializeField] private int _minimumNumberOfKnotsForCostReduction;
+        [SerializeField] private int _costReduction;
+        [Space]
         [SerializeField] private float _distancePerSeconds = 2.5f;
         [SerializeField] private float _minimumDistancePerSeconds = 1f;
         [SerializeField] private float _timeBeforeReachingMinimumSpeed = 0.1f;
         [SerializeField] private float _timeBeforeRecoveringBaseSpeed = 0.5f;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
         [SerializeField] private float _heightOfTheRoot = 0.5f;
-        [SerializeField] private int _maximumNumberOfKnot = 50;
         [Space]
         [SerializeField] private Ivy[] _ivyPreset;
         
