@@ -1,10 +1,11 @@
 using System.Collections;
+using PlayerRuntime;
 using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 
 namespace ZoneFeature.Runtime
 {
-    public class ZoneHarvest : Zone
+    public class ZoneHarvestV2 : Zone
     {
         public int BaseResources
         {
@@ -20,23 +21,35 @@ namespace ZoneFeature.Runtime
 
         private void Awake()
         {
-            _nuclearCrateEmissionModifier = GetComponentInParent<NuclearCrateEmissionModifier>();
+            _nuclearCrateEmissionModifier = GetComponentInParent<NuclearCrateEmissionModifierV2>();
             CurrentResources = BaseResources;
         }
 
         protected override void OnEnterZone()
         {
+            PlayerV2.Instance.m_onNewKnotInstantiate += BoostCollectEfficiency;
             if (_isCollecting) return;
-            StartCoroutine(Collecting());
+            float timeBetweenCollect = _baseTimeBetweenCollect;
+            StartCoroutine(Collecting(timeBetweenCollect));
             _isCollecting = true;
         }
-        protected override void OnExitZone() {} 
-        
-        private IEnumerator Collecting()
+
+        private void BoostCollectEfficiency()
         {
-            yield return new WaitForSeconds(_timeBetweenCollect);
+            _currentKnotInTheZone++;
+        }
+
+        protected override void OnExitZone()
+        {
+            PlayerV2.Instance.m_onNewKnotInstantiate -= BoostCollectEfficiency;
+        } 
+        
+        private IEnumerator Collecting(float timeBetweenCollect)
+        {
+            yield return new WaitForSeconds(timeBetweenCollect);
+            timeBetweenCollect = _baseTimeBetweenCollect / (_currentKnotInTheZone * _timeReducingEfficiencyPercentage/100);
             if (!Collect()) yield break;
-            StartCoroutine(Collecting());
+            StartCoroutine(Collecting(timeBetweenCollect));
         }
         
         private bool Collect()
@@ -45,11 +58,11 @@ namespace ZoneFeature.Runtime
 
             int count = _resourcesCollectOverTime;
             int newTotalResources = CurrentResources - _resourcesCollectOverTime;
-            _nuclearCrateEmissionModifier?.ModifyEmissionBasedOnResources(_resourcesCollectOverTime);
 
             if (CurrentResources < _resourcesCollectOverTime) { count = CurrentResources; newTotalResources = 0; }
             ResourcesManager.Instance.AddResources(count);
             CurrentResources = newTotalResources;
+            _nuclearCrateEmissionModifier?.ModifyEmissionBasedOnResources();
             
             return true;
         }
@@ -59,14 +72,15 @@ namespace ZoneFeature.Runtime
             Gizmos.DrawWireSphere(transform.position, 0.5f);
         }
 
-        [SerializeField] private float _timeBetweenCollect;
+        [SerializeField] private float _baseTimeBetweenCollect;
         [SerializeField] private int _resourcesCollectOverTime;
         [SerializeField] private int _baseResources;
+        [SerializeField] private int _timeReducingEfficiencyPercentage = 100;
 
-        private NuclearCrateEmissionModifier _nuclearCrateEmissionModifier;
-        private Material _material;
+        private NuclearCrateEmissionModifierV2 _nuclearCrateEmissionModifier;
         private bool _isCollecting;
         private int _completionPercentage;
         private int _currentResources;
+        private int _currentKnotInTheZone;
     }
 }

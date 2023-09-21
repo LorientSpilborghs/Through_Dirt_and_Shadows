@@ -24,8 +24,8 @@ namespace CameraFeature.Runtime
 
         public CinemachineFreeLook FreeLook
         {
-            get => _cinemachineFreeLook;
-            set => _cinemachineFreeLook = value;
+            get => _cineMachineFreeLook;
+            set => _cineMachineFreeLook = value;
         }
 
         public bool IsInThirdPerson
@@ -96,13 +96,13 @@ namespace CameraFeature.Runtime
 
         private bool isInThirdPersonEventHandler()
         {
-            return Camera.main.transform.position == _cinemachineFreeLook.transform.position;
+            return Camera.main.transform.position == _cineMachineFreeLook.transform.position;
         }
         
         [SerializeField] private Transform _anchor;
         [SerializeField] private Transform _cameraSystem;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
-        [SerializeField] private CinemachineFreeLook _cinemachineFreeLook;
+        [SerializeField] private CinemachineFreeLook _cineMachineFreeLook;
         [SerializeField] private Transform _followCameraAnchor;
         
         private PlayerV2 _player;

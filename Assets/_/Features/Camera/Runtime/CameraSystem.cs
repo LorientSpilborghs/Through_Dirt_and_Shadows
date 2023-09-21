@@ -192,9 +192,9 @@ namespace CameraFeature.Runtime
 
         private void MoveTopCameraWhileInterpolating()
         {
-            var freeLookTransform = CameraManager.Instance.FreeLook.transform;
-            transform.position = new Vector3(freeLookTransform.position.x,transform.position.y,freeLookTransform.position.z);
-            transform.rotation = freeLookTransform.rotation;
+            var followCameraAnchorTransform = CameraManager.Instance.FollowCameraAnchor;
+            transform.position = new Vector3(followCameraAnchorTransform.position.x,transform.position.y,followCameraAnchorTransform.position.z);
+            transform.rotation = followCameraAnchorTransform.rotation;
         }
 
 

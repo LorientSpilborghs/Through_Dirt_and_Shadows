@@ -7,14 +7,6 @@ namespace UiFeature.Runtime
 {
     public class PauseMenu : MonoBehaviour
     {
-        public static PauseMenu Instance { get; private set; }
-        
-        private void Awake()
-        {
-            if (Instance == null) Instance = this;
-            else Destroy(gameObject);
-        }
-        
         private void Start()
         {
             PlayerV2.Instance.m_onPauseMenu += OnPauseMenuEventHandler;
