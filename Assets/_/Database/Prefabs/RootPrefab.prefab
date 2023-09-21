@@ -138,13 +138,16 @@ MonoBehaviour:
   _splineContainer: {fileID: 8721236178818016567}
   _frontCollider: {fileID: 7130140536928042537}
   _rootHeadPrefab: {fileID: 196451393014779840}
+  _maximumNumberOfKnot: 50
+  _supplementalCostForNewRoot: 1
+  _minimumNumberOfKnotsForCostReduction: 20
+  _costReduction: 20
   _distancePerSeconds: 3.5
   _minimumDistancePerSeconds: 2.6
   _timeBeforeReachingMinimumSpeed: 0.1
   _timeBeforeRecoveringBaseSpeed: 0.5
   _distanceBetweenKnots: 1
   _heightOfTheRoot: 0.25
-  _maximumNumberOfKnot: 50
   _ivyPreset:
   - {fileID: 11400000, guid: 580ae47700c65ba4585fab1c350c9014, type: 2}
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}
