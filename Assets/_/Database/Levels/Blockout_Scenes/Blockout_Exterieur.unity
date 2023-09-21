@@ -25279,6 +25279,11 @@ PrefabInstance:
       propertyPath: _anchor
       value: 
       objectReference: {fileID: 1070257032}
+    - target: {fileID: 683189766432311407, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: m_Layer
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1493158714336088861, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25494,6 +25499,11 @@ PrefabInstance:
       propertyPath: _growCost
       value: 
       objectReference: {fileID: 178347793}
+    - target: {fileID: 4558180940991918630, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: _pauseMenuUI
+      value: 
+      objectReference: {fileID: 729924130}
     - target: {fileID: 7282820621149785666, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_DefaultBlend.m_Time
@@ -25533,6 +25543,16 @@ PrefabInstance:
         type: 3}
       propertyPath: _heightOfTheRootAtStart
       value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8455009551266148299, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: _supplementalCostForNewRoot
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8455009551266148299, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: _minimumNumberOfKnotsForCostReduction
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27362,6 +27382,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7050931150995149379, guid: 031ec8628d2a8aa46baa251180c89127,
     type: 3}
   m_PrefabInstance: {fileID: 897610943}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &729924130 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7364223236097812082, guid: cbc2c6fd876f95c468e7cafdd1104cce,
+    type: 3}
+  m_PrefabInstance: {fileID: 950524146}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &730359132
 PrefabInstance:
