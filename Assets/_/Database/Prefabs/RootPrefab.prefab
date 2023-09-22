@@ -93,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8281967038105575292}
   - component: {fileID: 2969661420894498415}
+  - component: {fileID: -8778106155370664437}
   - component: {fileID: 913331109243674626}
   - component: {fileID: 3351727091959212854}
   - component: {fileID: 8721236178818016567}
@@ -138,17 +139,34 @@ MonoBehaviour:
   _splineContainer: {fileID: 8721236178818016567}
   _frontCollider: {fileID: 7130140536928042537}
   _rootHeadPrefab: {fileID: 196451393014779840}
+  _maximumNumberOfKnot: 50
+  _supplementalCostForNewRoot: 0
+  _minimumNumberOfKnotsForCostReduction: 0
+  _costReduction: 0
   _distancePerSeconds: 3.5
   _minimumDistancePerSeconds: 2.6
   _timeBeforeReachingMinimumSpeed: 0.1
   _timeBeforeRecoveringBaseSpeed: 0.5
   _distanceBetweenKnots: 1
   _heightOfTheRoot: 0.25
-  _maximumNumberOfKnot: 50
   _ivyPreset:
   - {fileID: 11400000, guid: 580ae47700c65ba4585fab1c350c9014, type: 2}
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}
   - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
+--- !u!114 &-8778106155370664437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6682276744045735708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99b92b4d9e1d6934086d354efd242344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particleSystem:
+  - {fileID: 11400000, guid: 42f5411aa29036c4dbbdf579af808103, type: 2}
 --- !u!114 &913331109243674626
 MonoBehaviour:
   m_ObjectHideFlags: 0

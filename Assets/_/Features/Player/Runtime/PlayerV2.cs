@@ -278,8 +278,8 @@ namespace PlayerRuntime
         private RootV2 _rootToModify;
         private RootV2 _currentClosestRoot;
         private BezierKnot _currentClosestKnot;
-        private int _currentClosestKnotIndex;
         private Spline _currentClosestSpline;
+        private int _currentClosestKnotIndex;
         private bool _isInterpolating;
 
         #endregion
