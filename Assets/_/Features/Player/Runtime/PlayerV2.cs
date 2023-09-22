@@ -115,7 +115,6 @@ namespace PlayerRuntime
                 return;
             }
             GetTheRightRoot(true);
-            Debug.Log(_currentClosestKnotIndex);
         }
         
         private void OnLeftMouseDownEventHandler()
@@ -143,12 +142,14 @@ namespace PlayerRuntime
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
+            RootToModify.IsGrowing = true;
             if (IsMaxDistanceBetweenKnots()) m_onNewKnotInstantiate?.Invoke();
         }
         
         private void OnMouseUpEventHandler()
         {
             IsInterpolating = false;
+            RootToModify.IsGrowing = false;
             RootToModify?.DeleteIfTooClose(RootToModify);
         }
         

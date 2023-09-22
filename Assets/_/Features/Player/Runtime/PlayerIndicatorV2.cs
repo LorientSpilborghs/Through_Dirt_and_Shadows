@@ -25,6 +25,5 @@ namespace PlayerRuntime
         [SerializeField] private float _yAxisOffset = 0.5f;
         
         private Vector3 _closestKnot;
-        private bool _isActive = true;
     }
 }

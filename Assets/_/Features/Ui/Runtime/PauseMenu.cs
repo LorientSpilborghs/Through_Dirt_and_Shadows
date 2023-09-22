@@ -3,7 +3,7 @@ using PlayerRuntime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace UiFeature.Runtime
+namespace UIFeature.Runtime
 {
     public class PauseMenu : MonoBehaviour
     {
@@ -31,14 +31,14 @@ namespace UiFeature.Runtime
 
         private void Pause()
         {
-            UiManager.Instance.PauseMenuUI.SetActive(true);
+            UIManager.Instance.PauseMenuUI.SetActive(true);
             Time.timeScale = 0;
             GameManager.Instance.IsGamePause = true;
         }
 
         public void Resume()
         {
-            UiManager.Instance.PauseMenuUI.SetActive(false);
+            UIManager.Instance.PauseMenuUI.SetActive(false);
             Time.timeScale = 1;
             GameManager.Instance.IsGamePause = false;
         }

@@ -10,8 +10,7 @@ namespace RootFeature.Runtime
 {
     public class RootV2 : MonoBehaviour
     {
-        public Action m_onGrow;
-        public Func<int> m_onGrowCost;
+        public Action<Vector3> m_onGrow;
         
         public SplineContainer Container
         {
@@ -55,6 +54,12 @@ namespace RootFeature.Runtime
             set => _costReduction = value;
         }
 
+        public bool IsGrowing
+        {
+            get => _isGrowing;
+            set => _isGrowing = value;
+        }
+
         private void Awake()
         {
             _splineExtrude = GetComponent<SplineExtrude>();
@@ -88,8 +93,8 @@ namespace RootFeature.Runtime
             root.Container.Spline.SetKnot(root.Container.Spline.Knots.Count() - 1, lastKnot);
             _splineExtrude.Rebuild();
             _frontCollider.transform.position = Container.Spline[^1].Position;
+            m_onGrow?.Invoke(positionToGo);
             UpdateHeadOfTheRootTransform(positionToGo);
-            m_onGrow?.Invoke();
         }
 
         public void DeleteIfTooClose(RootV2 root)
@@ -124,11 +129,6 @@ namespace RootFeature.Runtime
                 {
                     InstantiateIvy(pos2, ivy);
                 }
-            }
-
-            for (int i = 0; i < Container.Spline.Count; i++)
-            {
-                
             }
         }
         
@@ -208,6 +208,7 @@ namespace RootFeature.Runtime
         private float _normalizedTargetKnotPosition;
         private float _maxDistancePerSeconds;
         private bool _isSlow;
+        private bool _isGrowing;
         private int _initialGrowCost;
         private float _speedPercentage = 1;
     }

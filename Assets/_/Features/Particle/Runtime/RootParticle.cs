@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using RootFeature.Runtime;
 using UnityEngine;
 
@@ -15,34 +13,21 @@ namespace ParticleFeature.Runtime
         private void Start()
         {
             _root.m_onGrow += OnGrowEventHandler;
-            foreach (var particlePreset in _particleSystem)
-            {
-                Instantiate(particlePreset.m_particleSystem, 
-                    new Vector3(transform.position.x, particlePreset.m_height, transform.position.z),
-                    Quaternion.identity, transform);
-            }
         }
 
-        private void OnGrowEventHandler()
+        private void Update()
         {
-            if (_isPlayingParticle) return;
-            
-            foreach (var particlePreset in _particleSystem)
-            {
-                particlePreset.m_particleSystem.Play();
-                particlePreset.m_particleSystem.transform.position = _root.Container.Spline[^1].Position;
-            }
-            StartCoroutine(WaitForAnimationToEnd());
+            _particle.gameObject.SetActive(_root.IsGrowing);
         }
 
-        private IEnumerator WaitForAnimationToEnd()
+        private void OnGrowEventHandler(Vector3 pos)
         {
-            yield return new WaitForSeconds(_particleSystem[^1].m_particleSystem.main.duration);
-            _isPlayingParticle = false;
-        } 
-
-        [SerializeField] private ParticlePreset[] _particleSystem;
-
+            _particle.transform.position = _root.Container.Spline[^1].Position;
+            Vector3 newDirection = new Vector3(pos.x, _particle.transform.position.y, pos.z);
+            _particle.transform.LookAt(newDirection,Vector3.up);
+        }
+        
+        [SerializeField] private ParticleSystem _particle;
         private RootV2 _root;
         private bool _isPlayingParticle;
     }
