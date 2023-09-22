@@ -146,6 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_slider: {fileID: 7322903488454583114}
+  _canvasHealthBar: {fileID: 3332924951324153535}
 --- !u!1 &7210425495319889975
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,6 +638,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c1ad595a90be7e45b4bc2280ef1bc0e, type: 3}
+--- !u!1 &3332924951324153535 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6252271299634758442, guid: 8c1ad595a90be7e45b4bc2280ef1bc0e,
+    type: 3}
+  m_PrefabInstance: {fileID: 8684182578375153045}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7322903488454583114 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2099882387841365727, guid: 8c1ad595a90be7e45b4bc2280ef1bc0e,
