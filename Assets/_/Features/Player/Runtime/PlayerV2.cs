@@ -136,11 +136,10 @@ namespace PlayerRuntime
             
             if (_frontColliderBehaviour.IsBlocked) return;
             if (RootToModify.SpeedPercentage <= 0) return;
-            // if (!UseResourcesWhileGrowing((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
-            //                                * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
-            //                               / ResourcesManager.Instance.ResourcesCostDivider)) return;
+            if (!UseResourcesWhileGrowing((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
+                                           * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
+                                          / ResourcesManager.Instance.ResourcesCostDivider)) return;
             
-            if (!UseResourcesWhileGrowing())
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
