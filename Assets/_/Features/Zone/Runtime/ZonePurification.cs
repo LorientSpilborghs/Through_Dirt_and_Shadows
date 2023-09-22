@@ -1,11 +1,27 @@
+using System;
 using PlayerRuntime;
 using RootFeature.Runtime;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace ZoneFeature.Runtime
 {
     public class ZonePurification : Zone
     {
+        public Action m_onValueChange;
+        
+        public int KnotsNeedForPurification
+        {
+            get => _knotsNeedForPurification;
+            set => _knotsNeedForPurification = value;
+        }
+
+        public int CurrentKnotInTheZone
+        {
+            get => _currentKnotInTheZone;
+            set => _currentKnotInTheZone = value;
+        }
+        
         private void Start()
         {
             _sphereCollider = GetComponent<SphereCollider>();
@@ -25,9 +41,10 @@ namespace ZoneFeature.Runtime
         {
             if (_completed) return;
 
-            _currentKnotInTheZone++;
+            CurrentKnotInTheZone++;
+            m_onValueChange?.Invoke();
 
-            if (_currentKnotInTheZone < _knotsNeedForPurification) return;
+            if (CurrentKnotInTheZone < KnotsNeedForPurification) return;
             
             _completed = true;
             PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
@@ -58,6 +75,5 @@ namespace ZoneFeature.Runtime
         private int _currentKnotInTheZone;
         private bool _canPurify;
         private bool _completed;
-        
     }
 }

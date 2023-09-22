@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using PlayerRuntime;
 using ResourcesManagerFeature.Runtime;
 using TMPro;
@@ -15,7 +16,13 @@ namespace UIFeature.Runtime
             get => _pauseMenuUI;
             set => _pauseMenuUI = value;
         }
-        
+
+        public List<GameObject> CanvasHealthBarList
+        {
+            get => __canvasHealthBarList;
+            set => __canvasHealthBarList = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -27,9 +34,18 @@ namespace UIFeature.Runtime
             _player = PlayerV2.Instance;
             _resourcesManager = ResourcesManager.Instance;
             PlayerV2.Instance.m_onNewKnotSelected += UpdateGrowCostTextOnMouseOver;
+            PlayerV2.Instance.m_onUIShow += OnUIShowEventHandler;
             ResourcesManager.Instance.m_onResourcesChange += UpdateGrowCostTextOnMouseHold;
             ResourcesManager.Instance.m_onResourcesChange += UpdateHealthText;
             StartCoroutine(WaitForInitialize());
+        }
+
+        private void OnUIShowEventHandler()
+        {
+            foreach (var gameObject in CanvasHealthBarList)
+            {
+                gameObject.SetActive(!gameObject.activeInHierarchy);
+            }
         }
 
         private void UpdateHealthText()
@@ -74,6 +90,7 @@ namespace UIFeature.Runtime
         [SerializeField] private TextMeshProUGUI _growCost;
         [SerializeField] private GameObject _pauseMenuUI;
 
+        private List<GameObject> __canvasHealthBarList = new List<GameObject>();
         private PlayerV2 _player;
         private ResourcesManager _resourcesManager;
     }

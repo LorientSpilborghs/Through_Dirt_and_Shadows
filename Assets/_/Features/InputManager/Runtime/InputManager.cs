@@ -17,6 +17,7 @@ namespace InputManagerFeature.Runtime
         public Action m_onMouseUp;
         public Action m_onSpaceBarDown;
         public Action m_onEscapeKeyDown;
+        public Action m_onTabKeyDown;
 
         public int FpsCount;
 
@@ -40,6 +41,7 @@ namespace InputManagerFeature.Runtime
             OnMouseHold();
             OnMouseUp();
             OnSpaceBarDown();
+            OnTabKeyDown();
         }
 
         private IEnumerator HandleFpsCounter(float secToWait)
@@ -98,6 +100,12 @@ namespace InputManagerFeature.Runtime
         {
             if (!Input.GetKeyDown(KeyCode.Escape)) return;
             m_onEscapeKeyDown?.Invoke();
+        }
+
+        private void OnTabKeyDown()
+        {
+            if (!Input.GetKeyDown(KeyCode.Tab)) return;
+            m_onTabKeyDown?.Invoke();
         }
         
         
