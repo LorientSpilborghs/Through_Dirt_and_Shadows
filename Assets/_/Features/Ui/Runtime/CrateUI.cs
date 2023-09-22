@@ -22,7 +22,7 @@ namespace UIFeature.Runtime
 
         private void OnDestroy()
         {
-            throw new NotImplementedException();
+            _zoneHarvest.m_onValueChange -= OnValueChangeEventHandler;
         }
 
         private void OnValueChangeEventHandler()
