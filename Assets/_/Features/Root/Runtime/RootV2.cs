@@ -11,6 +11,7 @@ namespace RootFeature.Runtime
     public class RootV2 : MonoBehaviour
     {
         public Action m_onGrow;
+        public Func<int> m_onGrowCost;
         
         public SplineContainer Container
         {
@@ -123,6 +124,11 @@ namespace RootFeature.Runtime
                 {
                     InstantiateIvy(pos2, ivy);
                 }
+            }
+
+            for (int i = 0; i < Container.Spline.Count; i++)
+            {
+                
             }
         }
         
