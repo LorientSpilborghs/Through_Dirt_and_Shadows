@@ -1,13 +1,18 @@
+using System;
 using System.Collections;
 using System.Linq;
 using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Splines;
+using Random = UnityEngine.Random;
 
 namespace RootFeature.Runtime
 {
     public class RootV2 : MonoBehaviour
     {
+        public Action m_onGrow;
+        public Func<int> m_onGrowCost;
+        
         public SplineContainer Container
         {
             get => _splineContainer;
@@ -84,6 +89,7 @@ namespace RootFeature.Runtime
             _splineExtrude.Rebuild();
             _frontCollider.transform.position = Container.Spline[^1].Position;
             UpdateHeadOfTheRootTransform(positionToGo);
+            m_onGrow?.Invoke();
         }
 
         public void DeleteIfTooClose(RootV2 root)
@@ -118,6 +124,11 @@ namespace RootFeature.Runtime
                 {
                     InstantiateIvy(pos2, ivy);
                 }
+            }
+
+            for (int i = 0; i < Container.Spline.Count; i++)
+            {
+                
             }
         }
         
