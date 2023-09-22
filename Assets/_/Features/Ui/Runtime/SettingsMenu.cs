@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace UiFeature.Runtime
+namespace UIFeature.Runtime
 {
     public class SettingsMenu : MonoBehaviour
     {

@@ -787,9 +787,6 @@ MonoBehaviour:
     type: 3}
   _frontColliderBehaviour: {fileID: 1450449442410881056}
   _heightOfTheRootAtStart: 0.5
-  _supplementalCostForNewRoot: 0
-  _minimumNumberOfKnotsForCostReduction: 0
-  _costReduction: 0
 --- !u!1 &4529346449832118140
 GameObject:
   m_ObjectHideFlags: 0
@@ -2091,7 +2088,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3931608473901767597}
-  - component: {fileID: 4558180940991918630}
+  - component: {fileID: 461424017087724772}
   m_Layer: 0
   m_Name: UiManager
   m_TagString: Untagged
@@ -2114,7 +2111,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2990447803393186488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4558180940991918630
+--- !u!114 &461424017087724772
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

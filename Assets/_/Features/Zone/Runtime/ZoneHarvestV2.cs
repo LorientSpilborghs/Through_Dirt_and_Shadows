@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using PlayerRuntime;
 using ResourcesManagerFeature.Runtime;
@@ -7,6 +8,8 @@ namespace ZoneFeature.Runtime
 {
     public class ZoneHarvestV2 : Zone
     {
+        public Action m_onValueChange;
+        
         public int BaseResources
         {
             get => _baseResources;
@@ -58,10 +61,11 @@ namespace ZoneFeature.Runtime
 
             int count = _resourcesCollectOverTime;
             int newTotalResources = CurrentResources - _resourcesCollectOverTime;
-
             if (CurrentResources < _resourcesCollectOverTime) { count = CurrentResources; newTotalResources = 0; }
+            
             ResourcesManager.Instance.AddResources(count);
             CurrentResources = newTotalResources;
+            m_onValueChange?.Invoke();
             _nuclearCrateEmissionModifier?.ModifyEmissionBasedOnResources();
             
             return true;

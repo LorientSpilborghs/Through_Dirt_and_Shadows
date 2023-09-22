@@ -4,11 +4,11 @@ using ResourcesManagerFeature.Runtime;
 using TMPro;
 using UnityEngine;
 
-namespace UiFeature.Runtime
+namespace UIFeature.Runtime
 {
-    public class UiManager : MonoBehaviour
+    public class UIManager : MonoBehaviour
     {
-        public static UiManager Instance { get; private set; }
+        public static UIManager Instance { get; private set; }
         
         public GameObject PauseMenuUI
         {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UiFeature.Runtime
+namespace UIFeature.Runtime
 {
     public class BillboardUtils : MonoBehaviour
     {

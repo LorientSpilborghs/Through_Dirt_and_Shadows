@@ -115,14 +115,12 @@ namespace PlayerRuntime
                 return;
             }
             GetTheRightRoot(true);
-            Debug.Log(_currentClosestKnotIndex);
         }
         
         private void OnLeftMouseDownEventHandler()
         {
             if (m_isCameraBlendingOver?.Invoke() is false || m_isInThirdPerson?.Invoke() is true) return;
             m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
-            // Move this to MouseHold for previous controller
             RootToModify = GetTheRightRoot() ?? RootToModify;
         }
 
@@ -134,24 +132,24 @@ namespace PlayerRuntime
         private void OnMouseHoldEventHandler()
         {
             if (m_isInThirdPerson?.Invoke()is false) return;
-            // if (!_isInterpolating && m_isInThirdPerson?.Invoke() is false)
-            // {
-            //     RootToModify = GetTheRightRoot() ?? RootToModify;
-            // }
+            
             if (_frontColliderBehaviour.IsBlocked) return;
             if (RootToModify.SpeedPercentage <= 0) return;
             if (!UseResourcesWhileGrowing((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
                                            * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
                                           / ResourcesManager.Instance.ResourcesCostDivider)) return;
+            
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
+            RootToModify.IsGrowing = true;
             if (IsMaxDistanceBetweenKnots()) m_onNewKnotInstantiate?.Invoke();
         }
         
         private void OnMouseUpEventHandler()
         {
             IsInterpolating = false;
+            RootToModify.IsGrowing = false;
             RootToModify?.DeleteIfTooClose(RootToModify);
         }
         
@@ -278,8 +276,8 @@ namespace PlayerRuntime
         private RootV2 _rootToModify;
         private RootV2 _currentClosestRoot;
         private BezierKnot _currentClosestKnot;
-        private int _currentClosestKnotIndex;
         private Spline _currentClosestSpline;
+        private int _currentClosestKnotIndex;
         private bool _isInterpolating;
 
         #endregion
