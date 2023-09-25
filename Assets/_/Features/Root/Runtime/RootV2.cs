@@ -100,7 +100,7 @@ namespace RootFeature.Runtime
         public void DeleteIfTooClose(RootV2 root)
         {
             if (!(Vector3.Distance(root.Container.Spline.ToArray()[^1].Position,
-                    root.Container.Spline.ToArray()[^2].Position) < 0.1)
+                    root.Container.Spline.ToArray()[^2].Position) < _minimumDistanceBetweenKnots)
                 || root.Container.Spline.Count() <= 2) return;
             
             root.Container.Spline.Remove(root.Container.Spline.ToArray()[^1]);
@@ -198,6 +198,7 @@ namespace RootFeature.Runtime
         [SerializeField] private float _timeBeforeReachingMinimumSpeed = 0.1f;
         [SerializeField] private float _timeBeforeRecoveringBaseSpeed = 0.5f;
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
+        [SerializeField] private float _minimumDistanceBetweenKnots = 0.1f;
         [SerializeField] private float _heightOfTheRoot = 0.5f;
         [Space]
         [SerializeField] private Ivy[] _ivyPreset;
