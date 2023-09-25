@@ -13,6 +13,7 @@ namespace UIFeature.Runtime
         {
             _zonePurification = GetComponent<ZonePurification>();
             _canvasGroup = GetComponentInChildren<CanvasGroup>();
+            _text = GetComponentInChildren<TextMeshProUGUI>();
             _uiManager = UIManager.Instance;
             _zonePurification.m_onValueChange += OnValueChangeEventHandler;
             m_slider.maxValue = _zonePurification.KnotsNeedForPurification;
@@ -29,7 +30,6 @@ namespace UIFeature.Runtime
             if (!_isEnabled)
             {
                 _uiManager.CanvasGroups.Add(_canvasGroup);
-                _text = GetComponentInChildren<TextMeshProUGUI>();
                 _isEnabled = true;
                 if (_uiManager.IsUIShowed)
                 {

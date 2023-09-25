@@ -21,7 +21,19 @@ namespace ZoneFeature.Runtime
             get => _currentKnotInTheZone;
             set => _currentKnotInTheZone = value;
         }
-        
+
+        public bool IsPurified
+        {
+            get => _isPurified;
+            set => _isPurified = value;
+        }
+
+        public int GlobalPercentageOnPurified
+        {
+            get => _globalPercentageOnPurified;
+            set => _globalPercentageOnPurified = value;
+        }
+
         private void Start()
         {
             _sphereCollider = GetComponent<SphereCollider>();
@@ -39,14 +51,15 @@ namespace ZoneFeature.Runtime
         
         private void Purifying()
         {
-            if (_completed) return;
+            if (IsPurified) return;
 
             CurrentKnotInTheZone++;
             m_onValueChange?.Invoke();
 
             if (CurrentKnotInTheZone < KnotsNeedForPurification) return;
             
-            _completed = true;
+            IsPurified = true;
+            GlobalPurification.Instance.m_onZonePurified?.Invoke();
             PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
             if (_ivyPreset.Length == 0) return;
             
@@ -61,7 +74,7 @@ namespace ZoneFeature.Runtime
 
         private void OnDrawGizmos()
         {
-            if (_completed)
+            if (IsPurified)
             {
                 Gizmos.color = Color.green;
             }
@@ -69,11 +82,12 @@ namespace ZoneFeature.Runtime
         }
 
         [SerializeField] private int _knotsNeedForPurification;
+        [SerializeField] private int _globalPercentageOnPurified;
         [SerializeField] private Ivy[] _ivyPreset;
 
         private SphereCollider _sphereCollider;
         private int _currentKnotInTheZone;
         private bool _canPurify;
-        private bool _completed;
+        private bool _isPurified;
     }
 }

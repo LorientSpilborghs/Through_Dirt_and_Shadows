@@ -25,14 +25,11 @@ public class GrowRoot : MonoBehaviour
         }
     }
 
-    void Update()
+    public void StartGrowRoot()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        foreach (var material in _growRootsMaterials)
         {
-            for (int i = 0; i < _growRootsMaterials.Count; i++)
-            {
-                StartCoroutine(GrowingRoot(_growRootsMaterials[i]));
-            }
+            StartCoroutine(GrowingRoot(material));
         }
     }
 

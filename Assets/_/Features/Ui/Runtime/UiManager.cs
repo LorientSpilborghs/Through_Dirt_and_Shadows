@@ -107,6 +107,7 @@ namespace UIFeature.Runtime
         
         
         [SerializeField] private TextMeshProUGUI _health;
+        [SerializeField] private TextMeshProUGUI _globalPurification;
         [SerializeField] private TextMeshProUGUI _growCost;
         [SerializeField] private GameObject _pauseMenuUI;
 
