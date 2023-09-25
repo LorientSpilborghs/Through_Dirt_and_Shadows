@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_slider: {fileID: 3086746837812980506}
+  _canvasHealthBar: {fileID: 7004948568647442159}
 --- !u!33 &2747036173581857864
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -462,6 +463,12 @@ MonoBehaviour:
 --- !u!224 &3711495622434724808 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 320870032976807437, guid: 8c1ad595a90be7e45b4bc2280ef1bc0e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4031306619534253509}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7004948568647442159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6252271299634758442, guid: 8c1ad595a90be7e45b4bc2280ef1bc0e,
     type: 3}
   m_PrefabInstance: {fileID: 4031306619534253509}
   m_PrefabAsset: {fileID: 0}

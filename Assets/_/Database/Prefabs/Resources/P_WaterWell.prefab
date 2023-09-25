@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_slider: {fileID: 1462172522477279606}
+  _canvasHealthBar: {fileID: 6893443471699602563}
 --- !u!1 &731450318223471870
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,6 +499,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6893443471699602563 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6252271299634758442, guid: 8c1ad595a90be7e45b4bc2280ef1bc0e,
+    type: 3}
+  m_PrefabInstance: {fileID: 679737666899177385}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1248356506211303726
 PrefabInstance:
   m_ObjectHideFlags: 0
