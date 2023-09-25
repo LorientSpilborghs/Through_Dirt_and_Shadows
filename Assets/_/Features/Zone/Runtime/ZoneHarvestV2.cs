@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using PlayerRuntime;
 using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 
@@ -30,27 +29,30 @@ namespace ZoneFeature.Runtime
 
         protected override void OnEnterZone()
         {
-            PlayerV2.Instance.m_onNewKnotInstantiate += BoostCollectEfficiency;
             if (_isCollecting) return;
             float timeBetweenCollect = _baseTimeBetweenCollect;
             StartCoroutine(Collecting(timeBetweenCollect));
             _isCollecting = true;
         }
 
-        private void BoostCollectEfficiency()
-        {
-            _currentKnotInTheZone++;
-        }
-
-        protected override void OnExitZone()
-        {
-            PlayerV2.Instance.m_onNewKnotInstantiate -= BoostCollectEfficiency;
-        } 
+        protected override void OnExitZone() {} 
         
         private IEnumerator Collecting(float timeBetweenCollect)
         {
             yield return new WaitForSeconds(timeBetweenCollect);
-            timeBetweenCollect = _baseTimeBetweenCollect / (_currentKnotInTheZone * _timeReducingEfficiencyPercentage/100);
+
+            float zoneBoostDivider = 0;
+            foreach (var zoneBoost in _zoneBoosts)
+            {
+                if (!zoneBoost.IsActive) continue;
+                zoneBoostDivider++;
+            }
+
+            if (zoneBoostDivider > 0)
+            {
+                timeBetweenCollect = _baseTimeBetweenCollect / (zoneBoostDivider * _timeReducingEfficiencyPercentage / 100);
+            }
+            
             if (!Collect()) yield break;
             StartCoroutine(Collecting(timeBetweenCollect));
         }
@@ -80,6 +82,7 @@ namespace ZoneFeature.Runtime
         [SerializeField] private int _resourcesCollectOverTime;
         [SerializeField] private int _baseResources;
         [SerializeField] private int _timeReducingEfficiencyPercentage = 100;
+        [Space] [SerializeField] private ZoneBoost[] _zoneBoosts;
 
         private NuclearCrateEmissionModifierV2 _nuclearCrateEmissionModifier;
         private bool _isCollecting;
