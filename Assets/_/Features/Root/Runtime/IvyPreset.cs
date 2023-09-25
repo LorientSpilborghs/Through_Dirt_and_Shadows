@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RootFeature.Runtime
 {
-    [CreateAssetMenu(fileName = "New Ivy", menuName = "Ivy")]
+    [CreateAssetMenu(fileName = "New Ivy", menuName = "IvyPreset")]
     public class Ivy : ScriptableObject
     {
         public GameObject _ivyPrefab;

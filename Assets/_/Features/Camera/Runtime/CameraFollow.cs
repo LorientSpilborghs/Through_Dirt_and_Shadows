@@ -9,7 +9,7 @@ namespace CameraFeature.Runtime
     {
         private void Awake()
         {
-            _cinemachineFreeLook = GetComponent<CinemachineFreeLook>();
+            _cineMachineFreeLook = GetComponent<CinemachineFreeLook>();
         }
 
         private void Start()
@@ -32,7 +32,7 @@ namespace CameraFeature.Runtime
         {
             CameraManager.Instance.FollowCameraAnchor.position = lastKnotPos;
             CameraManager.Instance.FollowCameraAnchor.transform.LookAt(PlayerV2.Instance.PointerPosition);
-            _cinemachineFreeLook.Priority = 100;
+            _cineMachineFreeLook.Priority = 100;
             CameraManager.Instance.VirtualCamera.LookAt = null;
             CameraManager.Instance.VirtualCamera.Follow = null;
         }
@@ -45,17 +45,17 @@ namespace CameraFeature.Runtime
         private void CameraIsNotFollowing()
         {
             if (CameraManager.Instance.PlayerCameraManager.IsInterpolating) return;
-            _cinemachineFreeLook.Priority = 0;
+            _cineMachineFreeLook.Priority = 0;
             CameraManager.Instance.VirtualCamera.LookAt = CameraManager.Instance.CameraSystem.transform;
             CameraManager.Instance.VirtualCamera.Follow = CameraManager.Instance.CameraSystem.transform;
         }
 
         private bool IsCameraBlendingOverEventHandler()
         {
-            return !_cinemachineBrain.IsBlending;
+            return !_cineMachineBrain.IsBlending;
         }
         
-        [SerializeField] private CinemachineBrain _cinemachineBrain;
-        private CinemachineFreeLook _cinemachineFreeLook;
+        [SerializeField] private CinemachineBrain _cineMachineBrain;
+        private CinemachineFreeLook _cineMachineFreeLook;
     }
 }

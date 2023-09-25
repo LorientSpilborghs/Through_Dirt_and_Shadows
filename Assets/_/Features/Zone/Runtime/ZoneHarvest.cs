@@ -6,6 +6,24 @@ namespace ZoneFeature.Runtime
 {
     public class ZoneHarvest : Zone
     {
+        public int BaseResources
+        {
+            get => _baseResources;
+            set => _baseResources = value;
+        }
+
+        public int CurrentResources
+        {
+            get => _currentResources;
+            set => _currentResources = value;
+        }
+
+        private void Awake()
+        {
+            _nuclearCrateEmissionModifier = GetComponentInParent<NuclearCrateEmissionModifier>();
+            CurrentResources = BaseResources;
+        }
+
         protected override void OnEnterZone()
         {
             if (_isCollecting) return;
@@ -23,14 +41,15 @@ namespace ZoneFeature.Runtime
         
         private bool Collect()
         {
-            if (_totalResources <= 0) return false;
+            if (CurrentResources <= 0) return false;
 
             int count = _resourcesCollectOverTime;
-            int newTotalResources = _totalResources - _resourcesCollectOverTime;
-            
-            if (_totalResources < _resourcesCollectOverTime) { count = _totalResources; newTotalResources = 0; }
+            int newTotalResources = CurrentResources - _resourcesCollectOverTime;
+            _nuclearCrateEmissionModifier?.ModifyEmissionBasedOnResources(_resourcesCollectOverTime);
+
+            if (CurrentResources < _resourcesCollectOverTime) { count = CurrentResources; newTotalResources = 0; }
             ResourcesManager.Instance.AddResources(count);
-            _totalResources = newTotalResources;
+            CurrentResources = newTotalResources;
             
             return true;
         }
@@ -42,8 +61,12 @@ namespace ZoneFeature.Runtime
 
         [SerializeField] private float _timeBetweenCollect;
         [SerializeField] private int _resourcesCollectOverTime;
-        [SerializeField] private int _totalResources;
+        [SerializeField] private int _baseResources;
 
+        private NuclearCrateEmissionModifier _nuclearCrateEmissionModifier;
+        private Material _material;
         private bool _isCollecting;
+        private int _completionPercentage;
+        private int _currentResources;
     }
 }

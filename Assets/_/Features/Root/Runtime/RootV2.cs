@@ -1,28 +1,63 @@
+using System;
 using System.Collections;
 using System.Linq;
+using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Splines;
+using Random = UnityEngine.Random;
 
 namespace RootFeature.Runtime
 {
     public class RootV2 : MonoBehaviour
     {
+        public Action<Vector3> m_onGrow;
+        
         public SplineContainer Container
         {
             get => _splineContainer;
             set => _splineContainer = value;
         }
-
-        public float DistancePerSeconds
-        {
-            get => _distancePerSeconds;
-            set => _distancePerSeconds = value;
-        }
-
+        
         public float DistanceBetweenKnots
         {
             get => _distanceBetweenKnots;
             set => _distanceBetweenKnots = value;
+        }
+
+        public int InitialGrowCost
+        {
+            get => _initialGrowCost;
+            set => _initialGrowCost = value;
+        }
+
+        public float SpeedPercentage
+        {
+            get => _speedPercentage;
+            set => _speedPercentage = value;
+        }
+
+        public int MinimumNumberOfKnotsForCostReduction
+        {
+            get => _minimumNumberOfKnotsForCostReduction;
+            set => _minimumNumberOfKnotsForCostReduction = value;
+        }
+
+        public int SupplementalCostForNewRoot
+        {
+            get => _supplementalCostForNewRoot;
+            set => _supplementalCostForNewRoot = value;
+        }
+
+        public int CostReduction
+        {
+            get => _costReduction;
+            set => _costReduction = value;
+        }
+
+        public bool IsGrowing
+        {
+            get => _isGrowing;
+            set => _isGrowing = value;
         }
 
         private void Awake()
@@ -33,15 +68,21 @@ namespace RootFeature.Runtime
 
         private void Start()
         {
-            _maxDistancePerSeconds = _distancePerSeconds;
             _collisionForSpeedModifier.m_onEnterSlowZone += LowerSpeed;
             _collisionForSpeedModifier.m_onExitSlowZone += ResetSpeed;
+            _maxDistancePerSeconds = _distancePerSeconds;
+        }
+
+        private void OnDestroy()
+        {
+            _collisionForSpeedModifier.m_onEnterSlowZone -= LowerSpeed;
+            _collisionForSpeedModifier.m_onExitSlowZone -= ResetSpeed;        
         }
 
         public void Grow(RootV2 root, Vector3 positionToGo)
         {
             Vector3 modifiedPositionToGo = new Vector3(positionToGo.x, _heightOfTheRoot, positionToGo.z);
-            _normalizedDistancePerSeconds = DistancePerSeconds / Vector3.Distance(root.Container.Spline.ToArray()[^1].Position, modifiedPositionToGo);
+            _normalizedDistancePerSeconds = (_distancePerSeconds * SpeedPercentage) / Vector3.Distance(root.Container.Spline.ToArray()[^1].Position, modifiedPositionToGo);
             _normalizedTargetKnotPosition = 0f;
             _normalizedTargetKnotPosition += _normalizedDistancePerSeconds * Time.deltaTime;
 
@@ -51,17 +92,23 @@ namespace RootFeature.Runtime
             AddKnotWhileInterpolating(root);
             root.Container.Spline.SetKnot(root.Container.Spline.Knots.Count() - 1, lastKnot);
             _splineExtrude.Rebuild();
-            UpdateFrontColliderPosition();
+            _frontCollider.transform.position = Container.Spline[^1].Position;
+            m_onGrow?.Invoke(positionToGo);
+            UpdateHeadOfTheRootTransform(positionToGo);
         }
 
         public void DeleteIfTooClose(RootV2 root)
         {
-            if (Vector3.Distance(root.Container.Spline.ToArray()[^1].Position, root.Container.Spline.ToArray()[^2].Position) < 1 
-                && root.Container.Spline.Count() > 2)
-            {
-                root.Container.Spline.Remove(root.Container.Spline.ToArray()[^1]);
-                _splineExtrude.Rebuild();
-            }
+            if (!(Vector3.Distance(root.Container.Spline.ToArray()[^1].Position,
+                    root.Container.Spline.ToArray()[^2].Position) < 0.1)
+                || root.Container.Spline.Count() <= 2) return;
+            
+            root.Container.Spline.Remove(root.Container.Spline.ToArray()[^1]);
+            ResourcesManager.Instance.AddResources((root.Container.Spline.Count - 1) 
+                * root.Container.Spline.Count / ResourcesManager.Instance.ResourcesCostDivider);
+            _splineExtrude.Rebuild();
+            _frontCollider.transform.position = Container.Spline[^1].Position;
+            _rootHeadPrefab.transform.position = Container.Spline[^1].Position;
         }
         
         private void AddKnotWhileInterpolating(RootV2 root)
@@ -71,6 +118,10 @@ namespace RootFeature.Runtime
             if (Vector3.Distance(pos1 , pos2) < DistanceBetweenKnots) return;
             
             root.Container.Spline.Add(new BezierKnot(pos2), TangentMode.AutoSmooth);
+            if (root.Container.Spline.Count >= _minimumNumberOfKnotsForCostReduction)
+            {
+                SpeedPercentage -= 1f / (_maximumNumberOfKnot - _minimumNumberOfKnotsForCostReduction);
+            }
 
             foreach (var ivy in _ivyPreset)
             {
@@ -80,10 +131,12 @@ namespace RootFeature.Runtime
                 }
             }
         }
-
-        private void UpdateFrontColliderPosition()
+        
+        private void UpdateHeadOfTheRootTransform(Vector3 direction)
         {
-            _frontCollider.transform.position = Container.Spline[^1].Position;
+            _rootHeadPrefab.transform.position = Container.Spline[^1].Position;
+            Vector3 newDirection = new Vector3(direction.x, _rootHeadPrefab.transform.position.y, direction.z);
+            _rootHeadPrefab.transform.LookAt(newDirection,Vector3.up);
         }
 
         private void LowerSpeed()
@@ -133,6 +186,12 @@ namespace RootFeature.Runtime
 
         [SerializeField] private SplineContainer _splineContainer;
         [SerializeField] private Collider _frontCollider;
+        [SerializeField] private GameObject _rootHeadPrefab;
+        [Space]
+        [SerializeField] private int _maximumNumberOfKnot = 50;
+        [SerializeField] private int _supplementalCostForNewRoot;
+        [SerializeField] private int _minimumNumberOfKnotsForCostReduction;
+        [SerializeField] private int _costReduction;
         [Space]
         [SerializeField] private float _distancePerSeconds = 2.5f;
         [SerializeField] private float _minimumDistancePerSeconds = 1f;
@@ -149,5 +208,8 @@ namespace RootFeature.Runtime
         private float _normalizedTargetKnotPosition;
         private float _maxDistancePerSeconds;
         private bool _isSlow;
+        private bool _isGrowing;
+        private int _initialGrowCost;
+        private float _speedPercentage = 1;
     }
 }

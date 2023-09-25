@@ -1,38 +1,82 @@
 using System.Collections;
+using System.Collections.Generic;
 using PlayerRuntime;
 using ResourcesManagerFeature.Runtime;
 using TMPro;
 using UnityEngine;
 
-namespace UiFeature.Runtime
+namespace UIFeature.Runtime
 {
-    public class UiManager : MonoBehaviour
+    public class UIManager : MonoBehaviour
     {
+        public static UIManager Instance { get; private set; }
+        
+        public GameObject PauseMenuUI
+        {
+            get => _pauseMenuUI;
+            set => _pauseMenuUI = value;
+        }
+
+        public List<GameObject> CanvasHealthBarList
+        {
+            get => __canvasHealthBarList;
+            set => __canvasHealthBarList = value;
+        }
+
+        private void Awake()
+        {
+            if (Instance == null) Instance = this;
+            else Destroy(gameObject);
+        }
+        
         private void Start()
         {
-            PlayerV2.Instance.m_onNewKnotInstantiate += UpdateHealthText;
-            PlayerV2.Instance.m_onNewKnotInstantiate += UpdateGrowCostTextOnMouseDown;
-            PlayerV2.Instance.m_onNewKnotSelected += UpdateGrowCostTextOnMouse;
+            _player = PlayerV2.Instance;
+            _resourcesManager = ResourcesManager.Instance;
+            PlayerV2.Instance.m_onNewKnotSelected += UpdateGrowCostTextOnMouseOver;
+            PlayerV2.Instance.m_onUIShow += OnUIShowEventHandler;
+            ResourcesManager.Instance.m_onResourcesChange += UpdateGrowCostTextOnMouseHold;
+            ResourcesManager.Instance.m_onResourcesChange += UpdateHealthText;
             StartCoroutine(WaitForInitialize());
+        }
+
+        private void OnUIShowEventHandler()
+        {
+            foreach (var gameObject in CanvasHealthBarList)
+            {
+                gameObject.SetActive(!gameObject.activeInHierarchy);
+            }
         }
 
         private void UpdateHealthText()
         {
-            _health.text = $"Current Health = {ResourcesManager.Instance.CurrentResources}";
+            _health.text = $"Current Health = {_resourcesManager.CurrentResources}";
         }
         
-        private void UpdateGrowCostTextOnMouse(bool isLastKnotFromSpline)
+        private void UpdateGrowCostTextOnMouseOver(bool isLastKnotFromSpline)
         {
-            if (PlayerV2.Instance.IsInterpolating) return;
-            _growCost.text = isLastKnotFromSpline 
-                ? $"{(PlayerV2.Instance.CurrentClosestSpline.Count - 1) * PlayerV2.Instance.CurrentClosestSpline.Count / PlayerV2.Instance.ResourcesCostDivider}" 
-                : $"{2 * PlayerV2.Instance.ResourcesCostDivider}";
+            if (isLastKnotFromSpline)
+            {
+                _growCost.text =
+                    $"{(_player.CurrentClosestSpline.Count - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestSpline.Count + _player.CurrentClosestRoot.InitialGrowCost) / _resourcesManager.ResourcesCostDivider}";
+            }
+            else if (_player.CurrentClosestKnotIndex <
+                     _player.CurrentClosestRoot.MinimumNumberOfKnotsForCostReduction)
+            {
+                _growCost.text =
+                    $"{(_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) + _player.CurrentClosestRoot.SupplementalCostForNewRoot / _resourcesManager.ResourcesCostDivider}";
+            }
+            else 
+            {
+                _growCost.text = $"{((_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) + _player.CurrentClosestRoot.SupplementalCostForNewRoot - _player.CurrentClosestRoot.CostReduction) / _resourcesManager.ResourcesCostDivider}";
+            }
         }
 
-        private void UpdateGrowCostTextOnMouseDown()
+        private void UpdateGrowCostTextOnMouseHold()
         {
+            if (!_player.IsInterpolating) return;
             _growCost.text = 
-                $"{(PlayerV2.Instance.RootToModify.Container.Spline.Count - 1) * PlayerV2.Instance.RootToModify.Container.Spline.Count / PlayerV2.Instance.ResourcesCostDivider}";
+                $"{(_player.RootToModify.Container.Spline.Count - 1 + _player.RootToModify.InitialGrowCost) * (_player.RootToModify.Container.Spline.Count + _player.RootToModify.InitialGrowCost) / _resourcesManager.ResourcesCostDivider}";
         }
 
         private IEnumerator WaitForInitialize()
@@ -44,7 +88,10 @@ namespace UiFeature.Runtime
         
         [SerializeField] private TextMeshProUGUI _health;
         [SerializeField] private TextMeshProUGUI _growCost;
+        [SerializeField] private GameObject _pauseMenuUI;
 
+        private List<GameObject> __canvasHealthBarList = new List<GameObject>();
         private PlayerV2 _player;
+        private ResourcesManager _resourcesManager;
     }
 }

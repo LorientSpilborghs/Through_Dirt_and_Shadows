@@ -20,6 +20,8 @@ namespace PlayerRuntime
         public Action m_onResetCameraPos;
         public Action m_onCameraBlendingStop;
         public Action m_onNewKnotInstantiate;
+        public Action m_onPauseMenu;
+        public Action m_onUIShow;
         public Action<bool> m_onNewKnotSelected;
         public Func<bool> m_isCameraBlendingOver;
         public Func<bool> m_isInThirdPerson;
@@ -48,12 +50,6 @@ namespace PlayerRuntime
             set => _rootToModify = value;
         }
 
-        public int ResourcesCostDivider
-        {
-            get => _resourcesCostDivider;
-            set => _resourcesCostDivider = value;
-        }
-
         public Spline CurrentClosestSpline
         {
             get => _currentClosestSpline;
@@ -64,6 +60,12 @@ namespace PlayerRuntime
         {
             get => _currentClosestRoot;
             set => _currentClosestRoot = value;
+        }
+
+        public int CurrentClosestKnotIndex
+        {
+            get => _currentClosestKnotIndex;
+            set => _currentClosestKnotIndex = value;
         }
 
         #endregion
@@ -84,8 +86,10 @@ namespace PlayerRuntime
             InputManager.Instance.m_onMouseHold += OnMouseHoldEventHandler;
             InputManager.Instance.m_onMouseUp += OnMouseUpEventHandler;
             InputManager.Instance.m_onSpaceBarDown += OnSpaceBarDownEventHandler;
+            InputManager.Instance.m_onEscapeKeyDown += OnEscapeKeyDownEventHandler;
+            InputManager.Instance.m_onTabKeyDown += OnTabKeyDownEventHandler;
             
-            AddNewRoot(Vector3.zero + Vector3.up * _heightOfTheRootAtStart);
+            RootToModify = AddNewRoot(Vector3.zero + Vector3.up * _heightOfTheRootAtStart);
         }
 
         private void OnDestroy()
@@ -96,6 +100,8 @@ namespace PlayerRuntime
             InputManager.Instance.m_onMouseHold -= OnMouseHoldEventHandler;
             InputManager.Instance.m_onMouseUp -= OnMouseUpEventHandler;
             InputManager.Instance.m_onSpaceBarDown -= OnSpaceBarDownEventHandler;
+            InputManager.Instance.m_onEscapeKeyDown -= OnEscapeKeyDownEventHandler;
+            InputManager.Instance.m_onTabKeyDown -= OnTabKeyDownEventHandler;
         }
         
         #endregion
@@ -106,13 +112,19 @@ namespace PlayerRuntime
         {
             if (m_isCameraBlendingOver?.Invoke() is false) return;
             PointerPosition = pos;
+            if (m_isInThirdPerson?.Invoke() is true)
+            {
+                _currentClosestKnot = RootToModify.Container.Spline[^1];
+                return;
+            }
             GetTheRightRoot(true);
         }
         
         private void OnLeftMouseDownEventHandler()
         {
-            if (m_isCameraBlendingOver?.Invoke() is false) return;
+            if (m_isCameraBlendingOver?.Invoke() is false || m_isInThirdPerson?.Invoke() is true) return;
             m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
+            RootToModify = GetTheRightRoot() ?? RootToModify;
         }
 
         private void OnRightMouseDownEventHandler()
@@ -123,21 +135,24 @@ namespace PlayerRuntime
         private void OnMouseHoldEventHandler()
         {
             if (m_isInThirdPerson?.Invoke()is false) return;
-            if (!_isInterpolating)
-            {
-                RootToModify = GetTheRightRoot() ?? RootToModify;
-            }
+            
             if (_frontColliderBehaviour.IsBlocked) return;
-            if (!UseResourcesWhileGrowing(((RootToModify.Container.Spline.Count - 1) * RootToModify.Container.Spline.Count) / ResourcesCostDivider)) return;
+            if (RootToModify.SpeedPercentage <= 0) return;
+            if (!UseResourcesWhileGrowing((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
+                                           * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
+                                          / ResourcesManager.Instance.ResourcesCostDivider)) return;
+            
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
+            RootToModify.IsGrowing = true;
             if (IsMaxDistanceBetweenKnots()) m_onNewKnotInstantiate?.Invoke();
         }
         
         private void OnMouseUpEventHandler()
         {
             IsInterpolating = false;
+            RootToModify.IsGrowing = false;
             RootToModify?.DeleteIfTooClose(RootToModify);
         }
         
@@ -145,11 +160,22 @@ namespace PlayerRuntime
         {
             m_onResetCameraPos?.Invoke();
         }
+
+        private void OnEscapeKeyDownEventHandler()
+        {
+            m_onPauseMenu?.Invoke();
+        }
+
+        private void OnTabKeyDownEventHandler()
+        {
+            m_onUIShow?.Invoke();
+        }
         
         private RootV2 GetTheRightRoot(bool onlySetKnot = false)
         {
             RootV2 root = _rootsList[0];
             BezierKnot closestKnot = root.Container.Spline.ToArray()[^1];
+            int closestKnotIndex = 0;
         
             for (int i = 0; i < _rootsList.Count; i++)
             {
@@ -160,11 +186,14 @@ namespace PlayerRuntime
                     if (dist1 > dist2) continue;
         
                     closestKnot = _rootsList[i].Container.Spline.ToArray()[j];
+                    closestKnotIndex = j;
                     root = _rootsList[i];
                 }
             }
             CurrentClosestKnot = closestKnot;
+            CurrentClosestKnotIndex = closestKnotIndex;
             CurrentClosestSpline = root.Container.Spline;
+            CurrentClosestRoot = root;
             
             m_onNewKnotSelected?.Invoke(IsLastKnotFromSpline(closestKnot, root));
             
@@ -176,15 +205,19 @@ namespace PlayerRuntime
             }
             else
             {
-                return UseResourcesWhileGrowing(RootToModify.Container.Spline.Count * _resourcesCostDivider)
-                    ? AddNewRoot((Vector3)CurrentClosestKnot.Position)
-                    : null;
+                return UseResourcesWhileGrowing(IsGettingCostReduction()) 
+                    ? AddNewRoot((Vector3)CurrentClosestKnot.Position) : null;
             }
         }
         
         private RootV2 AddNewRoot(Vector3 position)
         {
             RootV2 newRoot = Instantiate(_rootPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<RootV2>();
+            if (RootToModify is not null)
+            {
+                newRoot.InitialGrowCost = CurrentClosestKnotIndex + CurrentClosestRoot.InitialGrowCost;
+            }
+            
             Mesh mesh = new Mesh();
             mesh.isReadable.Equals(true);
             newRoot.GetComponent<MeshFilter>().mesh = mesh;
@@ -219,6 +252,22 @@ namespace PlayerRuntime
 
             return Vector3.Distance(pos1, pos2) > RootToModify.DistanceBetweenKnots;
         }
+
+        private int IsGettingCostReduction()
+        {
+            if (RootToModify.Container.Spline.Count < RootToModify.MinimumNumberOfKnotsForCostReduction)
+            {
+                return (RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
+                       * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
+                       + RootToModify.SupplementalCostForNewRoot / ResourcesManager.Instance.ResourcesCostDivider;
+            }
+            else
+            {
+                return ((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
+                       * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost)
+                       + RootToModify.SupplementalCostForNewRoot - RootToModify.CostReduction) / ResourcesManager.Instance.ResourcesCostDivider;
+            }
+        }
         
         #endregion
         
@@ -227,7 +276,7 @@ namespace PlayerRuntime
         
         [SerializeField] private GameObject _rootPrefab;
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
-        [SerializeField] private int _resourcesCostDivider = 1;
+        [Space]
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
         [Space]
         private List<RootV2> _rootsList = new();
@@ -236,6 +285,7 @@ namespace PlayerRuntime
         private RootV2 _currentClosestRoot;
         private BezierKnot _currentClosestKnot;
         private Spline _currentClosestSpline;
+        private int _currentClosestKnotIndex;
         private bool _isInterpolating;
 
         #endregion
