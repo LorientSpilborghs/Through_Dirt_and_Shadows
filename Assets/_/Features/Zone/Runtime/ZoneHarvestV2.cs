@@ -39,8 +39,6 @@ namespace ZoneFeature.Runtime
         
         private IEnumerator Collecting(float timeBetweenCollect)
         {
-            yield return new WaitForSeconds(timeBetweenCollect);
-
             float zoneBoostDivider = 0;
             foreach (var zoneBoost in _zoneBoosts)
             {
@@ -54,6 +52,7 @@ namespace ZoneFeature.Runtime
             }
             
             if (!Collect()) yield break;
+            yield return new WaitForSeconds(timeBetweenCollect);
             StartCoroutine(Collecting(timeBetweenCollect));
         }
         

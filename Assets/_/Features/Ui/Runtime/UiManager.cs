@@ -16,11 +16,17 @@ namespace UIFeature.Runtime
             get => _pauseMenuUI;
             set => _pauseMenuUI = value;
         }
-
-        public List<GameObject> CanvasHealthBarList
+        
+        public bool IsUIShowed
         {
-            get => __canvasHealthBarList;
-            set => __canvasHealthBarList = value;
+            get => _isUIShowed;
+            set => _isUIShowed = value;
+        }
+
+        public List<CanvasGroup> CanvasGroups
+        {
+            get => _canvasGroups;
+            set => _canvasGroups = value;
         }
 
         private void Awake()
@@ -42,9 +48,23 @@ namespace UIFeature.Runtime
 
         private void OnUIShowEventHandler()
         {
-            foreach (var gameObject in CanvasHealthBarList)
+            if (IsUIShowed)
             {
-                gameObject.SetActive(!gameObject.activeInHierarchy);
+                foreach (var canvasGroup in CanvasGroups)
+                {
+                    canvasGroup.alpha = 0;
+                }
+
+                IsUIShowed = false;
+            }
+            else
+            {
+                foreach (var canvasGroup in CanvasGroups)
+                {
+                    canvasGroup.alpha = 1;
+                }
+
+                IsUIShowed = true;
             }
         }
 
@@ -64,7 +84,7 @@ namespace UIFeature.Runtime
                      _player.CurrentClosestRoot.MinimumNumberOfKnotsForCostReduction)
             {
                 _growCost.text =
-                    $"{(_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) + _player.CurrentClosestRoot.SupplementalCostForNewRoot / _resourcesManager.ResourcesCostDivider}";
+                    $"{((_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) + _player.CurrentClosestRoot.SupplementalCostForNewRoot) / _resourcesManager.ResourcesCostDivider}";
             }
             else 
             {
@@ -90,8 +110,9 @@ namespace UIFeature.Runtime
         [SerializeField] private TextMeshProUGUI _growCost;
         [SerializeField] private GameObject _pauseMenuUI;
 
-        private List<GameObject> __canvasHealthBarList = new List<GameObject>();
+        private List<CanvasGroup> _canvasGroups = new List<CanvasGroup>();
         private PlayerV2 _player;
         private ResourcesManager _resourcesManager;
+        private bool _isUIShowed = true;
     }
 }
