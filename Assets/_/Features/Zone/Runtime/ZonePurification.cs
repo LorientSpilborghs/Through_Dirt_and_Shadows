@@ -59,7 +59,7 @@ namespace ZoneFeature.Runtime
             if (CurrentKnotInTheZone < KnotsNeedForPurification) return;
             
             IsPurified = true;
-            GlobalPurification.Instance.m_onZonePurified?.Invoke();
+            GlobalPurification.Instance.m_onZonePurified?.Invoke(_globalPercentageOnPurified);
             PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
             if (_ivyPreset.Length == 0) return;
             

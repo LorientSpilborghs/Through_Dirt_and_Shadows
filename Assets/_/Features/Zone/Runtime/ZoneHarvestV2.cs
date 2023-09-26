@@ -58,7 +58,12 @@ namespace ZoneFeature.Runtime
         
         private bool Collect()
         {
-            if (CurrentResources <= 0) return false;
+            if (CurrentResources <= 0)
+            {
+                if (!_isImpactingGlobalPurification) return false;
+                GlobalPurification.Instance.m_onZonePurified?.Invoke(_globalPercentageOnPurified);
+                return false;
+            }
 
             int count = _resourcesCollectOverTime;
             int newTotalResources = CurrentResources - _resourcesCollectOverTime;
@@ -81,6 +86,8 @@ namespace ZoneFeature.Runtime
         [SerializeField] private int _resourcesCollectOverTime;
         [SerializeField] private int _baseResources;
         [SerializeField] private int _timeReducingEfficiencyPercentage = 100;
+        [SerializeField] private bool _isImpactingGlobalPurification;
+        [SerializeField] private int _globalPercentageOnPurified;
         [Space] [SerializeField] private ZoneBoost[] _zoneBoosts;
 
         private NuclearCrateEmissionModifierV2 _nuclearCrateEmissionModifier;

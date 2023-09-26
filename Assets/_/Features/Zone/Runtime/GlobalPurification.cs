@@ -7,12 +7,6 @@ namespace ZoneFeature.Runtime
     public class GlobalPurification : MonoBehaviour
     {
         public static GlobalPurification Instance { get; private set; }
-        
-        public List<ZonePurification> ZonePurifications
-        {
-            get => _zonePurifications;
-            set => _zonePurifications = value;
-        }
 
         public int CurrentPercentage
         {
@@ -21,7 +15,7 @@ namespace ZoneFeature.Runtime
         }
 
         public Action m_onValueChange;
-        public Action m_onZonePurified;
+        public Action<int> m_onZonePurified;
         
         private void Awake()
         {
@@ -32,19 +26,11 @@ namespace ZoneFeature.Runtime
         private void Start()
         {
             m_onZonePurified += UpdateGlobalPurification;
-            foreach (var gameObject in GameObject.FindGameObjectsWithTag("Purification"))
-            {
-                ZonePurifications.Add(gameObject.GetComponent<ZonePurification>());
-            }
         }
 
-        private void UpdateGlobalPurification()
+        private void UpdateGlobalPurification(int globalPurificationPercentage)
         {
-            foreach (var zonePurification in _zonePurifications)
-            {
-                if (!zonePurification.IsPurified) continue;
-                CurrentPercentage += zonePurification.GlobalPercentageOnPurified;
-            }
+            CurrentPercentage += globalPurificationPercentage;
             
             m_onValueChange?.Invoke();
             if (CurrentPercentage < 100) return;
@@ -52,7 +38,6 @@ namespace ZoneFeature.Runtime
             //TODO ENDGAME
         }
 
-        private List<ZonePurification> _zonePurifications = new List<ZonePurification>();
         private int _currentPercentage;
     }
 }
