@@ -20,7 +20,7 @@ MonoBehaviour:
     x: 311
     y: -190
     width: 1487
-    height: 1833
+    height: 1814
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -565,7 +565,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614583}
   - {fileID: 8926484042661614680}
   dataType: 0
-  capacity: 12
+  capacity: 3
   stripCapacity: 16
   particlePerStripCount: 16
   needsComputeBounds: 0
@@ -1827,7 +1827,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.AnimationCurve, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"frames":[{"time":0.0,"value":0.0,"inTangent":2.0,"outTangent":2.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":1.0,"value":1.0,"inTangent":0.0,"outTangent":0.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
+      m_SerializableObject: '{"frames":[{"time":0.0,"value":0.0,"inTangent":2.0,"outTangent":2.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":0.12552538514137269,"value":0.41736268997192385,"inTangent":1.7989487648010255,"outTangent":1.7989487648010255,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":1.0,"value":1.0,"inTangent":0.0,"outTangent":0.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
     m_Space: 2147483647
   m_Property:
     name: curve
@@ -2240,7 +2240,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":1.0,"g":1.0,"b":1.0,"a":1.0},"time":0.0},{"color":{"r":0.5,"g":0.5,"b":0.5,"a":1.0},"time":0.4470588266849518},{"color":{"r":0.18867921829223634,"g":0.1860092282295227,"b":0.1860092282295227,"a":1.0},"time":0.9117723107337952}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.3396226167678833,"g":0.13131895661354066,"b":0.09772159159183502,"a":1.0},"time":0.0},{"color":{"r":0.25471699237823489,"g":0.13185231387615205,"b":0.114142045378685,"a":1.0},"time":0.4470588266849518},{"color":{"r":0.1603773832321167,"g":0.09153614938259125,"b":0.09153614938259125,"a":1.0},"time":0.9117723107337952}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
     m_Space: 2147483647
   m_Property:
     name: gradient
@@ -3855,7 +3855,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEditor.VFX.Position, Unity.VisualEffectGraph.Editor,
           Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"position":{"x":0.0,"y":-0.009999999776482582,"z":-0.10000000149011612}}'
+      m_SerializableObject: '{"position":{"x":0.0,"y":-0.25,"z":0.4000000059604645}}'
     m_Space: 0
   m_Property:
     name: Position
