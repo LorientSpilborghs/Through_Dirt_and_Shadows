@@ -33,11 +33,15 @@ namespace ZoneFeature.Runtime
             
             m_onValueChange?.Invoke();
             if (CurrentPercentage < _neededPercentageToWin) return;
-            
+
+            Instantiate(_fogRevelerPrefab, _areaToRevelTransform.position, Quaternion.identity);
+
             //TODO ENDGAME
         }
 
         [SerializeField] private int _neededPercentageToWin;
+        [SerializeField] private GameObject _fogRevelerPrefab;
+        [SerializeField] private Transform _areaToRevelTransform;
 
         private int _currentPercentage;
     }
