@@ -88,7 +88,7 @@ namespace UIFeature.Runtime
             }
             else 
             {
-                _growCost.text = $"{((_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) + _player.CurrentClosestRoot.SupplementalCostForNewRoot - _player.CurrentClosestRoot.CostReduction) / _resourcesManager.ResourcesCostDivider}";
+                _growCost.text = $"{(((_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) + _player.CurrentClosestRoot.SupplementalCostForNewRoot) / _resourcesManager.ResourcesCostDivider) - _player.CurrentClosestRoot.CostReduction}";
             }
         }
 

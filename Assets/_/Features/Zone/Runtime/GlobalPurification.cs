@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ZoneFeature.Runtime
@@ -33,10 +32,12 @@ namespace ZoneFeature.Runtime
             CurrentPercentage += globalPurificationPercentage;
             
             m_onValueChange?.Invoke();
-            if (CurrentPercentage < 100) return;
+            if (CurrentPercentage < _neededPercentageToWin) return;
             
             //TODO ENDGAME
         }
+
+        [SerializeField] private int _neededPercentageToWin;
 
         private int _currentPercentage;
     }
