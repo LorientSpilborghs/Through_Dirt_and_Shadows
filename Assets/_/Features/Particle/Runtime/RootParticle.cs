@@ -1,5 +1,7 @@
+using System;
 using RootFeature.Runtime;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace ParticleFeature.Runtime
 {
@@ -12,22 +14,31 @@ namespace ParticleFeature.Runtime
 
         private void Start()
         {
+            _root.m_onStartGrow += OnStartGrowEventHandler;
             _root.m_onGrow += OnGrowEventHandler;
+            _root.m_onEndGrow += OnEndGrowEventHandler;
+            
+            _visualEffect.SetFloat("Rate", 0);
         }
 
-        private void Update()
+        private void OnStartGrowEventHandler()
         {
-            _particle.gameObject.SetActive(_root.IsGrowing);
-        }
-
-        private void OnGrowEventHandler(Vector3 pos)
-        {
-            _particle.transform.position = _root.Container.Spline[^1].Position;
-            Vector3 newDirection = new Vector3(pos.x, _particle.transform.position.y, pos.z);
-            _particle.transform.LookAt(newDirection,Vector3.up);
+            _visualEffect.SetFloat("Rate", 32);
         }
         
-        [SerializeField] private ParticleSystem _particle;
+        private void OnGrowEventHandler(Vector3 pos, bool isInterpolating)
+        {
+            _visualEffect.transform.position = _root.Container.Spline[^1].Position;
+            Vector3 newDirection = new Vector3(pos.x, _visualEffect.transform.position.y, pos.z);
+            _visualEffect.transform.LookAt(newDirection,Vector3.up);
+        }
+        
+        private void OnEndGrowEventHandler()
+        {
+            _visualEffect.SetFloat("Rate", 0);
+        }
+        
+        [SerializeField] private VisualEffect _visualEffect;
         private RootV2 _root;
         private bool _isPlayingParticle;
     }

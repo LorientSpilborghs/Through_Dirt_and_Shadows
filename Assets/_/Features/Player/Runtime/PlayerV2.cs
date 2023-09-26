@@ -142,6 +142,7 @@ namespace PlayerRuntime
                                            * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
                                           / ResourcesManager.Instance.ResourcesCostDivider)) return;
             
+            if (!IsInterpolating) RootToModify.StartGrowing();
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
@@ -151,6 +152,7 @@ namespace PlayerRuntime
         
         private void OnMouseUpEventHandler()
         {
+            RootToModify.EndGrowing();
             IsInterpolating = false;
             RootToModify.IsGrowing = false;
             RootToModify?.DeleteIfTooClose(RootToModify);

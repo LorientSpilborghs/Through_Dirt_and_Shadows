@@ -34,6 +34,7 @@ namespace InputManagerFeature.Runtime
         {
             OnEscapeKeyDown();
             if (GameManager.Instance.IsGamePause) return;
+            if (GameManager.Instance.IsCutScenePlaying) return;
             MouseWorldPosition();
             
             OnLeftMouseDown();

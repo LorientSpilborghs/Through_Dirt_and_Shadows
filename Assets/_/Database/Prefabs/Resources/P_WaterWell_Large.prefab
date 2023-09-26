@@ -2452,7 +2452,7 @@ PrefabInstance:
     - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
         type: 3}
       propertyPath: _baseResources
-      value: 2000
+      value: 1200
       objectReference: {fileID: 0}
     - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
         type: 3}
@@ -2462,7 +2462,7 @@ PrefabInstance:
     - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
         type: 3}
       propertyPath: _baseTimeBetweenCollect
-      value: 25
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
         type: 3}
@@ -2664,6 +2664,16 @@ PrefabInstance:
       propertyPath: _zoneBoosts.Array.data[38]
       value: 
       objectReference: {fileID: 6052082259839227879}
+    - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
+        type: 3}
+      propertyPath: _globalPercentageOnPurified
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
+        type: 3}
+      propertyPath: _isImpactingGlobalPurification
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 36159107152163816, guid: 402fa1e8d6a1e70499f918ba7c4c2da6, type: 3}
     m_RemovedGameObjects: []

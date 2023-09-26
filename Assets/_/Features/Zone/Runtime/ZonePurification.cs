@@ -70,6 +70,10 @@ namespace ZoneFeature.Runtime
                     new Vector3(transform.position.x + Random.insideUnitSphere.x * radius, 0, transform.position.z + Random.insideUnitSphere.z * radius), 
                     Quaternion.identity, transform);
             }
+            
+            if (!_isOpeningADoor) return;
+
+            _doorAnimation.Play();
         }
 
         private void OnDrawGizmos()
@@ -83,6 +87,9 @@ namespace ZoneFeature.Runtime
 
         [SerializeField] private int _knotsNeedForPurification;
         [SerializeField] private int _globalPercentageOnPurified;
+        [SerializeField] private bool _isOpeningADoor;
+        [SerializeField] private Animation _doorAnimation;
+        [Space]
         [SerializeField] private Ivy[] _ivyPreset;
 
         private SphereCollider _sphereCollider;
