@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 74575599055730695}
   - component: {fileID: 3380353384897611293}
   - component: {fileID: 2648679877013644303}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 4386355031080701152}
   - component: {fileID: 3072283807003706766}
   - component: {fileID: 146747063178129920}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 8319847845844609961}
   - component: {fileID: 3617547211466278005}
   - component: {fileID: 8277169202582607064}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 4066201285774062280}
   - component: {fileID: 6351156440844141236}
   - component: {fileID: 6426977657180230972}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -471,7 +471,7 @@ GameObject:
   - component: {fileID: 1439669732615405519}
   - component: {fileID: 388630948018448891}
   - component: {fileID: 270110309034904090}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -632,6 +632,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Cupboard2_wheels
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 30334a4b937c40a4e86758979728eb9c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -711,6 +716,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Cupboard2_Arches
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f31be9a3717a512499955d03f90d4c05,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -789,6 +799,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_Cupboard2_Plate
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c094e569689f52948bfacf445214add7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
