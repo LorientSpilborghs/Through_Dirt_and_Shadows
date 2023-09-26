@@ -255,17 +255,17 @@ namespace PlayerRuntime
 
         private int IsGettingCostReduction()
         {
-            if (RootToModify.Container.Spline.Count < RootToModify.MinimumNumberOfKnotsForCostReduction)
+            if (CurrentClosestKnotIndex < RootToModify.MinimumNumberOfKnotsForCostReduction)
             {
-                return (RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
+                return ((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
                        * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
-                       + RootToModify.SupplementalCostForNewRoot / ResourcesManager.Instance.ResourcesCostDivider;
+                       + RootToModify.SupplementalCostForNewRoot) / ResourcesManager.Instance.ResourcesCostDivider;
             }
             else
             {
-                return ((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
+                return (((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
                        * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost)
-                       + RootToModify.SupplementalCostForNewRoot - RootToModify.CostReduction) / ResourcesManager.Instance.ResourcesCostDivider;
+                       + RootToModify.SupplementalCostForNewRoot) / ResourcesManager.Instance.ResourcesCostDivider) - RootToModify.CostReduction;
             }
         }
         
