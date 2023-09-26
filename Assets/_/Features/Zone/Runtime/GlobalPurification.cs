@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ZoneFeature.Runtime
@@ -15,6 +17,7 @@ namespace ZoneFeature.Runtime
 
         public Action m_onValueChange;
         public Action<int> m_onZonePurified;
+        public Action m_onAreaPurified;
         
         private void Awake()
         {
@@ -32,17 +35,29 @@ namespace ZoneFeature.Runtime
             CurrentPercentage += globalPurificationPercentage;
             
             m_onValueChange?.Invoke();
-            if (CurrentPercentage < _neededPercentageToWin) return;
+            if (CurrentPercentage < _neededPercentageToWin || _isAreaPurified) return;
 
-            Instantiate(_fogRevelerPrefab, _areaToRevelTransform.position, Quaternion.identity);
+            _isAreaPurified = true;
+            _fogRevelerPrefab.transform.SetPositionAndRotation(_doorTransform.position, Quaternion.identity);
+            m_onAreaPurified?.Invoke();
+            StartCoroutine(WaitForCutScene());
+        }
 
-            //TODO ENDGAME
+        private IEnumerator WaitForCutScene()
+        {
+            yield return new WaitForSeconds(2f);
+            _finalDoorAnimator.Play("OpenDoor");
+            _doorLightRenderer.materials[0].renderQueue = 0;
         }
 
         [SerializeField] private int _neededPercentageToWin;
         [SerializeField] private GameObject _fogRevelerPrefab;
-        [SerializeField] private Transform _areaToRevelTransform;
+        [Header("Final Door Info")]
+        [SerializeField] private Transform _doorTransform;
+        [SerializeField] private Animator _finalDoorAnimator;
+        [SerializeField] private MeshRenderer _doorLightRenderer;
 
         private int _currentPercentage;
+        private bool _isAreaPurified;
     }
 }

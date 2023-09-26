@@ -10,7 +10,9 @@ namespace RootFeature.Runtime
 {
     public class RootV2 : MonoBehaviour
     {
-        public Action<Vector3> m_onGrow;
+        public Action m_onStartGrow;
+        public Action<Vector3, bool> m_onGrow;
+        public Action m_onEndGrow;
         
         public SplineContainer Container
         {
@@ -93,8 +95,18 @@ namespace RootFeature.Runtime
             root.Container.Spline.SetKnot(root.Container.Spline.Knots.Count() - 1, lastKnot);
             _splineExtrude.Rebuild();
             _frontCollider.transform.position = Container.Spline[^1].Position;
-            m_onGrow?.Invoke(positionToGo);
+            m_onGrow?.Invoke(positionToGo, IsGrowing);
             UpdateHeadOfTheRootTransform(positionToGo);
+        }
+
+        public void StartGrowing()
+        {
+            m_onStartGrow?.Invoke();
+        }
+        
+        public void EndGrowing()
+        {
+            m_onEndGrow?.Invoke();
         }
 
         public void DeleteIfTooClose(RootV2 root)

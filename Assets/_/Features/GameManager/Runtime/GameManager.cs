@@ -18,6 +18,18 @@ namespace GameManagerFeature.Runtime
             set => _isGamePause = value;
         }
 
+        public bool IsCutScenePlaying
+        {
+            get => _isCutScenePlaying;
+            set => _isCutScenePlaying = value;
+        }
+
+        public bool IsGameEnd
+        {
+            get => _isGameEnd;
+            set => _isGameEnd = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -31,5 +43,7 @@ namespace GameManagerFeature.Runtime
 
         private Transform _playerTransform;
         private bool _isGamePause;
+        private bool _isCutScenePlaying;
+        private bool _isGameEnd;
     }
 }
