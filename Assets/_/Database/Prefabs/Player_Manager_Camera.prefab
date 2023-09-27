@@ -79,6 +79,70 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 3168638592193778187}
+--- !u!1 &324723744207214475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6258372125556614262}
+  - component: {fileID: 3548273995417550469}
+  - component: {fileID: 3594264444595197862}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6258372125556614262
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324723744207214475}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2990447803393186488}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3548273995417550469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324723744207214475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5525074cfec9846bcf92bf30716ff1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3594264444595197862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324723744207214475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6209e1fad2875f4dad215ba631a2df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inGameMusic:
+    Guid:
+      Data1: 1295312690
+      Data2: 1321382314
+      Data3: -1749590631
+      Data4: -892979001
+    Path: event:/Music/IngameMusic
 --- !u!1 &683189766432311407
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,6 +299,7 @@ Transform:
   - {fileID: 2956797976097147883}
   - {fileID: 3931608473901767597}
   - {fileID: 1609919071716003388}
+  - {fileID: 6258372125556614262}
   m_Father: {fileID: 1493158714336088861}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &764251057158007522
@@ -1790,7 +1855,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _neededPercentageToWin: 10
   _fogRevelerPrefab: {fileID: 0}
-  _areaToRevelTransform: {fileID: 0}
+  _doorTransform: {fileID: 0}
+  _finalDoorAnimator: {fileID: 0}
+  _doorLightRenderer: {fileID: 0}
 --- !u!1 &6718435548733609992
 GameObject:
   m_ObjectHideFlags: 3
