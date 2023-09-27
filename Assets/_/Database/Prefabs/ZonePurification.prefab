@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8279579157299362296}
   - component: {fileID: 1345139259826252197}
   - component: {fileID: 7279842604097065514}
+  - component: {fileID: 198643942082323121}
   - component: {fileID: 7928842578531323344}
   - component: {fileID: 4079502191656334870}
   m_Layer: 13
@@ -50,6 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _knotsNeedForPurification: 10
   _globalPercentageOnPurified: 10
+  _isOpeningADoor: 0
+  _doorAnimation: {fileID: 0}
   _ivyPreset:
   - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
   - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
@@ -74,6 +77,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_slider: {fileID: 950529675956821570}
+--- !u!114 &198643942082323121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5649631765897801034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 892ee546bd4bd5c42bc42c124c17c0ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _purificationSound:
+    Guid:
+      Data1: 1723897197
+      Data2: 1108702510
+      Data3: -64334679
+      Data4: -896023769
+    Path: event:/SFX/Zones/ZonePurification
 --- !u!135 &7928842578531323344
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -130,6 +152,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8279579157299362296}
     m_Modifications:
+    - target: {fileID: 787208427536872555, guid: 8de12d2f73037354ea26e72dc96155b6,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 787208427536872555, guid: 8de12d2f73037354ea26e72dc96155b6,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4659366259251277462, guid: 8de12d2f73037354ea26e72dc96155b6,
         type: 3}
       propertyPath: m_Name

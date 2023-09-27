@@ -52,6 +52,7 @@ namespace ZoneFeature.Runtime
             }
             
             if (!Collect()) yield break;
+            
             yield return new WaitForSeconds(timeBetweenCollect);
             StartCoroutine(Collecting(timeBetweenCollect));
         }

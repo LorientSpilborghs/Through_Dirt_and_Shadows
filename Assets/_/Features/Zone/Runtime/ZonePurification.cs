@@ -9,6 +9,7 @@ namespace ZoneFeature.Runtime
     public class ZonePurification : Zone
     {
         public Action m_onValueChange;
+        public Action m_onZonePurified;
         
         public int KnotsNeedForPurification
         {
@@ -22,21 +23,11 @@ namespace ZoneFeature.Runtime
             set => _currentKnotInTheZone = value;
         }
 
-        public bool IsPurified
-        {
-            get => _isPurified;
-            set => _isPurified = value;
-        }
-
-        public int GlobalPercentageOnPurified
-        {
-            get => _globalPercentageOnPurified;
-            set => _globalPercentageOnPurified = value;
-        }
-
         private void Start()
         {
             _sphereCollider = GetComponent<SphereCollider>();
+            PlayerV2.Instance.m_onCameraBlendingStart += CheckIfRootIsInZone;
+            PlayerV2.Instance.m_onCameraBlendingStop += StopPurifying;
         }
 
         protected override void OnEnterZone()
@@ -51,14 +42,15 @@ namespace ZoneFeature.Runtime
         
         private void Purifying()
         {
-            if (IsPurified) return;
+            if (_isPurified) return;
 
             CurrentKnotInTheZone++;
             m_onValueChange?.Invoke();
 
             if (CurrentKnotInTheZone < KnotsNeedForPurification) return;
             
-            IsPurified = true;
+            _isPurified = true;
+            m_onZonePurified?.Invoke();
             GlobalPurification.Instance.m_onZonePurified?.Invoke(_globalPercentageOnPurified);
             PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
             if (_ivyPreset.Length == 0) return;
@@ -76,9 +68,20 @@ namespace ZoneFeature.Runtime
             _doorAnimation.Play();
         }
 
+        private void StopPurifying()
+        {
+            PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
+        }
+
+        private void CheckIfRootIsInZone(Vector3 pos)
+        {
+            if (Vector3.Distance(transform.position, pos) > _sphereCollider.radius) return;
+            PlayerV2.Instance.m_onNewKnotInstantiate += Purifying;
+        }
+
         private void OnDrawGizmos()
         {
-            if (IsPurified)
+            if (_isPurified)
             {
                 Gizmos.color = Color.green;
             }

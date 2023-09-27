@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 80267371570208699}
   - component: {fileID: 8615177626226586093}
   - component: {fileID: 4247107637301637498}
+  - component: {fileID: 8181107369127915056}
   - component: {fileID: 36159107152163816}
   - component: {fileID: 4369287495249224243}
   m_Layer: 13
@@ -52,6 +53,8 @@ MonoBehaviour:
   _resourcesCollectOverTime: 5
   _baseResources: 100
   _timeReducingEfficiencyPercentage: 100
+  _isImpactingGlobalPurification: 0
+  _globalPercentageOnPurified: 0
   _zoneBoosts: []
 --- !u!114 &4247107637301637498
 MonoBehaviour:
@@ -65,7 +68,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e938714b3cea2048bb2f1a820a0b240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _healthBar: {fileID: 0}
+  m_slider: {fileID: 0}
+--- !u!114 &8181107369127915056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8095716181603728886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55ac0bf47e95973409e3794a1349dd2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _harvestSound:
+    Guid:
+      Data1: -2034064335
+      Data2: 1126637208
+      Data3: -1446609772
+      Data4: 1242668156
+    Path: event:/SFX/Zones/ZoneHarvest
+  _delayBeforeSound: 2
 --- !u!135 &36159107152163816
 SphereCollider:
   m_ObjectHideFlags: 0
