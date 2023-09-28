@@ -75,6 +75,11 @@ namespace RootFeature.Runtime
             _maxDistancePerSeconds = _distancePerSeconds;
         }
 
+        private void Update()
+        {
+            MoveTheHeadInTheGround();
+        }
+
         private void OnDestroy()
         {
             _collisionForSpeedModifier.m_onEnterSlowZone -= LowerSpeed;
@@ -130,9 +135,12 @@ namespace RootFeature.Runtime
             if (Vector3.Distance(pos1 , pos2) < DistanceBetweenKnots) return;
             
             root.Container.Spline.Add(new BezierKnot(pos2), TangentMode.AutoSmooth);
-            if (root.Container.Spline.Count >= _minimumNumberOfKnotsForCostReduction)
+            if (root.Container.Spline.Count >= _numberOfKnotAtWhichSlowStart)
             {
-                SpeedPercentage -= 1f / (_maximumNumberOfKnot - _minimumNumberOfKnotsForCostReduction);
+                SpeedPercentage -= (1f / (_maximumNumberOfKnot - _numberOfKnotAtWhichSlowStart)) * _speedPercentageReducerMultiplier;
+                if (SpeedPercentage > 0) return;
+                _baseRootHeadRotation = _rootHeadPrefab.transform.rotation;
+                _isStopped = true;
             }
 
             foreach (var ivy in _ivyPreset)
@@ -195,6 +203,17 @@ namespace RootFeature.Runtime
             
             Instantiate(ivyPreset._ivyPrefab, pos + new Vector3(0,ivyPreset._height,0), Quaternion.identity);
         }
+        
+        private void MoveTheHeadInTheGround()
+        {
+            if (!_isStopped) return;
+
+            _resetPosDelta += Time.deltaTime / _timeToReachGround;
+
+            _rootHeadPrefab.transform.rotation = Quaternion.Lerp(_baseRootHeadRotation,_groundedRootHeadRotation, _resetPosDelta);
+            Debug.Log("a");
+            if (_resetPosDelta >= 1) _isStopped = false;
+        }
 
         [SerializeField] private SplineContainer _splineContainer;
         [SerializeField] private Collider _frontCollider;
@@ -204,25 +223,34 @@ namespace RootFeature.Runtime
         [SerializeField] private int _supplementalCostForNewRoot;
         [SerializeField] private int _minimumNumberOfKnotsForCostReduction;
         [SerializeField] private int _costReduction;
-        [Space]
         [SerializeField] private float _distancePerSeconds = 2.5f;
+        [SerializeField] private int _numberOfKnotAtWhichSlowStart;
+        [SerializeField] private float _speedPercentageReducerMultiplier = 1;
+        [Space]
+        [Header("ZoneSlow")]
         [SerializeField] private float _minimumDistancePerSeconds = 1f;
         [SerializeField] private float _timeBeforeReachingMinimumSpeed = 0.1f;
         [SerializeField] private float _timeBeforeRecoveringBaseSpeed = 0.5f;
+        [Space]
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
         [SerializeField] private float _minimumDistanceBetweenKnots = 0.1f;
         [SerializeField] private float _heightOfTheRoot = 0.5f;
+        [SerializeField] private Quaternion _groundedRootHeadRotation;
+        [SerializeField] private float _timeToReachGround = 1;
         [Space]
         [SerializeField] private Ivy[] _ivyPreset;
         
         private SplineExtrude _splineExtrude;
         private CollisionForSpeedModifier _collisionForSpeedModifier;
+        private Quaternion _baseRootHeadRotation;
         private float _normalizedDistancePerSeconds;
         private float _normalizedTargetKnotPosition;
         private float _maxDistancePerSeconds;
         private bool _isSlow;
         private bool _isGrowing;
+        private bool _isStopped;
         private int _initialGrowCost;
         private float _speedPercentage = 1;
+        private float _resetPosDelta;
     }
 }

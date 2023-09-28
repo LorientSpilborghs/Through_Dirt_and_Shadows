@@ -62,6 +62,11 @@ namespace ZoneFeature.Runtime
                     new Vector3(transform.position.x + Random.insideUnitSphere.x * radius, 0, transform.position.z + Random.insideUnitSphere.z * radius), 
                     Quaternion.identity, transform);
             }
+
+            foreach (var particleSystem in _purificationParticle)
+            {
+                particleSystem.gameObject.SetActive(false);
+            }
             
             if (!_isOpeningADoor) return;
 
@@ -92,8 +97,8 @@ namespace ZoneFeature.Runtime
         [SerializeField] private float _globalPercentageOnPurified;
         [SerializeField] private bool _isOpeningADoor;
         [SerializeField] private Animation _doorAnimation;
-        [Space]
-        [SerializeField] private Ivy[] _ivyPreset;
+        [Space] [SerializeField] private Ivy[] _ivyPreset;
+        [Space] [SerializeField] private ParticleSystem[] _purificationParticle;
 
         private SphereCollider _sphereCollider;
         private int _currentKnotInTheZone;

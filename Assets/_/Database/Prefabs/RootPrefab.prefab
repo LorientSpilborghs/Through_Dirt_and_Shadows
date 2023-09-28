@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2534476642843871887}
   - component: {fileID: 131431397587660554}
   m_Layer: 10
-  m_Name: RootHeadTest
+  m_Name: RootHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,15 +143,19 @@ MonoBehaviour:
   _rootHeadPrefab: {fileID: 196451393014779840}
   _maximumNumberOfKnot: 60
   _supplementalCostForNewRoot: 0
-  _minimumNumberOfKnotsForCostReduction: 50
+  _minimumNumberOfKnotsForCostReduction: 40
   _costReduction: 0
   _distancePerSeconds: 3.5
+  _numberOfKnotAtWhichSlowStart: 60
+  _speedPercentageReducerMultiplier: 10
   _minimumDistancePerSeconds: 2.6
   _timeBeforeReachingMinimumSpeed: 0.1
   _timeBeforeRecoveringBaseSpeed: 0.5
   _distanceBetweenKnots: 1
   _minimumDistanceBetweenKnots: 0.1
   _heightOfTheRoot: 0.25
+  _groundedRootHeadRotation: {x: 0.38268346, y: 0, z: 0, w: 0.9238795}
+  _timeToReachGround: 1
   _ivyPreset:
   - {fileID: 11400000, guid: 580ae47700c65ba4585fab1c350c9014, type: 2}
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}

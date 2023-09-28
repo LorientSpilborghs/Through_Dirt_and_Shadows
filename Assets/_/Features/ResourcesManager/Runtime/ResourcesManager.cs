@@ -44,10 +44,16 @@ namespace ResourcesManagerFeature.Runtime
         public void AddResources(int quantity = 1)
         {
             CurrentResources += quantity;
+            if (CurrentResources > _maxResources)
+            {
+                CurrentResources = _maxResources;
+            }
+            
             m_onResourcesChange?.Invoke();
         }
 
         [SerializeField] private int _baseResources = 500;
+        [SerializeField] private int _maxResources = 1000;
         [SerializeField] private int _resourcesCostDivider = 1;
         
         private int _currentResources;
