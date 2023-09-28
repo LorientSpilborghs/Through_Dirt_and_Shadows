@@ -1741,7 +1741,7 @@ PrefabInstance:
     - target: {fileID: 1345139259826252197, guid: e595254a72cdb1c4c8cf14b97f71456e,
         type: 3}
       propertyPath: _globalPercentageOnPurified
-      value: 30
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 5649631765897801034, guid: e595254a72cdb1c4c8cf14b97f71456e,
         type: 3}
@@ -2877,6 +2877,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1345139259826252197, guid: e595254a72cdb1c4c8cf14b97f71456e,
+        type: 3}
+      propertyPath: _globalPercentageOnPurified
+      value: 10.9
+      objectReference: {fileID: 0}
     - target: {fileID: 5649631765897801034, guid: e595254a72cdb1c4c8cf14b97f71456e,
         type: 3}
       propertyPath: m_Name

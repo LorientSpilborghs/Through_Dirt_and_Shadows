@@ -8,14 +8,14 @@ namespace ZoneFeature.Runtime
     {
         public static GlobalPurification Instance { get; private set; }
 
-        public int CurrentPercentage
+        public float CurrentPercentage
         {
             get => _currentPercentage;
             set => _currentPercentage = value;
         }
 
         public Action m_onValueChange;
-        public Action<int> m_onZonePurified;
+        public Action<float> m_onZonePurified;
         public Action m_onAreaPurified;
         
         private void Awake()
@@ -29,7 +29,7 @@ namespace ZoneFeature.Runtime
             m_onZonePurified += UpdateGlobalPurification;
         }
 
-        private void UpdateGlobalPurification(int globalPurificationPercentage)
+        private void UpdateGlobalPurification(float globalPurificationPercentage)
         {
             CurrentPercentage += globalPurificationPercentage;
             
@@ -56,7 +56,7 @@ namespace ZoneFeature.Runtime
         [SerializeField] private Animator _finalDoorAnimator;
         [SerializeField] private MeshRenderer _doorLightRenderer;
 
-        private int _currentPercentage;
+        private float _currentPercentage;
         private bool _isAreaPurified;
     }
 }

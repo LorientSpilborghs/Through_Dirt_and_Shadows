@@ -88,7 +88,7 @@ namespace ZoneFeature.Runtime
         [SerializeField] private int _baseResources;
         [SerializeField] private int _timeReducingEfficiencyPercentage = 100;
         [SerializeField] private bool _isImpactingGlobalPurification;
-        [SerializeField] private int _globalPercentageOnPurified;
+        [SerializeField] private float _globalPercentageOnPurified;
         [Space] [SerializeField] private ZoneBoost[] _zoneBoosts;
 
         private NuclearCrateEmissionModifierV2 _nuclearCrateEmissionModifier;

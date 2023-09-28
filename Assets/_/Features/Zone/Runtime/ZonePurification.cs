@@ -89,7 +89,7 @@ namespace ZoneFeature.Runtime
         }
 
         [SerializeField] private int _knotsNeedForPurification;
-        [SerializeField] private int _globalPercentageOnPurified;
+        [SerializeField] private float _globalPercentageOnPurified;
         [SerializeField] private bool _isOpeningADoor;
         [SerializeField] private Animation _doorAnimation;
         [Space]
