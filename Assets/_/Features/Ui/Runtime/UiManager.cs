@@ -70,7 +70,7 @@ namespace UIFeature.Runtime
 
         private void UpdateHealthText()
         {
-            _health.text = $"Current Health = {_resourcesManager.CurrentResources}";
+            _healthUI.UpdateHealth(_resourcesManager.CurrentResources);
         }
         
         private void UpdateGrowCostTextOnMouseOver(bool isLastKnotFromSpline)
@@ -101,15 +101,15 @@ namespace UIFeature.Runtime
 
         private IEnumerator WaitForInitialize()
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForEndOfFrame();
             UpdateHealthText();
+            _healthUI.SetHealth(_resourcesManager.CurrentResources, _resourcesManager.MaxResources);
         }
         
         
-        [SerializeField] private TextMeshProUGUI _health;
-        [SerializeField] private TextMeshProUGUI _globalPurification;
         [SerializeField] private TextMeshProUGUI _growCost;
         [SerializeField] private GameObject _pauseMenuUI;
+        [SerializeField] private HealthUI _healthUI;
 
         private List<CanvasGroup> _canvasGroups = new List<CanvasGroup>();
         private PlayerV2 _player;

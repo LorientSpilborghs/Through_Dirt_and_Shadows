@@ -13,12 +13,12 @@ namespace SoundManagerFeature.Runtime
 
         private void Start()
         {
-            _zonePurification.m_onZonePurified += OnValueChangedEventHandler;
+            _zonePurification.m_onZoneFinished += OnValueChangedEventHandler;
         }
 
         private void OnDestroy()
         {
-            _zonePurification.m_onZonePurified -= OnValueChangedEventHandler;
+            _zonePurification.m_onZoneFinished -= OnValueChangedEventHandler;
         }
 
         private void OnValueChangedEventHandler()

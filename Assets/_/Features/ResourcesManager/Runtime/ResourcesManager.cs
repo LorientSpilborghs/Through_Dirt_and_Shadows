@@ -21,6 +21,12 @@ namespace ResourcesManagerFeature.Runtime
             set => _resourcesCostDivider = value;
         }
 
+        public int MaxResources
+        {
+            get => _maxResources;
+            set => _maxResources = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -44,9 +50,9 @@ namespace ResourcesManagerFeature.Runtime
         public void AddResources(int quantity = 1)
         {
             CurrentResources += quantity;
-            if (CurrentResources > _maxResources)
+            if (CurrentResources > MaxResources)
             {
-                CurrentResources = _maxResources;
+                CurrentResources = MaxResources;
             }
             
             m_onResourcesChange?.Invoke();

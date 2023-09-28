@@ -9,7 +9,7 @@ namespace ZoneFeature.Runtime
     public class ZonePurification : Zone
     {
         public Action m_onValueChange;
-        public Action m_onZonePurified;
+        public Action m_onZoneFinished;
         
         public int KnotsNeedForPurification
         {
@@ -50,24 +50,27 @@ namespace ZoneFeature.Runtime
             if (CurrentKnotInTheZone < KnotsNeedForPurification) return;
             
             _isPurified = true;
-            m_onZonePurified?.Invoke();
-            GlobalPurification.Instance.m_onZonePurified?.Invoke(_globalPercentageOnPurified);
             PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
-            if (_ivyPreset.Length == 0) return;
+            m_onZoneFinished?.Invoke();
+            GlobalPurification.Instance.m_onZonePurified?.Invoke(_globalPercentageOnPurified);
             
-            foreach (var ivy in _ivyPreset)
+            if (_ivyPreset.Length != 0)
             {
-                var radius = _sphereCollider.radius;
-                Instantiate(ivy._ivyPrefab, 
-                    new Vector3(transform.position.x + Random.insideUnitSphere.x * radius, 0, transform.position.z + Random.insideUnitSphere.z * radius), 
-                    Quaternion.identity, transform);
+                foreach (var ivy in _ivyPreset)
+                {
+                    var radius = _sphereCollider.radius;
+                    Instantiate(ivy._ivyPrefab, 
+                        new Vector3(transform.position.x + Random.insideUnitSphere.x * radius, 0, transform.position.z + Random.insideUnitSphere.z * radius), 
+                        Quaternion.identity, transform);
+                }
             }
-
-            foreach (var particleSystem in _purificationParticle)
+            if (_purificationParticle.Length != 0)
             {
-                particleSystem.gameObject.SetActive(false);
+                foreach (var particleSystem in _purificationParticle)
+                {
+                    particleSystem.gameObject.SetActive(false);
+                }
             }
-            
             if (!_isOpeningADoor) return;
 
             _doorAnimation.Play();

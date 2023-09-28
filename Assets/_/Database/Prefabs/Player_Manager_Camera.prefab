@@ -550,7 +550,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa0410eb99231a47a70a9cf46fb71c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseResources: 9999999
+  _baseResources: 500
+  _maxResources: 1000
   _resourcesCostDivider: 100
 --- !u!1 &2500277289337296056
 GameObject:
@@ -2456,7 +2457,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8f8c88ebdc5684f8a4479818ed86e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: {fileID: 0}
-  _globalPurification: {fileID: 0}
   _growCost: {fileID: 7869403076949633249}
   _pauseMenuUI: {fileID: 0}
+  _healthUI: {fileID: 0}

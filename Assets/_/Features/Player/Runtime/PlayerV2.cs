@@ -147,7 +147,6 @@ namespace PlayerRuntime
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
             IsInterpolating = true;
             RootToModify.IsGrowing = true;
-            if (IsMaxDistanceBetweenKnots()) m_onNewKnotInstantiate?.Invoke();
         }
         
         private void OnMouseUpEventHandler()
@@ -252,7 +251,10 @@ namespace PlayerRuntime
             Vector3 pos1 = RootToModify.Container.Spline.Knots.ToArray()[^2].Position;
             Vector3 pos2 = RootToModify.Container.Spline.Knots.ToArray()[^1].Position;
 
-            return Vector3.Distance(pos1, pos2) > RootToModify.DistanceBetweenKnots;
+            if (!(Vector3.Distance(pos1, pos2) > RootToModify.DistanceBetweenKnots)) return false;
+
+            m_onNewKnotInstantiate?.Invoke();
+            return true;
         }
 
         private int IsGettingCostReduction()

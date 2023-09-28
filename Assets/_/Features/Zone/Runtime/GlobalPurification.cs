@@ -14,7 +14,13 @@ namespace ZoneFeature.Runtime
             set => _currentPercentage = value;
         }
 
-        public Action m_onValueChange;
+        public int NeededPercentageToWin
+        {
+            get => _neededPercentageToWin;
+            set => _neededPercentageToWin = value;
+        }
+
+        public Action<float> m_onValueChange;
         public Action<float> m_onZonePurified;
         public Action m_onAreaPurified;
         
@@ -32,9 +38,8 @@ namespace ZoneFeature.Runtime
         private void UpdateGlobalPurification(float globalPurificationPercentage)
         {
             CurrentPercentage += globalPurificationPercentage;
-            
-            m_onValueChange?.Invoke();
-            if (CurrentPercentage < _neededPercentageToWin || _isAreaPurified) return;
+            m_onValueChange?.Invoke(globalPurificationPercentage);
+            if (CurrentPercentage < NeededPercentageToWin || _isAreaPurified) return;
 
             _isAreaPurified = true;
             _fogRevelerPrefab.transform.SetPositionAndRotation(_doorTransform.position, Quaternion.identity);
