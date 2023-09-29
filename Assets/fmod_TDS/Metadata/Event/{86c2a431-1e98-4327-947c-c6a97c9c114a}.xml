@@ -5,7 +5,7 @@
 			<value>ZoneHarvest</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{05169620-2caf-4bf6-9a4a-884789b1211c}</destination>
@@ -56,7 +56,11 @@
 			<destination>{bc3be354-a060-4f3d-8db2-80cec7c3a436}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{1952e6e8-5b06-4cca-9108-17c85e5ff2a7}" />
+	<object class="EventAutomatableProperties" id="{1952e6e8-5b06-4cca-9108-17c85e5ff2a7}">
+		<property name="maxVoices">
+			<value>2</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{2ad76b8e-a4c4-4481-9f3d-d3fa2b333a30}" />
 	<object class="GroupTrack" id="{022d7d4e-89f7-43bb-94e4-5d94b04aa7b1}">
 		<relationship name="modules">
@@ -116,6 +120,7 @@
 	<object class="MixerBusEffectChain" id="{70f75173-5b92-46f9-99f8-c77f393b16a7}">
 		<relationship name="effects">
 			<destination>{674fb812-bfa4-4f7c-93be-5e9385d3c013}</destination>
+			<destination>{c0844287-56d3-44da-849b-3278e628e720}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{762af73c-08f1-426c-8d98-cc972cbec5e3}" />
@@ -127,5 +132,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{f36710f2-17ac-450b-9ce8-514721041e87}" />
 	<object class="MixerBusFader" id="{674fb812-bfa4-4f7c-93be-5e9385d3c013}" />
+	<object class="SpatialiserEffect" id="{c0844287-56d3-44da-849b-3278e628e720}" />
 	<object class="MixerBusFader" id="{615c2334-9dde-40db-887f-4063be70143a}" />
 </objects>
