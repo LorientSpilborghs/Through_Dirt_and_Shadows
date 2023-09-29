@@ -7,6 +7,7 @@ namespace ZoneFeature.Runtime
     {
         private void Start()
         {
+            if (!_nuclearSticksMeshRenderer[0].material.IsKeywordEnabled("_EMISSION")) return;
             _color = _nuclearSticksMeshRenderer[0].material.GetColor("_EmissionColor");
         }
         

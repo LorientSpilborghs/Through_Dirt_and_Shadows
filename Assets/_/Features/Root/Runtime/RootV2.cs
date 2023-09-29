@@ -4,6 +4,7 @@ using System.Linq;
 using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Splines;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace RootFeature.Runtime
@@ -62,10 +63,24 @@ namespace RootFeature.Runtime
             set => _isGrowing = value;
         }
 
+        public CanvasGroup RootWarningUI
+        {
+            get => _rootWarningUI;
+            set => _rootWarningUI = value;
+        }
+
+        public CanvasGroup EnvironmentWarningUI
+        {
+            get => _environmentWarningUI;
+            set => _environmentWarningUI = value;
+        }
+
         private void Awake()
         {
             _splineExtrude = GetComponent<SplineExtrude>();
             _collisionForSpeedModifier = GetComponentInChildren<CollisionForSpeedModifier>();
+            RootWarningUI = GetComponentsInChildren<CanvasGroup>()[0];
+            EnvironmentWarningUI = GetComponentsInChildren<CanvasGroup>()[1];
         }
 
         private void Start()
@@ -243,6 +258,8 @@ namespace RootFeature.Runtime
         private SplineExtrude _splineExtrude;
         private CollisionForSpeedModifier _collisionForSpeedModifier;
         private Quaternion _baseRootHeadRotation;
+        private CanvasGroup _rootWarningUI;
+        private CanvasGroup _environmentWarningUI;
         private float _normalizedDistancePerSeconds;
         private float _normalizedTargetKnotPosition;
         private float _maxDistancePerSeconds;
