@@ -32,22 +32,6 @@ namespace UIFeature.Runtime
             }
             
             FillGauge(_images[2], globalPurificationPercentage);
-
-            // foreach (var image in _images)
-            // {
-            //     float newAmount = (_globalPurification.CurrentPercentage / 100) * 3.33f;
-            //     
-            //     if (newAmount + image.fillAmount > 1)
-            //     {
-            //         _savedAmount = (newAmount + image.fillAmount) - 1;
-            //         _isFilled = true;
-            //     }
-            //     
-            //     image.fillAmount += newAmount;
-            //
-            //     if (!_isFilled) return;
-            //     
-            // }
         }
 
         private bool FillGauge(Image image, float globalPurificationPercentage)

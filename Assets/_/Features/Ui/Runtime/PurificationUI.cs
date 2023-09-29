@@ -7,17 +7,16 @@ namespace UIFeature.Runtime
 {
     public class PurificationUI : MonoBehaviour
     {
-        public Slider m_slider;
    
         private void Start()
         {
             _zonePurification = GetComponent<ZonePurification>();
+            _image = GetComponentsInChildren<Image>()[1];
             _canvasGroup = GetComponentInChildren<CanvasGroup>();
             _text = GetComponentInChildren<TextMeshProUGUI>();
             _uiManager = UIManager.Instance;
             _zonePurification.m_onValueChange += OnValueChangeEventHandler;
-            m_slider.maxValue = _zonePurification.KnotsNeedForPurification;
-            m_slider.value = _zonePurification.CurrentKnotInTheZone;
+            _image.fillAmount = 0;
         }
 
         private void OnDestroy()
@@ -36,12 +35,14 @@ namespace UIFeature.Runtime
                     _canvasGroup.alpha = 1;
                 }
             }
-            m_slider.value = _zonePurification.CurrentKnotInTheZone;
+            _image.fillAmount = (float)_zonePurification.CurrentKnotInTheZone / _zonePurification.KnotsNeedForPurification;
+            if (_text is null) return;
             _text.text = $"{_zonePurification.CurrentKnotInTheZone} / {_zonePurification.KnotsNeedForPurification}";
         }
         
         private ZonePurification _zonePurification;
         private UIManager _uiManager;
+        private Image _image;
         private TextMeshProUGUI _text;
         private CanvasGroup _canvasGroup;
         private bool _isEnabled;

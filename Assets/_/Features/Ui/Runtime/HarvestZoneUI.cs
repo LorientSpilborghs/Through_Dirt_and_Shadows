@@ -7,17 +7,15 @@ namespace UIFeature.Runtime
 {
     public class HarvestZoneUI : MonoBehaviour
     {
-        public Slider m_slider;
-        
         private void Start()
         {
             _zoneHarvest = GetComponent<ZoneHarvestV2>();
             _canvasGroup = GetComponentInChildren<CanvasGroup>();
+            _image = GetComponentsInChildren<Image>()[1];
             _text = GetComponentInChildren<TextMeshProUGUI>();
             _uiManager = UIManager.Instance;
             _zoneHarvest.m_onValueChange += OnValueChangeEventHandler;
-            m_slider.maxValue = _zoneHarvest.BaseResources;
-            m_slider.value = _zoneHarvest.BaseResources;
+            _image.fillAmount = 1;
         }
 
         private void OnDestroy()
@@ -36,9 +34,12 @@ namespace UIFeature.Runtime
                     _canvasGroup.alpha = 1;
                 }
             }
-            m_slider.value = _zoneHarvest.CurrentResources;
+            _image.fillAmount = (float)_zoneHarvest.CurrentResources / _zoneHarvest.BaseResources;
+            if (_text is null) return;
             _text.text = $"{_zoneHarvest.CurrentResources} / {_zoneHarvest.BaseResources}";
         }
+        
+        [SerializeField] private Image _image;
         
         private ZoneHarvestV2 _zoneHarvest;
         private UIManager _uiManager;

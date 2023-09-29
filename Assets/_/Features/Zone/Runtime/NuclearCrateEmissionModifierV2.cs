@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace ZoneFeature.Runtime
 {
+    [SelectionBase]
     public class NuclearCrateEmissionModifierV2 : MonoBehaviour
     {
         private void Start()
