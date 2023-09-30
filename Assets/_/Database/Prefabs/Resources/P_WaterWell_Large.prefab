@@ -3480,11 +3480,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4247107637301637498, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
-        type: 3}
-      propertyPath: m_slider
-      value: 
-      objectReference: {fileID: 7334435105669309527}
     - target: {fileID: 8095716181603728886, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
         type: 3}
       propertyPath: m_Name
@@ -3493,7 +3488,7 @@ PrefabInstance:
     - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
         type: 3}
       propertyPath: _baseResources
-      value: 1200
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
         type: 3}
@@ -3503,12 +3498,12 @@ PrefabInstance:
     - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
         type: 3}
       propertyPath: _baseTimeBetweenCollect
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
         type: 3}
       propertyPath: _resourcesCollectOverTime
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8615177626226586093, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
         type: 3}
@@ -3770,18 +3765,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 11.5, y: 2, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7334435105669309527 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5818028455449690099, guid: 402fa1e8d6a1e70499f918ba7c4c2da6,
-    type: 3}
-  m_PrefabInstance: {fileID: 3851967259713182628}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3946094553197356136
 PrefabInstance:
   m_ObjectHideFlags: 0
