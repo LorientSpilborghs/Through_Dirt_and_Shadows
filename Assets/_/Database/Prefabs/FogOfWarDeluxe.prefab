@@ -49,9 +49,17 @@ MonoBehaviour:
     sightRange: 3
     updateOnlyOnMove: 1
     lastSeenAt: {x: 0, y: 0}
+  - revealerTransform: {fileID: 0}
+    sightRange: 3
+    updateOnlyOnMove: 1
+    lastSeenAt: {x: 0, y: 0}
+  - revealerTransform: {fileID: 0}
+    sightRange: 3
+    updateOnlyOnMove: 1
+    lastSeenAt: {x: 0, y: 0}
   levelMidPoint: {fileID: 0}
   FogRefreshRate: 10
-  fogPlaneHeight: 1
+  fogPlaneHeight: 0
   fogPlaneMaterial: {fileID: 2100000, guid: 36b93ac6fcf129c449491654e397fe4a, type: 2}
   fogColor: {r: 0.019607844, g: 0.05882353, b: 0.09803922, a: 1}
   fogPlaneAlpha: 1
@@ -63,7 +71,7 @@ MonoBehaviour:
   levelNameToSave: Default
   levelDimensionX: 100
   levelDimensionY: 100
-  unitScale: 3
+  unitScale: 2.4
   scanSpacingPerUnit: 0.25
   rayStartHeight: 5
   rayMaxDistance: 10
