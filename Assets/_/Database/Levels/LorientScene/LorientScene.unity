@@ -3019,6 +3019,21 @@ PrefabInstance:
       propertyPath: _pauseMenuUI
       value: 
       objectReference: {fileID: 6677540308498001281}
+    - target: {fileID: 461424017087724772, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: _scaleDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 461424017087724772, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: _minMaxTextSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 461424017087724772, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: _minMaxTextSize.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1493158714336088861, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3079,6 +3094,46 @@ PrefabInstance:
       propertyPath: _fogRevelerPrefab
       value: 
       objectReference: {fileID: 1737659972}
+    - target: {fileID: 5130072512914546158, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5130072512914546158, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: appearancesContainer.values.defaults.sizeDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5130072512914546158, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: appearancesContainer.values.defaults.sizeAmplitude
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5130072512914546158, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: appearancesContainer.tagsFallback_Appearances.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5130072512914546158, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: appearancesContainer.tagsFallback_Appearances.Array.data[1]
+      value: size
+      objectReference: {fileID: 0}
+    - target: {fileID: 5130072512914546158, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: appearancesContainer.tagsFallback_Appearances.Array.data[2]
+      value: size
+      objectReference: {fileID: 0}
+    - target: {fileID: 5130072512914546158, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: appearancesContainer.tagsFallback_Disappearances.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661763208855542894, guid: 54cb37a705b7bd64c9d88b8bfdd71272,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3225,7 +3280,7 @@ PrefabInstance:
     - target: {fileID: 7678010359979331148, guid: 38bb42f24f7f0aa41976602f4be61784,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 7678010359979331148, guid: 38bb42f24f7f0aa41976602f4be61784,
         type: 3}
@@ -3235,12 +3290,12 @@ PrefabInstance:
     - target: {fileID: 7678010359979331148, guid: 38bb42f24f7f0aa41976602f4be61784,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 7678010359979331148, guid: 38bb42f24f7f0aa41976602f4be61784,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7678010359979331148, guid: 38bb42f24f7f0aa41976602f4be61784,
         type: 3}
@@ -3250,7 +3305,7 @@ PrefabInstance:
     - target: {fileID: 7678010359979331148, guid: 38bb42f24f7f0aa41976602f4be61784,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 7678010359979331148, guid: 38bb42f24f7f0aa41976602f4be61784,
         type: 3}

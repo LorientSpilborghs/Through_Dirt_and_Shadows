@@ -30,6 +30,15 @@ namespace ZoneFeature.Runtime
         protected override void OnEnterZone()
         {
             if (_isCollecting) return;
+            
+            if (_zoneParticle.Length != 0)
+            {
+                foreach (var particleSystem in _zoneParticle)
+                {
+                    particleSystem.gameObject.SetActive(true);
+                }
+            }
+            
             float timeBetweenCollect = _baseTimeBetweenCollect;
             StartCoroutine(Collecting(timeBetweenCollect));
             _isCollecting = true;
@@ -63,6 +72,14 @@ namespace ZoneFeature.Runtime
             {
                 if (!_isImpactingGlobalPurification) return false;
                 GlobalPurification.Instance.m_onZonePurified?.Invoke(_globalPercentageOnPurified);
+
+                if (_zoneParticle.Length == 0) return false;
+                
+                foreach (var particleSystem in _zoneParticle)
+                {
+                    particleSystem.gameObject.SetActive(false);
+                }
+
                 return false;
             }
 
@@ -89,6 +106,7 @@ namespace ZoneFeature.Runtime
         [SerializeField] private int _timeReducingEfficiencyPercentage = 100;
         [SerializeField] private bool _isImpactingGlobalPurification;
         [SerializeField] private float _globalPercentageOnPurified;
+        [Space] [SerializeField] private ParticleSystem[] _zoneParticle;
         [Space] [SerializeField] private ZoneBoost[] _zoneBoosts;
 
         private NuclearCrateEmissionModifierV2 _nuclearCrateEmissionModifier;

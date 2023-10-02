@@ -36,7 +36,7 @@ namespace UIFeature.Runtime
 
         private bool FillGauge(Image image, float globalPurificationPercentage)
         {
-            if (_savedAmount > 0)
+            if (_savedAmount < 0)
             {
                 image.fillAmount += _savedAmount;
                 _savedAmount = 0;
@@ -45,15 +45,15 @@ namespace UIFeature.Runtime
             
             float newAmount = (globalPurificationPercentage / 100) * _images.Length;
             
-            if (newAmount + image.fillAmount >= 1)
+            if (image.fillAmount - newAmount < 0)
             {
-                _savedAmount = newAmount + image.fillAmount - 1;
-                image.fillAmount = 1;
+                _savedAmount = image.fillAmount - newAmount;
+                image.fillAmount = 0;
                 return true;
             }
             else
             {
-                image.fillAmount += newAmount;
+                image.fillAmount -= newAmount;
                 return false;
             }
         }

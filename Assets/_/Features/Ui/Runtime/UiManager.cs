@@ -39,11 +39,19 @@ namespace UIFeature.Runtime
         {
             _player = PlayerV2.Instance;
             _resourcesManager = ResourcesManager.Instance;
-            PlayerV2.Instance.m_onNewKnotSelected += UpdateGrowCostTextOnMouseOver;
-            PlayerV2.Instance.m_onUIShow += OnUIShowEventHandler;
-            ResourcesManager.Instance.m_onResourcesChange += UpdateGrowCostTextOnMouseHold;
-            ResourcesManager.Instance.m_onResourcesChange += UpdateHealthText;
+            _player.m_onNewKnotSelected += UpdateGrowCostTextOnMouseOver;
+            _player.m_onUIShow += OnUIShowEventHandler;
+            _resourcesManager.m_onResourcesChange += UpdateGrowCostTextOnMouseHold;
+            _resourcesManager.m_onResourcesChange += UpdateHealthText;
             StartCoroutine(WaitForInitialize());
+        }
+
+        private void OnDestroy()
+        {
+            _player.m_onNewKnotSelected -= UpdateGrowCostTextOnMouseOver;
+            _player.m_onUIShow -= OnUIShowEventHandler;
+            _resourcesManager.m_onResourcesChange -= UpdateGrowCostTextOnMouseHold;
+            _resourcesManager.m_onResourcesChange -= UpdateHealthText;
         }
 
         private void OnUIShowEventHandler()
@@ -77,26 +85,65 @@ namespace UIFeature.Runtime
         {
             if (isLastKnotFromSpline)
             {
-                _growCost.text =
-                    $"{(_player.CurrentClosestSpline.Count - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestSpline.Count + _player.CurrentClosestRoot.InitialGrowCost) / _resourcesManager.ResourcesCostDivider}";
+                float value = (float)((_player.CurrentClosestSpline.Count - 1 + _player.CurrentClosestRoot.InitialGrowCost) *
+                               (_player.CurrentClosestSpline.Count + _player.CurrentClosestRoot.InitialGrowCost)) /
+                              _resourcesManager.ResourcesCostDivider;
+                
+                UpdateTextVisual(value);
             }
             else if (_player.CurrentClosestKnotIndex <
                      _player.CurrentClosestRoot.MinimumNumberOfKnotsForCostReduction)
             {
-                _growCost.text =
-                    $"{((_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) + _player.CurrentClosestRoot.SupplementalCostForNewRoot) / _resourcesManager.ResourcesCostDivider}";
+                float value = (float)((_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) *
+                                      (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) +
+                                      _player.CurrentClosestRoot.SupplementalCostForNewRoot) / _resourcesManager.ResourcesCostDivider;
+                
+                UpdateTextVisual(value);
             }
-            else 
+            else
             {
-                _growCost.text = $"{(((_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) * (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) + _player.CurrentClosestRoot.SupplementalCostForNewRoot) / _resourcesManager.ResourcesCostDivider) - _player.CurrentClosestRoot.CostReduction}";
+                float value = ((float)((_player.CurrentClosestKnotIndex - 1 + _player.CurrentClosestRoot.InitialGrowCost) *
+                                    (_player.CurrentClosestKnotIndex + _player.CurrentClosestRoot.InitialGrowCost) +
+                                    _player.CurrentClosestRoot.SupplementalCostForNewRoot) /
+                            _resourcesManager.ResourcesCostDivider) - _player.CurrentClosestRoot.CostReduction;
+                
+                UpdateTextVisual(value);
             }
         }
 
         private void UpdateGrowCostTextOnMouseHold()
         {
             if (!_player.IsInterpolating) return;
-            _growCost.text = 
-                $"{(_player.RootToModify.Container.Spline.Count - 1 + _player.RootToModify.InitialGrowCost) * (_player.RootToModify.Container.Spline.Count + _player.RootToModify.InitialGrowCost) / _resourcesManager.ResourcesCostDivider}";
+
+            float value = (float)(_player.RootToModify.Container.Spline.Count - 1 + _player.RootToModify.InitialGrowCost) *
+                          (_player.RootToModify.Container.Spline.Count + _player.RootToModify.InitialGrowCost) /
+                          _resourcesManager.ResourcesCostDivider;
+
+            UpdateTextVisual(value);
+            
+            if (_scaleCoroutine is not null)
+            {
+                StopCoroutine(_scaleCoroutine);
+            }
+            _scaleCoroutine = StartCoroutine(TextScaleCoroutine());
+        }
+
+        private void UpdateTextVisual(float value)
+        {
+            if (value < 1)
+            {
+                _growCost.text = null;
+            }
+            else
+            {
+                _growCost.text = $"{(int)-value}";
+                _growCost.color = _gradient.Evaluate(value / _growCostToReachLimit);
+            
+                if (_growCost.fontSize < (value / _growCostToReachLimit) * _maxTextFontSize)
+                {
+                    _growCost.fontSize = (value / _growCostToReachLimit) * _maxTextFontSize;
+                }
+            }
         }
 
         private IEnumerator WaitForInitialize()
@@ -105,15 +152,42 @@ namespace UIFeature.Runtime
             UpdateHealthText();
             _healthUI.SetHealth(_resourcesManager.CurrentResources, _resourcesManager.MaxResources);
         }
+
+        private IEnumerator TextScaleCoroutine()
+        {
+            _scaleTimer = 0;
+            while (_scaleTimer < _scaleDuration)
+            {
+                _growCost.transform.localScale =
+                    Mathf.Lerp(_minMaxTextSize.y, _minMaxTextSize.x, EaseOutQuint(_scaleTimer / _scaleDuration)) * Vector3.one;
+                _scaleTimer += Time.deltaTime;
+                yield return null;
+            }
+
+            _scaleCoroutine = null;
+        }
+        
+        private float EaseOutQuint(float number)  
+        {
+            return 1 - Mathf.Pow(1 - number, 5);
+        }
         
         
         [SerializeField] private TextMeshProUGUI _growCost;
         [SerializeField] private GameObject _pauseMenuUI;
         [SerializeField] private HealthUI _healthUI;
+        [Space] [Header("Player Indicator Settings")]
+        [SerializeField] private Gradient _gradient;
+        [SerializeField] private int _maxTextFontSize = 36;
+        [SerializeField] private int _growCostToReachLimit = 50;
+        [SerializeField] private Vector2 _minMaxTextSize = new (1,2);
+        [SerializeField] private float _scaleDuration;
 
         private List<CanvasGroup> _canvasGroups = new List<CanvasGroup>();
         private PlayerV2 _player;
         private ResourcesManager _resourcesManager;
         private bool _isUIShowed = true;
+        private float _scaleTimer;
+        private Coroutine _scaleCoroutine;
     }
 }

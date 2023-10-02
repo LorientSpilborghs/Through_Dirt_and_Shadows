@@ -26,18 +26,19 @@ namespace ZoneFeature.Runtime
         private void Start()
         {
             _sphereCollider = GetComponent<SphereCollider>();
-            PlayerV2.Instance.m_onCameraBlendingStart += CheckIfRootIsInZone;
-            PlayerV2.Instance.m_onCameraBlendingStop += StopPurifying;
+            _player = PlayerV2.Instance;
+            _player.m_onCameraBlendingStart += CheckIfRootIsInZone;
+            _player.m_onCameraBlendingStop += StopPurifying;
         }
 
         protected override void OnEnterZone()
         {
-            PlayerV2.Instance.m_onNewKnotInstantiate += Purifying;
+            _player.m_onNewKnotInstantiate += Purifying;
         }
 
         protected override void OnExitZone()
         {
-            PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
+            _player.m_onNewKnotInstantiate -= Purifying;
         }
         
         private void Purifying()
@@ -50,7 +51,7 @@ namespace ZoneFeature.Runtime
             if (CurrentKnotInTheZone < KnotsNeedForPurification) return;
             
             _isPurified = true;
-            PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
+            _player.m_onNewKnotInstantiate -= Purifying;
             m_onZoneFinished?.Invoke();
             GlobalPurification.Instance.m_onZonePurified?.Invoke(_globalPercentageOnPurified);
             
@@ -78,13 +79,13 @@ namespace ZoneFeature.Runtime
 
         private void StopPurifying()
         {
-            PlayerV2.Instance.m_onNewKnotInstantiate -= Purifying;
+            _player.m_onNewKnotInstantiate -= Purifying;
         }
 
         private void CheckIfRootIsInZone(Vector3 pos)
         {
             if (Vector3.Distance(transform.position, pos) > _sphereCollider.radius) return;
-            PlayerV2.Instance.m_onNewKnotInstantiate += Purifying;
+            _player.m_onNewKnotInstantiate += Purifying;
         }
 
         private void OnDrawGizmos()
@@ -104,6 +105,7 @@ namespace ZoneFeature.Runtime
         [Space] [SerializeField] private ParticleSystem[] _purificationParticle;
 
         private SphereCollider _sphereCollider;
+        private PlayerV2 _player;
         private int _currentKnotInTheZone;
         private bool _canPurify;
         private bool _isPurified;

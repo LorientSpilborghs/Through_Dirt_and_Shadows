@@ -31,6 +31,7 @@ namespace PlayerRuntime
             IsBlocked = Physics.Raycast(rightRay,out _raycastHit, _range, LayerMask.GetMask("Environment", "Root"))
                          || Physics.Raycast(leftRay,out _raycastHit, _range, LayerMask.GetMask("Environment", "Root"));
 
+            if (_player.m_isInThirdPerson?.Invoke() is false) return;
             WarningUIBehaviour(_raycastHit);
         }
 

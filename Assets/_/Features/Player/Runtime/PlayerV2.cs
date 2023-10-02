@@ -138,10 +138,9 @@ namespace PlayerRuntime
             
             if (_frontColliderBehaviour.IsBlocked) return;
             if (RootToModify.SpeedPercentage <= 0) return;
-            if (!UseResourcesWhileGrowing((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
-                                           * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
-                                          / ResourcesManager.Instance.ResourcesCostDivider)) return;
-            
+            if (!UseResourcesWhileGrowing(((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
+                                     * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost)) 
+                                     / ResourcesManager.Instance.ResourcesCostDivider)) return;
             if (!IsInterpolating) RootToModify.StartGrowing();
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
@@ -206,7 +205,7 @@ namespace PlayerRuntime
             }
             else
             {
-                return UseResourcesWhileGrowing(IsGettingCostReduction()) 
+                return ResourcesManager.Instance.UseResources(IsGettingCostReduction()) 
                     ? AddNewRoot((Vector3)CurrentClosestKnot.Position) : null;
             }
         }
@@ -232,8 +231,22 @@ namespace PlayerRuntime
 
         private bool UseResourcesWhileGrowing(int resourcesUsage)
         {
-            return !(IsMaxDistanceBetweenKnots()) 
-                   || ResourcesManager.Instance.UseResources(resourcesUsage);
+            if (IsMaxDistanceBetweenKnots())
+            {
+                if (ResourcesManager.Instance.UseResources(resourcesUsage))
+                {
+                    m_onNewKnotInstantiate?.Invoke();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
         }
         
         #endregion
@@ -251,9 +264,7 @@ namespace PlayerRuntime
             Vector3 pos1 = RootToModify.Container.Spline.Knots.ToArray()[^2].Position;
             Vector3 pos2 = RootToModify.Container.Spline.Knots.ToArray()[^1].Position;
 
-            if (!(Vector3.Distance(pos1, pos2) > RootToModify.DistanceBetweenKnots)) return false;
-
-            m_onNewKnotInstantiate?.Invoke();
+            if (Vector3.Distance(pos1, pos2) < RootToModify.DistanceBetweenKnots) return false;
             return true;
         }
 
@@ -262,7 +273,7 @@ namespace PlayerRuntime
             if (CurrentClosestKnotIndex < RootToModify.MinimumNumberOfKnotsForCostReduction)
             {
                 return ((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
-                       * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost) 
+                       * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost)
                        + RootToModify.SupplementalCostForNewRoot) / ResourcesManager.Instance.ResourcesCostDivider;
             }
             else

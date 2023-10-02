@@ -4,7 +4,6 @@ using System.Linq;
 using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Splines;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace RootFeature.Runtime
@@ -154,8 +153,8 @@ namespace RootFeature.Runtime
             {
                 SpeedPercentage -= (1f / (_maximumNumberOfKnot - _numberOfKnotAtWhichSlowStart)) * _speedPercentageReducerMultiplier;
                 if (SpeedPercentage > 0) return;
-                _baseRootHeadRotation = _rootHeadPrefab.transform.rotation;
                 _isStopped = true;
+                _savedRotation = _rootHeadPrefab.transform.rotation;
             }
 
             foreach (var ivy in _ivyPreset)
@@ -225,8 +224,13 @@ namespace RootFeature.Runtime
 
             _resetPosDelta += Time.deltaTime / _timeToReachGround;
 
-            _rootHeadPrefab.transform.rotation = Quaternion.Lerp(_baseRootHeadRotation,_groundedRootHeadRotation, _resetPosDelta);
-            Debug.Log("a");
+            Vector3 eulerSavedRotation = _savedRotation.eulerAngles;
+
+            Vector3 eulerRotation = Vector3.Lerp(eulerSavedRotation,
+                new Vector3(_groundedRootHeadRotation, eulerSavedRotation.y, eulerSavedRotation.z), _resetPosDelta);
+
+            _rootHeadPrefab.transform.rotation = Quaternion.Euler(eulerRotation);
+            
             if (_resetPosDelta >= 1) _isStopped = false;
         }
 
@@ -250,16 +254,16 @@ namespace RootFeature.Runtime
         [SerializeField] [Range(0.1f, 5f)] private float _distanceBetweenKnots = 2;
         [SerializeField] private float _minimumDistanceBetweenKnots = 0.1f;
         [SerializeField] private float _heightOfTheRoot = 0.5f;
-        [SerializeField] private Quaternion _groundedRootHeadRotation;
+        [SerializeField] private float _groundedRootHeadRotation = 45;
         [SerializeField] private float _timeToReachGround = 1;
         [Space]
         [SerializeField] private Ivy[] _ivyPreset;
         
         private SplineExtrude _splineExtrude;
         private CollisionForSpeedModifier _collisionForSpeedModifier;
-        private Quaternion _baseRootHeadRotation;
         private CanvasGroup _rootWarningUI;
         private CanvasGroup _environmentWarningUI;
+        private Quaternion _savedRotation;
         private float _normalizedDistancePerSeconds;
         private float _normalizedTargetKnotPosition;
         private float _maxDistancePerSeconds;
