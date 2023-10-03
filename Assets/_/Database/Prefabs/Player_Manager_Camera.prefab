@@ -550,7 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa0410eb99231a47a70a9cf46fb71c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseResources: 1000
+  _baseResources: 500
   _maxResources: 1000
   _resourcesCostDivider: 100
 --- !u!1 &2500277289337296056
@@ -2458,8 +2458,6 @@ MonoBehaviour:
   _growCost: {fileID: 7869403076949633249}
   _pauseMenuUI: {fileID: 0}
   _healthUI: {fileID: 0}
-  _minMaxTextSize: {x: 0, y: 0}
-  _scaleDuration: 0
   _gradient:
     serializedVersion: 2
     key0: {r: 0, g: 1, b: 0, a: 1}
@@ -2492,3 +2490,5 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _maxTextFontSize: 80
   _growCostToReachLimit: 50
+  _minMaxTextSize: {x: 1, y: 2}
+  _scaleDuration: 0.5

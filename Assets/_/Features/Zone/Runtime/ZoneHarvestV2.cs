@@ -27,9 +27,16 @@ namespace ZoneFeature.Runtime
             CurrentResources = BaseResources;
         }
 
+        private void Start()
+        {
+            _resourcesManager = ResourcesManager.Instance;
+        }
+
         protected override void OnEnterZone()
         {
             if (_isCollecting) return;
+            
+            _resourcesManager.UpcomingHarvest.Add(_baseResources);
             
             if (_zoneParticle.Length != 0)
             {
@@ -142,6 +149,7 @@ namespace ZoneFeature.Runtime
         [Space] [SerializeField] private ZoneBoost[] _zoneBoosts;
 
         private NuclearCrateEmissionModifierV2 _nuclearCrateEmissionModifier;
+        private ResourcesManager _resourcesManager;
         private bool _isCollecting;
         private int _completionPercentage;
         private float _currentResources;

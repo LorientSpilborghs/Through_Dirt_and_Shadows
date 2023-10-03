@@ -28,10 +28,10 @@ namespace ResourcesManagerFeature.Runtime
             set => _maxResources = value;
         }
 
-        public float PreviousResources
+        public List<float> UpcomingHarvest
         {
-            get => _previousResources;
-            set => _previousResources = value;
+            get => _upcomingHarvest;
+            set => _upcomingHarvest = value;
         }
 
         private void Awake()
@@ -68,8 +68,8 @@ namespace ResourcesManagerFeature.Runtime
         [SerializeField] private float _baseResources = 500;
         [SerializeField] private float _maxResources = 1000;
         [SerializeField] private int _resourcesCostDivider = 1;
-        
+
+        private List<float> _upcomingHarvest = new List<float>();
         private float _currentResources;
-        private float _previousResources;
     }
 }

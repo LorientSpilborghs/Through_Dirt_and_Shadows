@@ -9,24 +9,25 @@ namespace UIFeature.Runtime
         private void Start()
         {
             _text = GetComponentInChildren<TextMeshProUGUI>();
-            _slider = GetComponent<Slider>();
+            _greenHealthSlider = GetComponent<Slider>();
         }
 
         public void SetHealth(float currentResources, float maxResources)
         {
-            _slider.maxValue = maxResources;
-            _slider.value = currentResources;
+            _greenHealthSlider.maxValue = maxResources;
+            _greenHealthSlider.value = currentResources;
             _text.text = $"{currentResources}";
         }
 
         public void UpdateHealth(float currentResources)
         {
-            _slider.value = currentResources;
+            _greenHealthSlider.value = currentResources;
             _text.text = $"{currentResources}";
         }
         
         
-        private Slider _slider;
+        private Slider _greenHealthSlider;
         private TextMeshProUGUI _text;
+        private Coroutine _delayRedSlider;
     }
 }
