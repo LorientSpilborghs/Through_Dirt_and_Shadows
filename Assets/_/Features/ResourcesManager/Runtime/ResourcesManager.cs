@@ -67,7 +67,7 @@ namespace ResourcesManagerFeature.Runtime
             if (CurrentResources > MaxResources)
             {
                 CurrentResources = MaxResources;
-                TotalUpcomingResources = CurrentResources;
+                TotalUpcomingResources -= quantity;
             }
             
             m_onResourcesChange?.Invoke();
