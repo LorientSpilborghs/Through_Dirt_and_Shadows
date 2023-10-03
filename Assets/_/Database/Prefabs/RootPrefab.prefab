@@ -150,7 +150,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d5f9d8012c4074647b6e1106989a99bf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b1b2cb2c986ccd142abd9ba2cb6ef6e1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -348,12 +348,12 @@ MonoBehaviour:
   _rootHeadPrefab: {fileID: 196451393014779840}
   _rootFlowerPrefab: {fileID: 7537356120920449253, guid: 24378f1c3f6992f4cb77cbc75ba44855,
     type: 3}
-  _maximumNumberOfKnot: 2
+  _maximumNumberOfKnot: 60
   _supplementalCostForNewRoot: 0
   _minimumNumberOfKnotsForCostReduction: 40
   _costReduction: 0
   _distancePerSeconds: 3.5
-  _numberOfKnotAtWhichSlowStart: 1
+  _numberOfKnotAtWhichSlowStart: 50
   _speedPercentageReducerMultiplier: 2.5
   _minimumDistancePerSeconds: 2.6
   _timeBeforeReachingMinimumSpeed: 0.1
@@ -363,7 +363,7 @@ MonoBehaviour:
   _heightOfTheRoot: 0.25
   _groundedRootHeadRotation: 45
   _timeToReachGround: 1
-  _flowerHeight: 0.6
+  _flowerHeight: 0.508
   _ivyPreset:
   - {fileID: 11400000, guid: 580ae47700c65ba4585fab1c350c9014, type: 2}
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}
@@ -618,7 +618,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d5d17adeb352cb5429c402ef777926a1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ee9175babe212d14fb13774b0af15d9c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
