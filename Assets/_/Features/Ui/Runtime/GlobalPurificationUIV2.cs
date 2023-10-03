@@ -9,17 +9,11 @@ namespace UIFeature.Runtime
         private void Start()
         {
             _globalPurification = GlobalPurification.Instance;
-            _canvasGroup = GetComponentInChildren<CanvasGroup>();
             _globalPurification.m_onValueChange += OnValueChangeUpdateEventHandler;
         }
 
         private void OnValueChangeUpdateEventHandler(float globalPurificationPercentage)
         {
-            if (!_isEnable)
-            {
-                _canvasGroup.alpha = 1;
-                _isEnable = true;
-            }
             if (!_firstGaugeDone)
             {
                 if (!FillGauge(_images[0], globalPurificationPercentage)) return;
@@ -63,8 +57,6 @@ namespace UIFeature.Runtime
         [SerializeField] private Image[] _images;
         
         private GlobalPurification _globalPurification;
-        private CanvasGroup _canvasGroup;
-        private bool _isEnable;
         private bool _firstGaugeDone;
         private bool _secondGaugeDone;
         private float _savedAmount;
