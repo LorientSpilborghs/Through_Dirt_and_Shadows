@@ -24,18 +24,12 @@ namespace UIFeature.Runtime
         public void UpdateHealth(float currentResources, float totalUpcomingResources)
         {
             m_greenHealthSlider.value = currentResources;
-            // m_upcomingHealthSlider.value = totalUpcomingResources;
+            m_upcomingHealthSlider.value = totalUpcomingResources;
 
             if (m_greenHealthSlider.value > m_redHealthSlider.value)
             {
                 m_redHealthSlider.value = m_greenHealthSlider.value;
             }
-            
-            if (_delayUpcomingHealthSlider is not null)
-            {
-                StopCoroutine(_delayUpcomingHealthSlider);
-            }
-            _delayUpcomingHealthSlider = StartCoroutine(DelayUpcomingHealthSlider(totalUpcomingResources));
             
             if (_delayRedHealthSlider is not null)
             {
@@ -44,27 +38,14 @@ namespace UIFeature.Runtime
             _delayRedHealthSlider = StartCoroutine(DelayRedHealthSlider());
             // _text.text = $"{currentResources}";
         }
-        
-        private IEnumerator DelayUpcomingHealthSlider(float totalUpcomingResources)
-        {
-            _upcomingTimer = 0;
-            while (m_upcomingHealthSlider.value < totalUpcomingResources)
-            {
-                m_upcomingHealthSlider.value = Mathf.Lerp(m_upcomingHealthSlider.value, totalUpcomingResources, _upcomingTimer/_upcomingHealthDelayDuration);
-                _upcomingTimer += Time.deltaTime;
-                yield return null;
-            }
-
-            _delayUpcomingHealthSlider = null;
-        }
 
         private IEnumerator DelayRedHealthSlider()
         {
-            _redTimer = 0;
+            _timer = 0;
             while (m_redHealthSlider.value > m_greenHealthSlider.value)
             {
-                m_redHealthSlider.value = Mathf.Lerp(m_redHealthSlider.value, m_greenHealthSlider.value, _redTimer/_redHealthDelayDuration);
-                _redTimer += Time.deltaTime;
+                m_redHealthSlider.value = Mathf.Lerp(m_redHealthSlider.value, m_greenHealthSlider.value, _timer/_redHealthDelayDuration);
+                _timer += Time.deltaTime;
                 yield return null;
             }
 
@@ -74,12 +55,9 @@ namespace UIFeature.Runtime
         
         
         [SerializeField] private float _redHealthDelayDuration = 10;
-        [SerializeField] private float _upcomingHealthDelayDuration = 1;
         
         private Coroutine _delayRedHealthSlider;
-        private Coroutine _delayUpcomingHealthSlider;
-        private float _upcomingTimer;
-        private float _redTimer;
+        private float _timer;
         // private TextMeshProUGUI _text;
     }
 }
