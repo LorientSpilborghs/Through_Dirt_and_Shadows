@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ResourcesManagerFeature.Runtime
@@ -9,7 +10,7 @@ namespace ResourcesManagerFeature.Runtime
 
         public Action m_onResourcesChange;
         
-        public int CurrentResources
+        public float CurrentResources
         {
             get => _currentResources;
             set => _currentResources = value;
@@ -21,10 +22,16 @@ namespace ResourcesManagerFeature.Runtime
             set => _resourcesCostDivider = value;
         }
 
-        public int MaxResources
+        public float MaxResources
         {
             get => _maxResources;
             set => _maxResources = value;
+        }
+
+        public float PreviousResources
+        {
+            get => _previousResources;
+            set => _previousResources = value;
         }
 
         private void Awake()
@@ -38,7 +45,7 @@ namespace ResourcesManagerFeature.Runtime
             CurrentResources = _baseResources;
         }
 
-        public bool UseResources(int quantity = 1)
+        public bool UseResources(float quantity = 1)
         {
             if (quantity > CurrentResources) return false;
 
@@ -47,7 +54,7 @@ namespace ResourcesManagerFeature.Runtime
             return true;
         }
 
-        public void AddResources(int quantity = 1)
+        public void AddResources(float quantity = 1)
         {
             CurrentResources += quantity;
             if (CurrentResources > MaxResources)
@@ -58,10 +65,11 @@ namespace ResourcesManagerFeature.Runtime
             m_onResourcesChange?.Invoke();
         }
 
-        [SerializeField] private int _baseResources = 500;
-        [SerializeField] private int _maxResources = 1000;
+        [SerializeField] private float _baseResources = 500;
+        [SerializeField] private float _maxResources = 1000;
         [SerializeField] private int _resourcesCostDivider = 1;
         
-        private int _currentResources;
+        private float _currentResources;
+        private float _previousResources;
     }
 }
