@@ -76,6 +76,7 @@ namespace RootFeature.Runtime
 
         private void Awake()
         {
+            _resourcesManager = ResourcesManager.Instance;
             _splineExtrude = GetComponent<SplineExtrude>();
             _collisionForSpeedModifier = GetComponentInChildren<CollisionForSpeedModifier>();
             RootWarningUI = GetComponentsInChildren<CanvasGroup>()[0];
@@ -135,8 +136,8 @@ namespace RootFeature.Runtime
                 || root.Container.Spline.Count() <= 2) return;
             
             root.Container.Spline.Remove(root.Container.Spline.ToArray()[^1]);
-            ResourcesManager.Instance.AddResources((root.Container.Spline.Count - 1) 
-                * root.Container.Spline.Count / ResourcesManager.Instance.ResourcesCostDivider);
+            _resourcesManager.AddResources((float)(root.Container.Spline.Count - 1) 
+                * root.Container.Spline.Count / _resourcesManager.ResourcesCostDivider, true);
             _splineExtrude.Rebuild();
             _frontCollider.transform.position = Container.Spline[^1].Position;
             _rootHeadPrefab.transform.position = Container.Spline[^1].Position;
@@ -258,7 +259,8 @@ namespace RootFeature.Runtime
         [SerializeField] private float _timeToReachGround = 1;
         [Space]
         [SerializeField] private Ivy[] _ivyPreset;
-        
+
+        private ResourcesManager _resourcesManager;
         private SplineExtrude _splineExtrude;
         private CollisionForSpeedModifier _collisionForSpeedModifier;
         private CanvasGroup _rootWarningUI;

@@ -36,7 +36,7 @@ namespace ZoneFeature.Runtime
         {
             if (_isCollecting) return;
             
-            _resourcesManager.UpcomingHarvest.Add(_baseResources);
+            _resourcesManager.TotalUpcomingResources += _baseResources;
             
             if (_zoneParticle.Length != 0)
             {
@@ -126,7 +126,7 @@ namespace ZoneFeature.Runtime
                 newTotalResources = 0;
             }
             
-            ResourcesManager.Instance.AddResources(gainedResources);
+            ResourcesManager.Instance.AddResources(gainedResources, false);
             CurrentResources = newTotalResources;
             m_onValueChange?.Invoke();
             _nuclearCrateEmissionModifier?.ModifyEmissionBasedOnResources();

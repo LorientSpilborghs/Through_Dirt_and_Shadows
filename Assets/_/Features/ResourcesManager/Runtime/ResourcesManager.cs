@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ResourcesManagerFeature.Runtime
@@ -28,10 +27,10 @@ namespace ResourcesManagerFeature.Runtime
             set => _maxResources = value;
         }
 
-        public List<float> UpcomingHarvest
+        public float TotalUpcomingResources
         {
-            get => _upcomingHarvest;
-            set => _upcomingHarvest = value;
+            get => _totalUpcomingResources;
+            set => _totalUpcomingResources = value;
         }
 
         private void Awake()
@@ -43,23 +42,32 @@ namespace ResourcesManagerFeature.Runtime
         private void Start()
         {
             CurrentResources = _baseResources;
+            TotalUpcomingResources = CurrentResources;
         }
 
-        public bool UseResources(float quantity = 1)
+        public bool UseResources(float quantity)
         {
             if (quantity > CurrentResources) return false;
 
             CurrentResources -= quantity;
+            TotalUpcomingResources -= quantity;
             m_onResourcesChange?.Invoke();
             return true;
         }
 
-        public void AddResources(float quantity = 1)
+        public void AddResources(float quantity, bool isDeletingKnot)
         {
             CurrentResources += quantity;
+
+            if (isDeletingKnot)
+            {
+                TotalUpcomingResources += quantity;
+            }
+            
             if (CurrentResources > MaxResources)
             {
                 CurrentResources = MaxResources;
+                TotalUpcomingResources = CurrentResources;
             }
             
             m_onResourcesChange?.Invoke();
@@ -68,8 +76,8 @@ namespace ResourcesManagerFeature.Runtime
         [SerializeField] private float _baseResources = 500;
         [SerializeField] private float _maxResources = 1000;
         [SerializeField] private int _resourcesCostDivider = 1;
-
-        private List<float> _upcomingHarvest = new List<float>();
+        
         private float _currentResources;
+        private float _totalUpcomingResources;
     }
 }

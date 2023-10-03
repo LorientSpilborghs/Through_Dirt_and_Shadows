@@ -78,7 +78,7 @@ namespace UIFeature.Runtime
 
         private void UpdateHealthText()
         {
-            _healthUI.UpdateHealth(_resourcesManager.CurrentResources);
+            _healthUI.UpdateHealth(_resourcesManager.CurrentResources, _resourcesManager.TotalUpcomingResources);
         }
         
         private void UpdateGrowCostTextOnMouseOver(bool isLastKnotFromSpline)

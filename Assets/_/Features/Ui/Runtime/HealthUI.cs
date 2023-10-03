@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,28 +5,26 @@ namespace UIFeature.Runtime
 {
     public class HealthUI : MonoBehaviour
     {
-        private void Start()
-        {
-            _text = GetComponentInChildren<TextMeshProUGUI>();
-            _greenHealthSlider = GetComponent<Slider>();
-        }
-
+        public Slider m_greenHealthSlider;
+        public Slider m_upcomingHealthSlider;
+        
         public void SetHealth(float currentResources, float maxResources)
         {
-            _greenHealthSlider.maxValue = maxResources;
-            _greenHealthSlider.value = currentResources;
-            _text.text = $"{currentResources}";
+            m_greenHealthSlider.maxValue = maxResources;
+            m_greenHealthSlider.value = currentResources;
+            m_upcomingHealthSlider.maxValue = maxResources;
+            m_upcomingHealthSlider.value = currentResources;
+            // _text.text = $"{currentResources}";
         }
 
-        public void UpdateHealth(float currentResources)
+        public void UpdateHealth(float currentResources, float totalUpcomingResources)
         {
-            _greenHealthSlider.value = currentResources;
-            _text.text = $"{currentResources}";
+            m_greenHealthSlider.value = currentResources;
+            m_upcomingHealthSlider.value = totalUpcomingResources;
+            // _text.text = $"{currentResources}";
         }
         
         
-        private Slider _greenHealthSlider;
-        private TextMeshProUGUI _text;
-        private Coroutine _delayRedSlider;
+        // private TextMeshProUGUI _text;
     }
 }

@@ -48,7 +48,7 @@ namespace ZoneFeature.Runtime
             _nuclearCrateEmissionModifier?.ModifyEmissionBasedOnResources(_resourcesCollectOverTime);
 
             if (CurrentResources < _resourcesCollectOverTime) { count = CurrentResources; newTotalResources = 0; }
-            ResourcesManager.Instance.AddResources(count);
+            ResourcesManager.Instance.AddResources(count, false);
             CurrentResources = newTotalResources;
             
             return true;
