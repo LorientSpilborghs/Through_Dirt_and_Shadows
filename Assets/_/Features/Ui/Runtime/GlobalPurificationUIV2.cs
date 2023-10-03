@@ -16,16 +16,22 @@ namespace UIFeature.Runtime
         {
             if (!_firstGaugeDone)
             {
-                if (!FillGauge(_images[0], globalPurificationPercentage)) return;
+                if (!FillGauge(_gauges[0], globalPurificationPercentage)) return;
+                _radioactiveLight[0].gameObject.SetActive(false);
                 _firstGaugeDone = true;
             }
             if (!_secondGaugeDone)
             {
-                if (!FillGauge(_images[1], globalPurificationPercentage)) return;
+                if (!FillGauge(_gauges[1], globalPurificationPercentage)) return;
+                _radioactiveLight[1].gameObject.SetActive(false);
                 _secondGaugeDone = true;
             }
-            
-            FillGauge(_images[2], globalPurificationPercentage);
+
+            FillGauge(_gauges[2], globalPurificationPercentage);
+            if (_gauges[^1].fillAmount <= 0)
+            {
+                _radioactiveLight[2].gameObject.SetActive(false);
+            }
         }
 
         private bool FillGauge(Image image, float globalPurificationPercentage)
@@ -37,7 +43,7 @@ namespace UIFeature.Runtime
                 return false;
             }
             
-            float newAmount = (globalPurificationPercentage / 100) * _images.Length;
+            float newAmount = (globalPurificationPercentage / 100) * _gauges.Length;
             
             if (image.fillAmount - newAmount < 0)
             {
@@ -53,12 +59,13 @@ namespace UIFeature.Runtime
         }
         
         
-        
-        [SerializeField] private Image[] _images;
+        [SerializeField] private Image[] _gauges;
+        [SerializeField] private Image[] _radioactiveLight;
         
         private GlobalPurification _globalPurification;
         private bool _firstGaugeDone;
         private bool _secondGaugeDone;
+        private bool _thirdGaugeDone;
         private float _savedAmount;
     }
 }
