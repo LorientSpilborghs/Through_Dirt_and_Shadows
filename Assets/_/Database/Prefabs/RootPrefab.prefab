@@ -346,12 +346,14 @@ MonoBehaviour:
   _splineContainer: {fileID: 8721236178818016567}
   _frontCollider: {fileID: 7130140536928042537}
   _rootHeadPrefab: {fileID: 196451393014779840}
-  _maximumNumberOfKnot: 60
+  _rootFlowerPrefab: {fileID: 7537356120920449253, guid: 24378f1c3f6992f4cb77cbc75ba44855,
+    type: 3}
+  _maximumNumberOfKnot: 2
   _supplementalCostForNewRoot: 0
   _minimumNumberOfKnotsForCostReduction: 40
   _costReduction: 0
   _distancePerSeconds: 3.5
-  _numberOfKnotAtWhichSlowStart: 50
+  _numberOfKnotAtWhichSlowStart: 1
   _speedPercentageReducerMultiplier: 2.5
   _minimumDistancePerSeconds: 2.6
   _timeBeforeReachingMinimumSpeed: 0.1
@@ -361,6 +363,7 @@ MonoBehaviour:
   _heightOfTheRoot: 0.25
   _groundedRootHeadRotation: 45
   _timeToReachGround: 1
+  _flowerHeight: 0.6
   _ivyPreset:
   - {fileID: 11400000, guid: 580ae47700c65ba4585fab1c350c9014, type: 2}
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}

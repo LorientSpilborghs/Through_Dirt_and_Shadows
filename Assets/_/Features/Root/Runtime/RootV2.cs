@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using ResourcesManagerFeature.Runtime;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 using Random = UnityEngine.Random;
@@ -156,6 +157,9 @@ namespace RootFeature.Runtime
                 if (SpeedPercentage > 0) return;
                 _isStopped = true;
                 _savedRotation = _rootHeadPrefab.transform.rotation;
+                Instantiate(_rootFlowerPrefab,
+                    new Vector3(_rootHeadPrefab.transform.position.x, _flowerHeight,
+                        _rootHeadPrefab.transform.position.z), quaternion.identity, transform).GetComponentInChildren<Animator>().Play("grow");
             }
 
             foreach (var ivy in _ivyPreset)
@@ -238,6 +242,7 @@ namespace RootFeature.Runtime
         [SerializeField] private SplineContainer _splineContainer;
         [SerializeField] private Collider _frontCollider;
         [SerializeField] private GameObject _rootHeadPrefab;
+        [SerializeField] private GameObject _rootFlowerPrefab;
         [Space]
         [SerializeField] private int _maximumNumberOfKnot = 50;
         [SerializeField] private int _supplementalCostForNewRoot;
@@ -257,6 +262,7 @@ namespace RootFeature.Runtime
         [SerializeField] private float _heightOfTheRoot = 0.5f;
         [SerializeField] private float _groundedRootHeadRotation = 45;
         [SerializeField] private float _timeToReachGround = 1;
+        [SerializeField] private float _flowerHeight = 0.6f;
         [Space]
         [SerializeField] private Ivy[] _ivyPreset;
 
