@@ -72,9 +72,9 @@ namespace ZoneFeature.Runtime
                     particleSystem.gameObject.SetActive(false);
                 }
             }
-            if (!_isOpeningADoor) return;
+            if (_doorAnimation is null) return;
 
-            _doorAnimation.Play();
+            _doorAnimation.Play("OpenDoor");
         }
 
         private void StopPurifying()
@@ -99,8 +99,7 @@ namespace ZoneFeature.Runtime
 
         [SerializeField] private int _knotsNeedForPurification;
         [SerializeField] private float _globalPercentageOnPurified;
-        [SerializeField] private bool _isOpeningADoor;
-        [SerializeField] private Animation _doorAnimation;
+        [SerializeField] private Animator _doorAnimation;
         [Space] [SerializeField] private Ivy[] _ivyPreset;
         [Space] [SerializeField] private ParticleSystem[] _purificationParticle;
 
