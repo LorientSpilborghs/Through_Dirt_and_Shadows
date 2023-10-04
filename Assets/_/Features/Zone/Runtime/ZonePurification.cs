@@ -73,10 +73,11 @@ namespace ZoneFeature.Runtime
                     particleSystem.gameObject.SetActive(false);
                 }
             }
-            if (_doorAnimation is null && _playableDirector is null) return;
+            if (_doorAnimation == null || _playableDirector == null) return;
 
             _doorAnimation.Play("OpenDoor");
             _playableDirector.Play();
+            _fogRevealer.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
         }
 
         private void StopPurifying()
@@ -101,8 +102,10 @@ namespace ZoneFeature.Runtime
 
         [SerializeField] private int _knotsNeedForPurification;
         [SerializeField] private float _globalPercentageOnPurified;
+        [Space] [Header("Manage Door Animation")]
         [SerializeField] private Animator _doorAnimation;
         [SerializeField] private PlayableDirector _playableDirector;
+        [SerializeField] private GameObject _fogRevealer;
         [Space] [SerializeField] private Ivy[] _ivyPreset;
         [Space] [SerializeField] private ParticleSystem[] _purificationParticle;
 
