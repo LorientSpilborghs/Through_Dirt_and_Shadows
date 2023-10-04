@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -18,7 +20,13 @@ namespace PostProcessManagerFeature.Runtime
         private void Start()
         {
             _resourcesManager = ResourcesManager.Instance;
-            _resourcesManager.m_onResourcesChange += UpdateVignetteBasedOnHealth;
+            // _resourcesManager.m_onResourcesChange += UpdateVignetteBasedOnHealth;
+            _isFadeOut = true;
+        }
+
+        private void Update()
+        {
+            UpdateVignetteBasedOnHealth();
         }
 
         private void UpdateVignetteBasedOnHealth()
@@ -29,25 +37,74 @@ namespace PostProcessManagerFeature.Runtime
             if (currentResourcesNormalized > _highHealthPercentage)
             {
                 vignette.color.Override(_vignetteColorAtHighHealth.value);
-
-                vignette.intensity.value = _vignetteMaxIntensity;
+                
+                if (_vignetteLerpFadeIn is not null || _vignetteLerpFadeOut is not null) return;
+                
+                if (_vignetteLerpFadeIn is null && _isFadeOut)
+                {
+                    _isFadeOut = false;
+                    _vignetteLerpFadeIn = StartCoroutine(VignetteLerpFadeIn(vignette));
+                }
+                if (_vignetteLerpFadeOut is null && _isFadeIn)
+                {
+                    _isFadeIn = false;
+                    _vignetteLerpFadeOut = StartCoroutine(VignetteLerpFadeOut(vignette));
+                }
             }
             else if (currentResourcesNormalized < _lowHealthPercentage)
             {
                 vignette.color.Override(_vignetteColorAtLowHealth.value);
                 
-                vignette.intensity.value = _vignetteMaxIntensity;
+                if (_vignetteLerpFadeIn is not null || _vignetteLerpFadeOut is not null) return;
+                
+                if (_vignetteLerpFadeIn is null && _isFadeOut)
+                {
+                    _isFadeOut = false;
+                    _vignetteLerpFadeIn = StartCoroutine(VignetteLerpFadeIn(vignette));
+                }
+                if (_vignetteLerpFadeOut is null && _isFadeIn)
+                {
+                    _isFadeIn = false;
+                    _vignetteLerpFadeOut = StartCoroutine(VignetteLerpFadeOut(vignette));
+                }
             }
             else
             {
                 vignette.color.Override(Color.white);
             }
         }
+
+        private IEnumerator VignetteLerpFadeIn(Vignette vignette)
+        {
+            _timer = 0;
+            while (_timer < _lerpDuration)
+            {
+                vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, _vignetteMaxIntensity, _timer/_lerpDuration);
+                _timer += Time.deltaTime;
+                yield return null;
+            }
+
+            _isFadeIn = true;
+            _vignetteLerpFadeIn = null;
+        }
         
+        private IEnumerator VignetteLerpFadeOut(Vignette vignette)
+        {
+            _timer = 0;
+            while (_timer < _lerpDuration)
+            {
+                vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, 0, _timer/_lerpDuration);
+                _timer += Time.deltaTime;
+                yield return null;
+            }
+
+            _isFadeOut = true;
+            _vignetteLerpFadeOut = null;
+        }
 
         [SerializeField] private Volume _globalVolume;
         [Space] [Header("Vignette Effect")]
-        [SerializeField] [Range(0,1)] private float _vignetteMaxIntensity;
+        [SerializeField] [Range(0,1)] private float _vignetteMaxIntensity = 0.2f;
         [SerializeField] private float _lerpDuration = 1;
         [SerializeField] [Range(0,1)] private float _lowHealthPercentage = 0.2f;
         [SerializeField] [Range(0,1)] private float _highHealthPercentage = 0.8f;
@@ -55,7 +112,10 @@ namespace PostProcessManagerFeature.Runtime
         [SerializeField] private ColorParameter _vignetteColorAtHighHealth;
 
         private ResourcesManager _resourcesManager;
-        private Coroutine _vignetteLerp;
+        private Coroutine _vignetteLerpFadeIn;
+        private Coroutine _vignetteLerpFadeOut;
         private float _timer;
+        private bool _isFadeIn;
+        private bool _isFadeOut;
     }
 }
