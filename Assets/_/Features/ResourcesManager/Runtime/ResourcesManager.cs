@@ -8,6 +8,7 @@ namespace ResourcesManagerFeature.Runtime
         public static ResourcesManager Instance { get; private set; }
 
         public Action m_onResourcesChange;
+        public Action<int, float> m_onChangeMaxHealthTier;
         
         public float CurrentResources
         {
@@ -73,11 +74,46 @@ namespace ResourcesManagerFeature.Runtime
             m_onResourcesChange?.Invoke();
         }
 
-        [SerializeField] private float _baseResources = 500;
-        [SerializeField] private float _maxResources = 1000;
-        [SerializeField] private int _resourcesCostDivider = 1;
+        public void ChangePlayerMaxResources(float currentPurificationPercentage)
+        {
+            if (currentPurificationPercentage >= _purificationPercentageForTierTwo && !_isTierTwoUnlocked)
+            {
+                _maxResources = _maxResourcesAtTierTwo;
+                m_onChangeMaxHealthTier?.Invoke(2, _maxResourcesAtTierTwo);
+                _isTierTwoUnlocked = true;
+                return;
+            }
+            
+            if (currentPurificationPercentage >= _purificationPercentageForTierThree && !_isTierThreeUnlocked)
+            {
+                _maxResources = _maxResourcesAtTierThree;
+                m_onChangeMaxHealthTier?.Invoke(3, _maxResourcesAtTierThree);
+                _isTierThreeUnlocked = true;
+                return;
+            }
+
+            if (!(currentPurificationPercentage >= _purificationPercentageForTierFour) && !_isTierFourUnlocked) return;
+            _maxResources = _maxResourcesAtTierFour;
+            m_onChangeMaxHealthTier?.Invoke(4, _maxResourcesAtTierFour);
+            _isTierFourUnlocked = true;
+        }
+
+        [SerializeField] private float _baseResources = 250;
+        [SerializeField] private float _maxResources = 500;
+        [SerializeField] private int _resourcesCostDivider = 100;
+        [Space] 
+        [Header("Manage Player Max Health Based On Purification Percentage")]
+        [SerializeField] private float _purificationPercentageForTierTwo = 20;
+        [SerializeField] private float _purificationPercentageForTierThree = 40;
+        [SerializeField] private float _purificationPercentageForTierFour = 60;
+        [SerializeField] private float _maxResourcesAtTierTwo = 1000;
+        [SerializeField] private float _maxResourcesAtTierThree = 1500;
+        [SerializeField] private float _maxResourcesAtTierFour = 2000;
         
         private float _currentResources;
         private float _totalUpcomingResources;
+        private bool _isTierTwoUnlocked;
+        private bool _isTierThreeUnlocked;
+        private bool _isTierFourUnlocked;
     }
 }

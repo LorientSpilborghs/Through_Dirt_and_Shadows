@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 
 namespace ZoneFeature.Runtime
@@ -33,12 +34,14 @@ namespace ZoneFeature.Runtime
         private void Start()
         {
             m_onZonePurified += UpdateGlobalPurification;
+            _resourcesManager = ResourcesManager.Instance;
         }
 
         private void UpdateGlobalPurification(float globalPurificationPercentage)
         {
             CurrentPercentage += globalPurificationPercentage;
             m_onValueChange?.Invoke(globalPurificationPercentage);
+            _resourcesManager.ChangePlayerMaxResources(CurrentPercentage);
             if (CurrentPercentage < NeededPercentageToWin || _isAreaPurified) return;
 
             _isAreaPurified = true;
@@ -61,6 +64,7 @@ namespace ZoneFeature.Runtime
         [SerializeField] private Animator _finalDoorAnimator;
         [SerializeField] private MeshRenderer _doorLightRenderer;
 
+        private ResourcesManager _resourcesManager;
         private float _currentPercentage;
         private bool _isAreaPurified;
     }

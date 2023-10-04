@@ -1,4 +1,5 @@
 using System.Collections;
+using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,12 @@ namespace UIFeature.Runtime
         public Slider m_greenHealthSlider;
         public Slider m_redHealthSlider;
         public Slider m_upcomingHealthSlider;
-        
+
+        private void Start()
+        {
+            ResourcesManager.Instance.m_onChangeMaxHealthTier += UpgradeMaxHealthForTierTwo;
+        }
+
         public void SetHealth(float currentResources, float maxResources)
         {
             m_greenHealthSlider.maxValue = maxResources;
@@ -51,10 +57,37 @@ namespace UIFeature.Runtime
 
             _delayRedHealthSlider = null;
         }
-
+        
+        private void UpgradeMaxHealthForTierTwo(int tier, float newMaxResources)
+        {
+            switch (tier)
+            {
+                case 2:
+                    _maxHealthBar[0].gameObject.SetActive(true);
+                    m_greenHealthSlider.maxValue = newMaxResources;
+                    m_upcomingHealthSlider.maxValue = newMaxResources;
+                    m_redHealthSlider.maxValue = newMaxResources;
+                    break;
+                case 3:
+                    _maxHealthBar[0].gameObject.SetActive(false);
+                    _maxHealthBar[1].gameObject.SetActive(true);
+                    m_greenHealthSlider.maxValue = newMaxResources;
+                    m_upcomingHealthSlider.maxValue = newMaxResources;
+                    m_redHealthSlider.maxValue = newMaxResources;
+                    break;
+                case 4:
+                    _maxHealthBar[1].gameObject.SetActive(false);
+                    _maxHealthBar[2].gameObject.SetActive(true);
+                    m_greenHealthSlider.maxValue = newMaxResources;
+                    m_upcomingHealthSlider.maxValue = newMaxResources;
+                    m_redHealthSlider.maxValue = newMaxResources;
+                    break;
+            }
+        }  
         
         
         [SerializeField] private float _redHealthDelayDuration = 10;
+        [Space] [SerializeField] private GameObject[] _maxHealthBar;
         
         private Coroutine _delayRedHealthSlider;
         private float _timer;
