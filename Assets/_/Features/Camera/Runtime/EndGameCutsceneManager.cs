@@ -2,18 +2,21 @@ using System.Collections;
 using GameManagerFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Playables;
+using ZoneFeature.Runtime;
 
 namespace CameraFeature.Runtime
 {
-    public class CutsceneManager : MonoBehaviour
+    public class EndGameCutsceneManager : MonoBehaviour
     {
         private void Start()
         {
             _playableDirector = GetComponent<PlayableDirector>();
+            _globalPurification = GlobalPurification.Instance;
             _gameManager = GameManager.Instance;
+            _globalPurification.m_onAreaPurified += EndGameCutScene;
         }
 
-        public void StartCutScene()
+        private void EndGameCutScene()
         {
             _playableDirector.Play();
             _gameManager.IsCutScenePlaying = true;
@@ -28,5 +31,6 @@ namespace CameraFeature.Runtime
 
         private PlayableDirector _playableDirector;
         private GameManager _gameManager;
+        private GlobalPurification _globalPurification;
     }
-}
+} 

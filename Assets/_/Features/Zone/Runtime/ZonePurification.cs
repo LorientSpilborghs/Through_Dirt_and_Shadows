@@ -2,6 +2,7 @@ using System;
 using PlayerRuntime;
 using RootFeature.Runtime;
 using UnityEngine;
+using UnityEngine.Playables;
 using Random = UnityEngine.Random;
 
 namespace ZoneFeature.Runtime
@@ -72,9 +73,10 @@ namespace ZoneFeature.Runtime
                     particleSystem.gameObject.SetActive(false);
                 }
             }
-            if (_doorAnimation is null) return;
+            if (_doorAnimation is null && _playableDirector is null) return;
 
             _doorAnimation.Play("OpenDoor");
+            _playableDirector.Play();
         }
 
         private void StopPurifying()
@@ -100,6 +102,7 @@ namespace ZoneFeature.Runtime
         [SerializeField] private int _knotsNeedForPurification;
         [SerializeField] private float _globalPercentageOnPurified;
         [SerializeField] private Animator _doorAnimation;
+        [SerializeField] private PlayableDirector _playableDirector;
         [Space] [SerializeField] private Ivy[] _ivyPreset;
         [Space] [SerializeField] private ParticleSystem[] _purificationParticle;
 
