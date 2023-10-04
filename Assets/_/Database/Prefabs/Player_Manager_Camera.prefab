@@ -159,6 +159,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f5525074cfec9846bcf92bf30716ff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _soundOnTierChange:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &3594264444595197862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,6 +342,7 @@ Transform:
   - {fileID: 3931608473901767597}
   - {fileID: 1609919071716003388}
   - {fileID: 6258372125556614262}
+  - {fileID: 8101008007960824874}
   m_Father: {fileID: 1493158714336088861}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &764251057158007522
@@ -2802,6 +2810,55 @@ MonoBehaviour:
   - {fileID: 2396980077225990551}
   - {fileID: 2235109780837210940}
   - {fileID: 3443871532105893056}
+--- !u!1 &7494436318505063434
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8101008007960824874}
+  - component: {fileID: 6434593802690309215}
+  m_Layer: 0
+  m_Name: PostProcessManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8101008007960824874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7494436318505063434}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2990447803393186488}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6434593802690309215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7494436318505063434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03d97f1a4b7a1b24ca573bcb18441567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _globalVolume: {fileID: 0}
+  _vignetteMaxIntensity: 0.2
+  _lerpDuration: 1
+  _lowHealthPercentage: 0
+  _highHealthPercentage: 0
 --- !u!1 &7533899130790275010
 GameObject:
   m_ObjectHideFlags: 0
