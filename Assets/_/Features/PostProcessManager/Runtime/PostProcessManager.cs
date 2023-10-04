@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using ResourcesManagerFeature.Runtime;
 using UnityEngine;
@@ -43,7 +42,7 @@ namespace PostProcessManagerFeature.Runtime
                 if (_vignetteLerpFadeIn is null && _isFadeOut)
                 {
                     _isFadeOut = false;
-                    _vignetteLerpFadeIn = StartCoroutine(VignetteLerpFadeIn(vignette));
+                    _vignetteLerpFadeIn = StartCoroutine(VignetteLerpFadeIn(vignette, _vignetteMaxIntensityHigh));
                 }
                 if (_vignetteLerpFadeOut is null && _isFadeIn)
                 {
@@ -60,7 +59,7 @@ namespace PostProcessManagerFeature.Runtime
                 if (_vignetteLerpFadeIn is null && _isFadeOut)
                 {
                     _isFadeOut = false;
-                    _vignetteLerpFadeIn = StartCoroutine(VignetteLerpFadeIn(vignette));
+                    _vignetteLerpFadeIn = StartCoroutine(VignetteLerpFadeIn(vignette, _vignetteMaxIntensityLow));
                 }
                 if (_vignetteLerpFadeOut is null && _isFadeIn)
                 {
@@ -74,12 +73,12 @@ namespace PostProcessManagerFeature.Runtime
             }
         }
 
-        private IEnumerator VignetteLerpFadeIn(Vignette vignette)
+        private IEnumerator VignetteLerpFadeIn(Vignette vignette, float vignetteMaxIntensity)
         {
             _timer = 0;
-            while (_timer < _lerpDuration)
+            while (_timer < _lerpDurationFadeIn)
             {
-                vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, _vignetteMaxIntensity, _timer/_lerpDuration);
+                vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, vignetteMaxIntensity, _timer/_lerpDurationFadeIn);
                 _timer += Time.deltaTime;
                 yield return null;
             }
@@ -91,9 +90,9 @@ namespace PostProcessManagerFeature.Runtime
         private IEnumerator VignetteLerpFadeOut(Vignette vignette)
         {
             _timer = 0;
-            while (_timer < _lerpDuration)
+            while (_timer < _lerpDurationFadeOut)
             {
-                vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, 0, _timer/_lerpDuration);
+                vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, 0, _timer/_lerpDurationFadeOut);
                 _timer += Time.deltaTime;
                 yield return null;
             }
@@ -104,8 +103,10 @@ namespace PostProcessManagerFeature.Runtime
 
         [SerializeField] private Volume _globalVolume;
         [Space] [Header("Vignette Effect")]
-        [SerializeField] [Range(0,1)] private float _vignetteMaxIntensity = 0.2f;
-        [SerializeField] private float _lerpDuration = 1;
+        [SerializeField] [Range(0,1)] private float _vignetteMaxIntensityLow = 0.2f;
+        [SerializeField] [Range(0,1)] private float _vignetteMaxIntensityHigh = 0.2f;
+        [SerializeField] private float _lerpDurationFadeIn = 1;
+        [SerializeField] private float _lerpDurationFadeOut = 1;
         [SerializeField] [Range(0,1)] private float _lowHealthPercentage = 0.2f;
         [SerializeField] [Range(0,1)] private float _highHealthPercentage = 0.8f;
         [SerializeField] private ColorParameter _vignetteColorAtLowHealth;
