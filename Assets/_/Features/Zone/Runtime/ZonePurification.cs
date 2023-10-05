@@ -78,6 +78,8 @@ namespace ZoneFeature.Runtime
             _doorAnimation.Play("OpenDoor");
             _playableDirector.Play();
             _fogRevealer.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
+            if (_screenLightRenderer == null) return;
+            _screenLightRenderer.materials[0].renderQueue = 0;
         }
 
         private void StopPurifying()
@@ -106,6 +108,7 @@ namespace ZoneFeature.Runtime
         [SerializeField] private Animator _doorAnimation;
         [SerializeField] private PlayableDirector _playableDirector;
         [SerializeField] private GameObject _fogRevealer;
+        [SerializeField] private MeshRenderer _screenLightRenderer;
         [Space] [SerializeField] private Ivy[] _ivyPreset;
         [Space] [SerializeField] private ParticleSystem[] _purificationParticle;
 

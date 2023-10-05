@@ -17,6 +17,7 @@ namespace PlayerRuntime
 
         public Action<Vector3> m_onCameraBlendingStart;
         public Action<Vector3> m_onInterpolate;
+        public Action<bool> m_onCameraRotate;
         public Action m_onResetCameraPos;
         public Action m_onCameraBlendingStop;
         public Action m_onNewKnotInstantiate;
@@ -25,6 +26,7 @@ namespace PlayerRuntime
         public Action<bool> m_onNewKnotSelected;
         public Func<bool> m_isCameraBlendingOver;
         public Func<bool> m_isInThirdPerson;
+        public Func<bool> m_isInTopView;
         
         public Vector3 PointerPosition
         {
@@ -82,10 +84,12 @@ namespace PlayerRuntime
         {
             InputManager.Instance.m_onMouseMove += OnMouseMoveEventHandler;
             InputManager.Instance.m_onLeftMouseDown += OnLeftMouseDownEventHandler;
-            InputManager.Instance.m_onRightMouseDown += OnRightMouseDownEventHandler;
-            InputManager.Instance.m_onMouseHold += OnMouseHoldEventHandler;
-            InputManager.Instance.m_onMouseUp += OnMouseUpEventHandler;
-            InputManager.Instance.m_onSpaceBarDown += OnSpaceBarDownEventHandler;
+            InputManager.Instance.m_onRightMouseHold += OnRightMouseHoldEventHandler;
+            InputManager.Instance.m_onRightMouseUp += OnRightMouseUpEventHandler;
+            InputManager.Instance.m_onMiddleMouseDown += OnMiddleMouseDownEventHandler;
+            InputManager.Instance.m_onMiddleMouseDown += OnMiddleMouseEventHandlerInTopView;
+            InputManager.Instance.m_onLeftMouseHold += OnMouseHoldEventHandler;
+            InputManager.Instance.m_onLeftMouseUp += OnMouseUpEventHandler;
             InputManager.Instance.m_onEscapeKeyDown += OnEscapeKeyDownEventHandler;
             InputManager.Instance.m_onTabKeyDown += OnTabKeyDownEventHandler;
             
@@ -96,10 +100,12 @@ namespace PlayerRuntime
         {
             InputManager.Instance.m_onMouseMove -= OnMouseMoveEventHandler;
             InputManager.Instance.m_onLeftMouseDown -= OnLeftMouseDownEventHandler;
-            InputManager.Instance.m_onRightMouseDown -= OnRightMouseDownEventHandler;
-            InputManager.Instance.m_onMouseHold -= OnMouseHoldEventHandler;
-            InputManager.Instance.m_onMouseUp -= OnMouseUpEventHandler;
-            InputManager.Instance.m_onSpaceBarDown -= OnSpaceBarDownEventHandler;
+            InputManager.Instance.m_onRightMouseHold -= OnRightMouseHoldEventHandler;
+            InputManager.Instance.m_onRightMouseUp -= OnRightMouseUpEventHandler;
+            InputManager.Instance.m_onMiddleMouseDown -= OnMiddleMouseDownEventHandler;
+            InputManager.Instance.m_onMiddleMouseDown -= OnMiddleMouseEventHandlerInTopView;
+            InputManager.Instance.m_onLeftMouseHold -= OnMouseHoldEventHandler;
+            InputManager.Instance.m_onLeftMouseUp -= OnMouseUpEventHandler;
             InputManager.Instance.m_onEscapeKeyDown -= OnEscapeKeyDownEventHandler;
             InputManager.Instance.m_onTabKeyDown -= OnTabKeyDownEventHandler;
         }
@@ -126,8 +132,20 @@ namespace PlayerRuntime
             m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
             RootToModify = GetTheRightRoot() ?? RootToModify;
         }
+        
+        private void OnRightMouseHoldEventHandler()
+        {
+            m_onCameraRotate?.Invoke(m_isInThirdPerson?.Invoke() is true);
+        }
 
-        private void OnRightMouseDownEventHandler()
+        private void OnRightMouseUpEventHandler()
+        {
+            if (Cursor.visible is true || Cursor.lockState is CursorLockMode.None) return;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        private void OnMiddleMouseDownEventHandler()
         {
             m_onCameraBlendingStop?.Invoke();
         }
@@ -156,8 +174,9 @@ namespace PlayerRuntime
             RootToModify?.DeleteIfTooClose(RootToModify);
         }
         
-        private void OnSpaceBarDownEventHandler()
+        private void OnMiddleMouseEventHandlerInTopView()
         {
+            if (m_isInTopView?.Invoke() is false) return;
             m_onResetCameraPos?.Invoke();
         }
 
