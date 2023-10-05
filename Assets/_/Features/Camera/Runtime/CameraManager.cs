@@ -68,6 +68,7 @@ namespace CameraFeature.Runtime
             // _player.m_onInterpolate += CameraIsFollowing;
             // _player.m_onInterpolateEnd += CameraIsNotFollowing;
             PlayerV2.Instance.m_isInThirdPerson += isInThirdPersonEventHandler;
+            PlayerV2.Instance.m_isInTopView += isInTopViewEventHandler;
         }
         
         
@@ -97,6 +98,11 @@ namespace CameraFeature.Runtime
         private bool isInThirdPersonEventHandler()
         {
             return Camera.main.transform.position == _cineMachineFreeLook.transform.position;
+        }
+        
+        private bool isInTopViewEventHandler()
+        {
+            return Camera.main.transform.position == _virtualCamera.transform.position;
         }
         
         [SerializeField] private Transform _anchor;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Drawing;
 using GameManagerFeature.Runtime;
 using UnityEngine;
 
@@ -12,10 +13,11 @@ namespace InputManagerFeature.Runtime
         public Action<Vector3> m_onMouseMove;
         
         public Action m_onLeftMouseDown;
-        public Action m_onRightMouseDown;
-        public Action m_onMouseHold;
-        public Action m_onMouseUp;
-        public Action m_onSpaceBarDown;
+        public Action m_onLeftMouseHold;
+        public Action m_onLeftMouseUp;
+        public Action m_onRightMouseHold;
+        public Action m_onRightMouseUp;
+        public Action m_onMiddleMouseDown;
         public Action m_onEscapeKeyDown;
         public Action m_onTabKeyDown;
 
@@ -38,10 +40,11 @@ namespace InputManagerFeature.Runtime
             MouseWorldPosition();
             
             OnLeftMouseDown();
-            OnRightMouseDown();
-            OnMouseHold();
-            OnMouseUp();
-            OnSpaceBarDown();
+            OnRightMouseHold();
+            OnRightMouseUp();
+            OnMiddleMouseDown();
+            OnLeftMouseHold();
+            OnleftMouseUp();
             OnTabKeyDown();
         }
 
@@ -73,28 +76,34 @@ namespace InputManagerFeature.Runtime
             m_onLeftMouseDown?.Invoke();
         }
 
-        private void OnRightMouseDown()
+        private void OnRightMouseHold()
         {
-            if (!Input.GetKeyDown(KeyCode.Mouse1)) return;
-            m_onRightMouseDown?.Invoke();
+            if (!Input.GetKey(KeyCode.Mouse1)) return;
+            m_onRightMouseHold?.Invoke();
         }
 
-        private void OnMouseHold()
+        private void OnRightMouseUp()
+        {
+            if (!Input.GetKeyUp(KeyCode.Mouse1)) return;
+            m_onRightMouseUp?.Invoke();
+        }
+
+        private void OnMiddleMouseDown()
+        {
+            if (!Input.GetKeyDown(KeyCode.Mouse2)) return;
+            m_onMiddleMouseDown?.Invoke();
+        }
+
+        private void OnLeftMouseHold()
         {
             if (!Input.GetKey(KeyCode.Mouse0)) return; 
-            m_onMouseHold?.Invoke();
+            m_onLeftMouseHold?.Invoke();
         }
 
-        private void OnMouseUp()
+        private void OnleftMouseUp()
         {
             if (!Input.GetKeyUp(KeyCode.Mouse0)) return; 
-            m_onMouseUp?.Invoke();
-        }
-
-        private void OnSpaceBarDown()
-        {
-            if (!Input.GetKeyDown(KeyCode.Space)) return;
-            m_onSpaceBarDown?.Invoke();
+            m_onLeftMouseUp?.Invoke();
         }
 
         private void OnEscapeKeyDown()

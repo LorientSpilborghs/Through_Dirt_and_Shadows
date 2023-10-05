@@ -7,9 +7,7 @@ namespace CameraFeature.Runtime
     public class CameraSystem : MonoBehaviour
     {
         [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
-        [SerializeField] private bool useEdgeScrolling;
-        [SerializeField] private bool useDragPan;
-        [SerializeField] private float cameraMoveSpeed;
+        // [SerializeField] private bool useDragPan;
         [SerializeField] private float fieldOfViewMax = 50;
         [SerializeField] private float fieldOfViewMin = 10;
         [SerializeField] private float followOffsetMin = 5f;
@@ -17,10 +15,16 @@ namespace CameraFeature.Runtime
         [SerializeField] private float followOffsetMinY = 10f;
         [SerializeField] private float followOffsetMaxY = 50f;
         
-        [Space]
-        [SerializeField] private float _timeToReset = 1f;
-        [SerializeField] private float _rotationSpeed = 100;
-        
+        [Space] [Header("TDS Camera Option")]
+        [SerializeField] private bool useEdgeScrolling;
+        [SerializeField] private float cameraMoveSpeed;
+        [SerializeField] [Range(0,1)] private float edgeScrollingSpeed = 0.5f;
+        [SerializeField] private float _timeToReset = 1.2f;
+        [SerializeField] private float _rotationSpeedInTopView = 2;
+        [SerializeField] private float _rotationSpeedInThirdPerson = 4;
+
+        private CameraManager _cameraManager;
+        private PlayerV2 _player;
         private bool dragPanMoveActive;
         private Vector2 lastMousePosition;
         private float targetFieldOfView = 50;
@@ -40,36 +44,36 @@ namespace CameraFeature.Runtime
 
         private void Start()
         {
+            _cameraManager = CameraManager.Instance;
+            _player = PlayerV2.Instance;
             followOffset.y = followOffsetMaxY;
             _basePosition = transform.position;
             _baseRotation = transform.rotation;
-            PlayerV2.Instance.m_onResetCameraPos += OnResetCameraPosEventHandler;
+            _player.m_onResetCameraPos += OnResetCameraPosEventHandler;
+            _player.m_onCameraRotate += OnCameraRotateEventHandler;
             _rigidbody = GetComponent<Rigidbody>();
         }
 
         private void Update()
         {
-            if (PlayerV2.Instance.m_isInThirdPerson?.Invoke() is true)
+            if (_player.m_isInThirdPerson?.Invoke() is true)
             {
                 MoveTopCameraWhileInterpolating();
                 _resetPos = false;
-                if (PlayerV2.Instance.m_isCameraBlendingOver?.Invoke() is false) return;
-                HandleCameraRotation(true);
+                if (_player.m_isCameraBlendingOver?.Invoke() is false) return;
                 return;
             }
 
-            HandleCameraRotation(false);
-
             HandleCameraMovement();
-            // if (useEdgeScrolling)
-            // {
-            //     HandleCameraMovementEdgeScrolling();
-            // }
-
-            if (useDragPan)
+            
+            if (useEdgeScrolling)
             {
-                HandleCameraMovementDragPan();
+                HandleCameraMovementEdgeScrolling();
             }
+            // if (useDragPan)
+            // {
+            //     HandleCameraMovementDragPan();
+            // }
 
             //HandleCameraZoom_FieldOfView();
             //HandleCameraZoom_MoveForward();
@@ -116,22 +120,22 @@ namespace CameraFeature.Runtime
             int edgeScrollSize = 20;
             if (Input.mousePosition.x < edgeScrollSize)
             {
-                inputDir.x = -1f;
+                inputDir.x -= edgeScrollingSpeed;
             }
 
             if (Input.mousePosition.y < edgeScrollSize)
             {
-                inputDir.z = -1f;
+                inputDir.z -= edgeScrollingSpeed;
             }
 
             if (Input.mousePosition.x > Screen.width - edgeScrollSize)
             {
-                inputDir.x = +1f;
+                inputDir.x += edgeScrollingSpeed;
             }
 
             if (Input.mousePosition.y > Screen.height - edgeScrollSize)
             {
-                inputDir.z = +1f;
+                inputDir.z += edgeScrollingSpeed;
             }
 
             Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
@@ -167,32 +171,36 @@ namespace CameraFeature.Runtime
             transform.position += moveDir * (moveSpeed * Time.deltaTime);
         }
 
-        private void HandleCameraRotation(bool isInThirdPerson)
+        private void OnCameraRotateEventHandler(bool isInThirdPerson)
         {
             Transform transformToRotate = new RectTransform();
 
             if (isInThirdPerson)
             {
-                transformToRotate = CameraManager.Instance.FollowCameraAnchor.transform;
-                float rotateDir = 0f;
-                if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
-                if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
-                transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
+                transformToRotate = _cameraManager.FollowCameraAnchor.transform;
+                // float rotateDir = 0f;
+                // if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
+                // if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
+                // transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
+                transformToRotate.eulerAngles += new Vector3(0,Input.GetAxis("Mouse X") * _rotationSpeedInThirdPerson, 0);
                 transform.rotation = transformToRotate.rotation;
             }
             else
             {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
                 transformToRotate = transform;
-                float rotateDir = 0f;
-                if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
-                if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
-                transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
+                // float rotateDir = 0f;
+                // if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
+                // if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
+                // transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
+                transformToRotate.eulerAngles += new Vector3(0,Input.GetAxis("Mouse X") * _rotationSpeedInTopView, 0);
             }
         }
 
         private void MoveTopCameraWhileInterpolating()
         {
-            var followCameraAnchorTransform = CameraManager.Instance.FollowCameraAnchor;
+            var followCameraAnchorTransform = _cameraManager.FollowCameraAnchor;
             transform.position = new Vector3(followCameraAnchorTransform.position.x,transform.position.y,followCameraAnchorTransform.position.z);
             transform.rotation = followCameraAnchorTransform.rotation;
         }
