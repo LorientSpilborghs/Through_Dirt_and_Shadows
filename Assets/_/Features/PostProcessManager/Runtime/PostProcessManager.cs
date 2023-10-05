@@ -21,6 +21,7 @@ namespace PostProcessManagerFeature.Runtime
             _resourcesManager = ResourcesManager.Instance;
             // _resourcesManager.m_onResourcesChange += UpdateVignetteBasedOnHealth;
             _isFadeOut = true;
+            _isTimeBetweenFadeOver = true;
         }
 
         private void Update()
@@ -37,14 +38,14 @@ namespace PostProcessManagerFeature.Runtime
             {
                 vignette.color.Override(_vignetteColorAtHighHealth.value);
                 
-                if (_vignetteLerpFadeIn is not null || _vignetteLerpFadeOut is not null) return;
+                if ((_vignetteLerpFadeIn is not null || _vignetteLerpFadeOut is not null) && !_isTimeBetweenFadeOver) return;
                 
-                if (_vignetteLerpFadeIn is null && _isFadeOut)
+                if (_vignetteLerpFadeIn is null && _isFadeOut && _isTimeBetweenFadeOver)
                 {
                     _isFadeOut = false;
                     _vignetteLerpFadeIn = StartCoroutine(VignetteLerpFadeIn(vignette, _vignetteMaxIntensityHigh));
                 }
-                if (_vignetteLerpFadeOut is null && _isFadeIn)
+                if (_vignetteLerpFadeOut is null && _isFadeIn && _isTimeBetweenFadeOver)
                 {
                     _isFadeIn = false;
                     _vignetteLerpFadeOut = StartCoroutine(VignetteLerpFadeOut(vignette));
@@ -54,14 +55,14 @@ namespace PostProcessManagerFeature.Runtime
             {
                 vignette.color.Override(_vignetteColorAtLowHealth.value);
                 
-                if (_vignetteLerpFadeIn is not null || _vignetteLerpFadeOut is not null) return;
+                if ((_vignetteLerpFadeIn is not null || _vignetteLerpFadeOut is not null) && !_isTimeBetweenFadeOver) return;
                 
-                if (_vignetteLerpFadeIn is null && _isFadeOut)
+                if (_vignetteLerpFadeIn is null && _isFadeOut && _isTimeBetweenFadeOver)
                 {
                     _isFadeOut = false;
                     _vignetteLerpFadeIn = StartCoroutine(VignetteLerpFadeIn(vignette, _vignetteMaxIntensityLow));
                 }
-                if (_vignetteLerpFadeOut is null && _isFadeIn)
+                if (_vignetteLerpFadeOut is null && _isFadeIn && _isTimeBetweenFadeOver)
                 {
                     _isFadeIn = false;
                     _vignetteLerpFadeOut = StartCoroutine(VignetteLerpFadeOut(vignette));
@@ -85,6 +86,7 @@ namespace PostProcessManagerFeature.Runtime
 
             _isFadeIn = true;
             _vignetteLerpFadeIn = null;
+            StartCoroutine(TimeBetweenFade());
         }
         
         private IEnumerator VignetteLerpFadeOut(Vignette vignette)
@@ -99,6 +101,19 @@ namespace PostProcessManagerFeature.Runtime
 
             _isFadeOut = true;
             _vignetteLerpFadeOut = null;
+            StartCoroutine(TimeBetweenFade());
+        }
+
+        private IEnumerator TimeBetweenFade()
+        {
+            _timer = 0;
+            _isTimeBetweenFadeOver = false;
+            while (_timer < _durationBetweenFade)
+            {
+                _timer += Time.deltaTime;
+                yield return null;
+            }
+            _isTimeBetweenFadeOver = true;
         }
 
         [SerializeField] private Volume _globalVolume;
@@ -107,6 +122,7 @@ namespace PostProcessManagerFeature.Runtime
         [SerializeField] [Range(0,1)] private float _vignetteMaxIntensityHigh = 0.2f;
         [SerializeField] private float _lerpDurationFadeIn = 1;
         [SerializeField] private float _lerpDurationFadeOut = 1;
+        [SerializeField] private float _durationBetweenFade = 1;
         [SerializeField] [Range(0,1)] private float _lowHealthPercentage = 0.2f;
         [SerializeField] [Range(0,1)] private float _highHealthPercentage = 0.8f;
         [SerializeField] private ColorParameter _vignetteColorAtLowHealth;
@@ -118,5 +134,6 @@ namespace PostProcessManagerFeature.Runtime
         private float _timer;
         private bool _isFadeIn;
         private bool _isFadeOut;
+        private bool _isTimeBetweenFadeOver;
     }
 }
