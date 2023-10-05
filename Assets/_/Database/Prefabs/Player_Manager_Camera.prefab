@@ -343,6 +343,7 @@ Transform:
   - {fileID: 1609919071716003388}
   - {fileID: 6258372125556614262}
   - {fileID: 8101008007960824874}
+  - {fileID: 6884273264484417761}
   m_Father: {fileID: 1493158714336088861}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &764251057158007522
@@ -1501,6 +1502,51 @@ MonoBehaviour:
   m_YawDamping: 0
   m_RollDamping: 0
   m_AngularDamping: 0
+--- !u!1 &4024556613197703432
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6884273264484417761}
+  - component: {fileID: 2678055222737002957}
+  m_Layer: 0
+  m_Name: CursorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6884273264484417761
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4024556613197703432}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2990447803393186488}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2678055222737002957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4024556613197703432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b0f986bb21323149a6cae9aed130d4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cursorTexture: {fileID: 2800000, guid: 9fb78dadb6d3fd7469a5659f612e82a3, type: 3}
 --- !u!1 &4513175347879182219
 GameObject:
   m_ObjectHideFlags: 0
@@ -1896,17 +1942,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cinemachineVirtualCamera: {fileID: 6264762346755306349}
-  useEdgeScrolling: 0
-  useDragPan: 0
-  cameraMoveSpeed: 1000
   fieldOfViewMax: 50
   fieldOfViewMin: 10
   followOffsetMin: 5
   followOffsetMax: 50
   followOffsetMinY: 2
   followOffsetMaxY: 10
+  useEdgeScrolling: 0
+  cameraMoveSpeed: 1000
+  edgeScrollingSpeed: 0.5
   _timeToReset: 1.2
-  _rotationSpeed: 100
+  _rotationSpeedInTopView: 5
+  _rotationSpeedInThirdPerson: 5
 --- !u!135 &6526894737714670866
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2855,10 +2902,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalVolume: {fileID: 0}
-  _vignetteMaxIntensity: 0.2
-  _lerpDuration: 1
+  _vignetteMaxIntensityLow: 0.2
+  _vignetteMaxIntensityHigh: 0.2
+  _lerpDurationFadeIn: 1
+  _lerpDurationFadeOut: 1
+  _durationBetweenFade: 1
   _lowHealthPercentage: 0
   _highHealthPercentage: 0
+  _vignetteColorAtLowHealth:
+    m_OverrideState: 0
+    m_Value: {r: 0, g: 0, b: 0, a: 0}
+  _vignetteColorAtHighHealth:
+    m_OverrideState: 0
+    m_Value: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &7533899130790275010
 GameObject:
   m_ObjectHideFlags: 0

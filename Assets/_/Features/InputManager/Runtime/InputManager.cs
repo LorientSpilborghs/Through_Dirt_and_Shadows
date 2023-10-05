@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Drawing;
 using GameManagerFeature.Runtime;
 using UnityEngine;
 
@@ -18,6 +17,7 @@ namespace InputManagerFeature.Runtime
         public Action m_onRightMouseHold;
         public Action m_onRightMouseUp;
         public Action m_onMiddleMouseDown;
+        public Action m_onSpaceKeyDown;
         public Action m_onEscapeKeyDown;
         public Action m_onTabKeyDown;
 
@@ -45,6 +45,7 @@ namespace InputManagerFeature.Runtime
             OnMiddleMouseDown();
             OnLeftMouseHold();
             OnleftMouseUp();
+            OnSpaceKeyDown();
             OnTabKeyDown();
         }
 
@@ -104,6 +105,12 @@ namespace InputManagerFeature.Runtime
         {
             if (!Input.GetKeyUp(KeyCode.Mouse0)) return; 
             m_onLeftMouseUp?.Invoke();
+        }
+
+        private void OnSpaceKeyDown()
+        {
+            if (!Input.GetKeyDown(KeyCode.Space)) return;
+            m_onSpaceKeyDown?.Invoke();
         }
 
         private void OnEscapeKeyDown()

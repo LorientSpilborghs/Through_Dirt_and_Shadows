@@ -86,8 +86,8 @@ namespace PlayerRuntime
             InputManager.Instance.m_onLeftMouseDown += OnLeftMouseDownEventHandler;
             InputManager.Instance.m_onRightMouseHold += OnRightMouseHoldEventHandler;
             InputManager.Instance.m_onRightMouseUp += OnRightMouseUpEventHandler;
-            InputManager.Instance.m_onMiddleMouseDown += OnMiddleMouseDownEventHandler;
-            InputManager.Instance.m_onMiddleMouseDown += OnMiddleMouseEventHandlerInTopView;
+            InputManager.Instance.m_onMiddleMouseDown += OnSpaceKeyDownEventHandler;
+            InputManager.Instance.m_onSpaceKeyDown += OnSpaceKeyEventHandler;
             InputManager.Instance.m_onLeftMouseHold += OnMouseHoldEventHandler;
             InputManager.Instance.m_onLeftMouseUp += OnMouseUpEventHandler;
             InputManager.Instance.m_onEscapeKeyDown += OnEscapeKeyDownEventHandler;
@@ -102,8 +102,8 @@ namespace PlayerRuntime
             InputManager.Instance.m_onLeftMouseDown -= OnLeftMouseDownEventHandler;
             InputManager.Instance.m_onRightMouseHold -= OnRightMouseHoldEventHandler;
             InputManager.Instance.m_onRightMouseUp -= OnRightMouseUpEventHandler;
-            InputManager.Instance.m_onMiddleMouseDown -= OnMiddleMouseDownEventHandler;
-            InputManager.Instance.m_onMiddleMouseDown -= OnMiddleMouseEventHandlerInTopView;
+            InputManager.Instance.m_onMiddleMouseDown -= OnSpaceKeyDownEventHandler;
+            InputManager.Instance.m_onSpaceKeyDown -= OnSpaceKeyEventHandler;
             InputManager.Instance.m_onLeftMouseHold -= OnMouseHoldEventHandler;
             InputManager.Instance.m_onLeftMouseUp -= OnMouseUpEventHandler;
             InputManager.Instance.m_onEscapeKeyDown -= OnEscapeKeyDownEventHandler;
@@ -145,7 +145,7 @@ namespace PlayerRuntime
             Cursor.lockState = CursorLockMode.None;
         }
 
-        private void OnMiddleMouseDownEventHandler()
+        private void OnSpaceKeyDownEventHandler()
         {
             m_onCameraBlendingStop?.Invoke();
         }
@@ -174,7 +174,7 @@ namespace PlayerRuntime
             RootToModify?.DeleteIfTooClose(RootToModify);
         }
         
-        private void OnMiddleMouseEventHandlerInTopView()
+        private void OnSpaceKeyEventHandler()
         {
             if (m_isInTopView?.Invoke() is false) return;
             m_onResetCameraPos?.Invoke();
