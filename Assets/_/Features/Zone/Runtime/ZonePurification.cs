@@ -102,7 +102,7 @@ namespace ZoneFeature.Runtime
 
             _doorAnimation.Play("OpenDoor");
             _playableDirector.Play();
-            _fogRevealer.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
+            _fogRevealer.transform.SetPositionAndRotation(_doorAnimation.gameObject.gameObject.transform.position, Quaternion.identity);
             if (_screenLightRenderer == null) return;
             _screenLightRenderer.materials[0].renderQueue = 0;
         }
