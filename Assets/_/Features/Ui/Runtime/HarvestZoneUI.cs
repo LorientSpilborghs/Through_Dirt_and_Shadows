@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using ZoneFeature.Runtime;
@@ -12,7 +11,6 @@ namespace UIFeature.Runtime
             _zoneHarvest = GetComponent<ZoneHarvestV2>();
             _canvasGroup = GetComponentInChildren<CanvasGroup>();
             _image = GetComponentsInChildren<Image>()[1];
-            _text = GetComponentInChildren<TextMeshProUGUI>();
             _uiManager = UIManager.Instance;
             _zoneHarvest.m_onValueChange += OnValueChangeEventHandler;
             _image.fillAmount = 1;
@@ -34,16 +32,16 @@ namespace UIFeature.Runtime
                     _canvasGroup.alpha = 1;
                 }
             }
-            _image.fillAmount = (float)_zoneHarvest.CurrentResources / _zoneHarvest.BaseResources;
-            if (_text is null) return;
-            _text.text = $"{_zoneHarvest.CurrentResources} / {_zoneHarvest.BaseResources}";
+            _image.fillAmount = _zoneHarvest.CurrentResources / _zoneHarvest.BaseResources;
+            
+            if (_image.fillAmount > 0) return;
+            _canvasGroup.gameObject.SetActive(false);
         }
         
         [SerializeField] private Image _image;
         
         private ZoneHarvestV2 _zoneHarvest;
         private UIManager _uiManager;
-        private TextMeshProUGUI _text;
         private CanvasGroup _canvasGroup;
         private bool _isEnabled;
     }

@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using ZoneFeature.Runtime;
@@ -13,7 +12,6 @@ namespace UIFeature.Runtime
             _zonePurification = GetComponent<ZonePurification>();
             _image = GetComponentsInChildren<Image>()[1];
             _canvasGroup = GetComponentInChildren<CanvasGroup>();
-            _text = GetComponentInChildren<TextMeshProUGUI>();
             _uiManager = UIManager.Instance;
             _zonePurification.m_onValueChange += OnValueChangeEventHandler;
             _image.fillAmount = 0;
@@ -36,14 +34,14 @@ namespace UIFeature.Runtime
                 }
             }
             _image.fillAmount = (float)_zonePurification.CurrentKnotInTheZone / _zonePurification.KnotsNeedForPurification;
-            if (_text is null) return;
-            _text.text = $"{_zonePurification.CurrentKnotInTheZone} / {_zonePurification.KnotsNeedForPurification}";
+            
+            if (_image.fillAmount < 1) return;
+            _canvasGroup.gameObject.SetActive(false);
         }
         
         private ZonePurification _zonePurification;
         private UIManager _uiManager;
         private Image _image;
-        private TextMeshProUGUI _text;
         private CanvasGroup _canvasGroup;
         private bool _isEnabled;
     }
