@@ -139,8 +139,7 @@ namespace CameraFeature.Runtime
             }
 
             Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
-            float moveSpeed = 50f;
-            transform.position += moveDir * (moveSpeed * Time.deltaTime);
+            _rigidbody.velocity = Time.fixedDeltaTime * cameraMoveSpeed * moveDir;
         }
 
         private void HandleCameraMovementDragPan()

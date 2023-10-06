@@ -1,6 +1,7 @@
 using System.Collections;
 using FMOD.Studio;
 using FMODUnity;
+using PostProcessManagerFeature.Runtime;
 using RootFeature.Runtime;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
@@ -12,6 +13,8 @@ namespace SoundManagerFeature.Runtime
         private void Start()
         {
             _growingRootSoundInstance = RuntimeManager.CreateInstance(_growingRootSound);
+            PostProcessManager.Instance.m_onLowHealth += OnLowHealthEventHandler;
+            PostProcessManager.Instance.m_onOverHealth += OnOverHealthEventHandler;
             _root = GetComponent<RootV2>();
             _root.m_onStartGrow = OnStartGrowEventHandler;
             _root.m_onEndGrow = OnEndGrowEventHandler;
@@ -31,6 +34,16 @@ namespace SoundManagerFeature.Runtime
             _growingRootSoundInstance.stop(STOP_MODE.IMMEDIATE);
         }
 
+        private void OnOverHealthEventHandler()
+        {
+            RuntimeManager.PlayOneShot(_overHealthSound);
+        }
+        
+        private void OnLowHealthEventHandler()
+        {
+            RuntimeManager.PlayOneShot(_lowHealthSound);
+        }
+        
         private IEnumerator SoundDelay()
         {
             yield return new WaitForSeconds(_delayBeforeSoundOnStartGrow);
@@ -40,6 +53,8 @@ namespace SoundManagerFeature.Runtime
         
         [SerializeField] private EventReference _growingRootSound;
         [SerializeField] private EventReference _startGrowSound;
+        [SerializeField] private EventReference _overHealthSound;
+        [SerializeField] private EventReference _lowHealthSound;
         [Space] [SerializeField] private float _delayBeforeSoundOnStartGrow = 2;
     
         private EventInstance _growingRootSoundInstance;

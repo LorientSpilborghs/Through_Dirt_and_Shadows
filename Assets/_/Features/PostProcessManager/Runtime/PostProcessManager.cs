@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using ResourcesManagerFeature.Runtime;
 using UnityEngine;
@@ -9,6 +10,9 @@ namespace PostProcessManagerFeature.Runtime
     public class PostProcessManager : MonoBehaviour
     {
         public static PostProcessManager Instance { get; private set; }
+
+        public Action m_onOverHealth;
+        public Action m_onLowHealth;
         
         private void Awake()
         {
@@ -42,6 +46,7 @@ namespace PostProcessManagerFeature.Runtime
                 
                 if (_vignetteLerpFadeIn is null && _isFadeOut && _isTimeBetweenFadeOver)
                 {
+                    m_onOverHealth?.Invoke();
                     _isFadeOut = false;
                     _vignetteLerpFadeIn = StartCoroutine(VignetteLerpFadeIn(vignette, _vignetteMaxIntensityHigh));
                 }
@@ -59,6 +64,7 @@ namespace PostProcessManagerFeature.Runtime
                 
                 if (_vignetteLerpFadeIn is null && _isFadeOut && _isTimeBetweenFadeOver)
                 {
+                    m_onLowHealth?.Invoke();
                     _isFadeOut = false;
                     _vignetteLerpFadeIn = StartCoroutine(VignetteLerpFadeIn(vignette, _vignetteMaxIntensityLow));
                 }
