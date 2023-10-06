@@ -39,6 +39,8 @@ namespace GameManagerFeature.Runtime
         private void Start()
         {
             _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+            IsGamePause = true;
+            Time.timeScale = 0;
         }
 
         private Transform _playerTransform;

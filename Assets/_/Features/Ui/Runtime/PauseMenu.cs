@@ -34,6 +34,7 @@ namespace UIFeature.Runtime
             UIManager.Instance.PauseMenuUI.SetActive(true);
             Time.timeScale = 0;
             GameManager.Instance.IsGamePause = true;
+            _playerUICanvasGroup.alpha = 0;
         }
 
         public void Resume()
@@ -41,6 +42,7 @@ namespace UIFeature.Runtime
             UIManager.Instance.PauseMenuUI.SetActive(false);
             Time.timeScale = 1;
             GameManager.Instance.IsGamePause = false;
+            _playerUICanvasGroup.alpha = 1;
         }
         
         public void LoadMenu()
@@ -53,5 +55,7 @@ namespace UIFeature.Runtime
         {
             Application.Quit();
         }
+
+        [SerializeField] private CanvasGroup _playerUICanvasGroup;
     }
 }
