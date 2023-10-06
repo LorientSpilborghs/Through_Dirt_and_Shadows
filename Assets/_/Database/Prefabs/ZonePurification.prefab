@@ -130,6 +130,7 @@ MonoBehaviour:
   _doorAnimation: {fileID: 0}
   _playableDirector: {fileID: 0}
   _fogRevealer: {fileID: 0}
+  _screenLightRenderer: {fileID: 0}
   _ivyPreset:
   - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
   - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
@@ -426,6 +427,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 1489c4aa2a610204abfefe1e806dfd67,
         type: 3}
+    - target: {fileID: 3722219986438538978, guid: 8de12d2f73037354ea26e72dc96155b6,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722219986438538978, guid: 8de12d2f73037354ea26e72dc96155b6,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722219986438538978, guid: 8de12d2f73037354ea26e72dc96155b6,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4659366259251277462, guid: 8de12d2f73037354ea26e72dc96155b6,
         type: 3}
       propertyPath: m_Name
