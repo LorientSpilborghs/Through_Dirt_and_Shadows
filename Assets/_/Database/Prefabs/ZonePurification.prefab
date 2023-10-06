@@ -127,13 +127,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _knotsNeedForPurification: 10
   _globalPercentageOnPurified: 10
-  _purificationIndicatorHeight: 0.1
   _doorAnimation: {fileID: 0}
   _playableDirector: {fileID: 0}
   _fogRevealer: {fileID: 0}
   _screenLightRenderer: {fileID: 0}
-  _zonePurificationIndicator: {fileID: 5311957119108611474, guid: 54be05d3f442cfd4ebb6f5565d76e1c1,
-    type: 3}
   _ivyPreset:
   - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
   - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
@@ -145,9 +142,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}
-  _particleBeforePurification: []
-  _particleAfterPurification:
-  - {fileID: 188967638627759816, guid: 041cde37c38eadc4ea21596acbb1270c, type: 3}
+  _purificationParticle:
+  - {fileID: 830107448903188505}
 --- !u!114 &7279842604097065514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,6 +376,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1dbb16e83691194d9b479fb5f439abe, type: 3}
+--- !u!198 &830107448903188505 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7694881104286658412, guid: e1dbb16e83691194d9b479fb5f439abe,
+    type: 3}
+  m_PrefabInstance: {fileID: 7011145622213947253}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8305932825800779921 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1299304083269896164, guid: e1dbb16e83691194d9b479fb5f439abe,
@@ -425,6 +427,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 1489c4aa2a610204abfefe1e806dfd67,
         type: 3}
+    - target: {fileID: 3722219986438538978, guid: 8de12d2f73037354ea26e72dc96155b6,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722219986438538978, guid: 8de12d2f73037354ea26e72dc96155b6,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722219986438538978, guid: 8de12d2f73037354ea26e72dc96155b6,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4659366259251277462, guid: 8de12d2f73037354ea26e72dc96155b6,
         type: 3}
       propertyPath: m_Name
