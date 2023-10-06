@@ -127,10 +127,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _knotsNeedForPurification: 10
   _globalPercentageOnPurified: 10
+  _purificationIndicatorHeight: 0.1
   _doorAnimation: {fileID: 0}
   _playableDirector: {fileID: 0}
   _fogRevealer: {fileID: 0}
   _screenLightRenderer: {fileID: 0}
+  _zonePurificationIndicator: {fileID: 5311957119108611474, guid: 54be05d3f442cfd4ebb6f5565d76e1c1,
+    type: 3}
   _ivyPreset:
   - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
   - {fileID: 11400000, guid: 02c40d324bbfddb40890acc65324e9cd, type: 2}
@@ -142,8 +145,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}
   - {fileID: 11400000, guid: a175d9f3b1fe00a4fad9421bcf2db156, type: 2}
-  _purificationParticle:
+  _particleBeforePurification:
   - {fileID: 830107448903188505}
+  _particleAfterPurification:
+  - {fileID: 6967638359624225795, guid: b1b171ef030118b48909ebee6feced86, type: 3}
 --- !u!114 &7279842604097065514
 MonoBehaviour:
   m_ObjectHideFlags: 0
