@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using GameManagerFeature.Runtime;
 using PlayerRuntime;
@@ -17,7 +18,7 @@ namespace CameraFeature.Runtime
         [SerializeField] private float followOffsetMaxY = 50f;
         
         [Space] [Header("TDS Camera Option")]
-        private bool useEdgeScrolling = false;
+        private bool useEdgeScrolling;
         [SerializeField] private float cameraMoveSpeed;
         [SerializeField] [Range(0,1)] private float edgeScrollingSpeed = 0.5f;
         [SerializeField] private float _timeToReset = 1.2f;
@@ -38,6 +39,7 @@ namespace CameraFeature.Runtime
         private bool _resetPos;
         private float _resetPosDelta;
         private Rigidbody _rigidbody;
+        private Vector3 _currentRigidbodyRotation;
 
         public bool UseEdgeScrolling
         {
@@ -63,7 +65,33 @@ namespace CameraFeature.Runtime
             _rigidbody = GetComponent<Rigidbody>();
         }
 
-        private void Update()
+        // private void Update()
+        // {
+        //     HandleCameraZoom_LowerY();
+        //     if (!_gameManager.IsTutorialOver || _gameManager.IsGamePause || _gameManager.IsGameEnd) return;
+        //     
+        //     if (_player.m_isInThirdPerson?.Invoke() is true)
+        //     {
+        //         MoveTopCameraWhileInterpolating();
+        //         _resetPos = false;
+        //         if (_player.m_isCameraBlendingOver?.Invoke() is false) return;
+        //         return;
+        //     }
+        //     
+        //     HandleCameraMovement();
+        //     
+        //     // if (useDragPan)
+        //     // {
+        //     //     HandleCameraMovementDragPan();
+        //     // }
+        //
+        //     //HandleCameraZoom_FieldOfView();
+        //     //HandleCameraZoom_MoveForward();
+        //
+        //     ResetCameraPos();
+        // }
+
+        private void LateUpdate()
         {
             HandleCameraZoom_LowerY();
             if (!_gameManager.IsTutorialOver || _gameManager.IsGamePause || _gameManager.IsGameEnd) return;
@@ -143,7 +171,7 @@ namespace CameraFeature.Runtime
             if (Input.GetKey(KeyCode.D)) inputDir.x = +1f;
 
             Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
-            _rigidbody.velocity = Time.fixedDeltaTime * cameraMoveSpeed * moveDir;
+            _rigidbody.velocity = Time.smoothDeltaTime * cameraMoveSpeed * moveDir;
         }
 
         // private void HandleCameraMovementEdgeScrolling()
@@ -225,7 +253,10 @@ namespace CameraFeature.Runtime
                 // if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
                 // if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
                 // transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
-                transformToRotate.eulerAngles += new Vector3(0,Input.GetAxis("Mouse X") * _rotationSpeedInTopView, 0);
+                // transformToRotate.eulerAngles += new Vector3(0,Input.GetAxis("Mouse X") * _rotationSpeedInTopView, 0);
+                Vector3 rotation = new Vector3(0,Input.GetAxis("Mouse X") * _rotationSpeedInTopView, 0);
+                _currentRigidbodyRotation += rotation;
+                _rigidbody.rotation = Quaternion.Euler(_currentRigidbodyRotation);
             }
         }
 
