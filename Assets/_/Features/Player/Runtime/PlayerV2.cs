@@ -88,6 +88,7 @@ namespace PlayerRuntime
             InputManager.Instance.m_onRightMouseHold += OnRightMouseHoldEventHandler;
             InputManager.Instance.m_onRightMouseUp += OnRightMouseUpEventHandler;
             // InputManager.Instance.m_onMiddleMouseDown += OnSpaceKeyDownEventHandler;
+            InputManager.Instance.m_onPositiveScrollDown += OnPositiveScrollDown;
             InputManager.Instance.m_onNegativeScrollDown += OnSpaceKeyDownEventHandler;
             InputManager.Instance.m_onSpaceKeyDown += OnSpaceKeyEventHandler;
             InputManager.Instance.m_onLeftMouseHold += OnMouseHoldEventHandler;
@@ -105,6 +106,7 @@ namespace PlayerRuntime
             InputManager.Instance.m_onRightMouseHold -= OnRightMouseHoldEventHandler;
             InputManager.Instance.m_onRightMouseUp -= OnRightMouseUpEventHandler;
             // InputManager.Instance.m_onMiddleMouseDown -= OnSpaceKeyDownEventHandler;
+            InputManager.Instance.m_onPositiveScrollDown -= OnPositiveScrollDown;
             InputManager.Instance.m_onNegativeScrollDown -= OnSpaceKeyDownEventHandler;
             InputManager.Instance.m_onSpaceKeyDown -= OnSpaceKeyEventHandler;
             InputManager.Instance.m_onLeftMouseHold -= OnMouseHoldEventHandler;
@@ -131,6 +133,16 @@ namespace PlayerRuntime
         
         private void OnLeftMouseDownEventHandler()
         {
+            SelectRoot();
+        }
+        
+        private void OnPositiveScrollDown()
+        {
+            SelectRoot();
+        }
+
+        private void SelectRoot()
+        {
             if (m_isCameraBlendingOver?.Invoke() is false || m_isInThirdPerson?.Invoke() is true) return;
             m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
             RootToModify = GetTheRightRoot() ?? RootToModify;
@@ -143,7 +155,7 @@ namespace PlayerRuntime
 
         private void OnRightMouseUpEventHandler()
         {
-            if (Cursor.visible is true || Cursor.lockState is CursorLockMode.None) return;
+            if (Cursor.visible || Cursor.lockState is CursorLockMode.None) return;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
