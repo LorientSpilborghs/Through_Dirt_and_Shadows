@@ -32,11 +32,17 @@ namespace InputManagerFeature.Runtime
             StartCoroutine(HandleFpsCounter(1));
         }
 
+        private void Start()
+        {
+            _gameManager = GameManager.Instance;
+        }
+
         private void Update()
         {
+            if (!_gameManager.IsTutorialOver) return;
             OnEscapeKeyDown();
-            if (GameManager.Instance.IsGamePause) return;
-            if (GameManager.Instance.IsCutScenePlaying) return;
+            if (_gameManager.IsGamePause) return;
+            if (_gameManager.IsCutScenePlaying) return;
             MouseWorldPosition();
             
             OnLeftMouseDown();
@@ -127,6 +133,8 @@ namespace InputManagerFeature.Runtime
         
         
         [SerializeField] private LayerMask _layerMask;
+
+        private GameManager _gameManager;
         private Camera _camera;
         private Vector3 _previousMousePos;
     }

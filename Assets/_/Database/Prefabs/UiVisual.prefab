@@ -520,6 +520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerUICanvasGroup: {fileID: 2789356527337890077}
+  _tutorialCanvasGroup: {fileID: 10259167060083943}
 --- !u!223 &6653343266569370948
 Canvas:
   m_ObjectHideFlags: 0
@@ -1860,7 +1861,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 4744626392714639364}
         m_TargetAssemblyTypeName: UIFeature.Runtime.PauseMenu, UIFeature.Runtime
-        m_MethodName: Resume
+        m_MethodName: QuitTutorial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3845,6 +3846,7 @@ GameObject:
   - component: {fileID: 1497836030736451288}
   - component: {fileID: 2387664417899449779}
   - component: {fileID: 6964066623430961784}
+  - component: {fileID: 10259167060083943}
   m_Layer: 5
   m_Name: Tuto
   m_TagString: Untagged
@@ -3911,6 +3913,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &10259167060083943
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7915747851832447245}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8109313239551392024
 GameObject:
   m_ObjectHideFlags: 0

@@ -47,8 +47,8 @@ namespace CameraFeature.Runtime
         {
             if (_cameraManager.PlayerCameraManager.IsInterpolating) return;
             _cineMachineFreeLook.Priority = 0;
-            _cameraManager.VirtualCamera.LookAt = _cameraManager.CameraSystem.transform;
-            _cameraManager.VirtualCamera.Follow = _cameraManager.CameraSystem.transform;
+            _cameraManager.VirtualCamera.LookAt = _cameraManager.CameraSystemField.transform;
+            _cameraManager.VirtualCamera.Follow = _cameraManager.CameraSystemField.transform;
         }
 
         private bool IsCameraBlendingOverEventHandler()

@@ -1,3 +1,4 @@
+using CameraFeature.Runtime;
 using GameManagerFeature.Runtime;
 using PlayerRuntime;
 using UnityEngine;
@@ -9,39 +10,45 @@ namespace UIFeature.Runtime
     {
         private void Start()
         {
-            PlayerV2.Instance.m_onPauseMenu += OnPauseMenuEventHandler;
+            _player = PlayerV2.Instance;
+            _gameManager = GameManager.Instance;
+            _uiManager = UIManager.Instance;
+            _cameraManager = CameraManager.Instance;
+            _player.m_onPauseMenu += OnPauseMenuEventHandler;
+            _gameManager.m_onShowTutorial += GetPlayerUICanvasGroup;
         }
 
         private void OnDestroy()
         {
-            PlayerV2.Instance.m_onPauseMenu -= OnPauseMenuEventHandler;
+            _player.m_onPauseMenu -= OnPauseMenuEventHandler;
         }
 
         private void OnPauseMenuEventHandler()
         {
-            if (!GameManager.Instance.IsGamePause)
+            switch (_gameManager.IsGamePause)
             {
-                Pause();
-            }
-            else
-            {
-                Resume();
+                case false when _uiManager.PauseMenuUI.activeInHierarchy is false:
+                    Pause();
+                    break;
+                case true when _uiManager.PauseMenuUI.activeInHierarchy:
+                    Resume();
+                    break;
             }
         }
 
         private void Pause()
         {
-            UIManager.Instance.PauseMenuUI.SetActive(true);
+            _uiManager.PauseMenuUI.SetActive(true);
             Time.timeScale = 0;
-            GameManager.Instance.IsGamePause = true;
+            _gameManager.IsGamePause = true;
             _playerUICanvasGroup.alpha = 0;
         }
 
         public void Resume()
         {
-            UIManager.Instance.PauseMenuUI.SetActive(false);
+            _uiManager.PauseMenuUI.SetActive(false);
             Time.timeScale = 1;
-            GameManager.Instance.IsGamePause = false;
+            _gameManager.IsGamePause = false;
             _playerUICanvasGroup.alpha = 1;
         }
         
@@ -56,6 +63,25 @@ namespace UIFeature.Runtime
             Application.Quit();
         }
 
+        public void QuitTutorial()
+        {
+            _cameraManager.ToggleEdgeScrolling();
+            _gameManager.IsTutorialOver = true;
+            _gameManager.IsGamePause = false;
+            _playerUICanvasGroup.alpha = 1;
+        }
+
+        private CanvasGroup GetPlayerUICanvasGroup()
+        {
+            return _tutorialCanvasGroup;
+        }
+
         [SerializeField] private CanvasGroup _playerUICanvasGroup;
+        [SerializeField] private CanvasGroup _tutorialCanvasGroup;
+
+        private CameraManager _cameraManager;
+        private UIManager _uiManager;
+        private GameManager _gameManager;
+        private PlayerV2 _player;
     }
 }

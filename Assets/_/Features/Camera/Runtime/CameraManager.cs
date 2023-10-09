@@ -33,12 +33,7 @@ namespace CameraFeature.Runtime
             get => _isInThirdPerson;
             set => _isInThirdPerson = value;
         }
-
-        public Transform CameraSystem
-        {
-            get => _cameraSystem;
-            set => _cameraSystem = value;
-        }
+        
 
         public Transform FollowCameraAnchor
         {
@@ -46,10 +41,18 @@ namespace CameraFeature.Runtime
             set => _followCameraAnchor = value;
         }
 
+        public CameraSystem CameraSystemField
+        {
+            get => _cameraSystem;
+            set => _cameraSystem = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
             else Destroy(gameObject);
+
+            _cameraSystem = GetComponentInChildren<CameraSystem>();
         }
 
         private void Start()
@@ -88,6 +91,11 @@ namespace CameraFeature.Runtime
             FreeLook.Priority = 0;
         }
 
+        public void ToggleEdgeScrolling()
+        {
+            CameraSystemField.UseEdgeScrolling = !CameraSystemField.UseEdgeScrolling;
+        }
+
         private IEnumerator WaitForPlayerToInitialize()
         {
             yield return new WaitForSeconds(0.1f);
@@ -106,11 +114,11 @@ namespace CameraFeature.Runtime
         }
         
         [SerializeField] private Transform _anchor;
-        [SerializeField] private Transform _cameraSystem;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
         [SerializeField] private CinemachineFreeLook _cineMachineFreeLook;
         [SerializeField] private Transform _followCameraAnchor;
         
+        private CameraSystem _cameraSystem;
         private PlayerV2 _player;
         private bool _isWaitForPlayerToInitializeOver;
         private bool _isInThirdPerson;

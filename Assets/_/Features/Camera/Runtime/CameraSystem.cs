@@ -1,4 +1,5 @@
 using Cinemachine;
+using GameManagerFeature.Runtime;
 using PlayerRuntime;
 using UnityEngine;
 
@@ -16,13 +17,14 @@ namespace CameraFeature.Runtime
         [SerializeField] private float followOffsetMaxY = 50f;
         
         [Space] [Header("TDS Camera Option")]
-        [SerializeField] private bool useEdgeScrolling;
+        private bool useEdgeScrolling = false;
         [SerializeField] private float cameraMoveSpeed;
         [SerializeField] [Range(0,1)] private float edgeScrollingSpeed = 0.5f;
         [SerializeField] private float _timeToReset = 1.2f;
         [SerializeField] private float _rotationSpeedInTopView = 2;
         [SerializeField] private float _rotationSpeedInThirdPerson = 4;
 
+        private GameManager _gameManager;
         private CameraManager _cameraManager;
         private PlayerV2 _player;
         private bool dragPanMoveActive;
@@ -36,7 +38,13 @@ namespace CameraFeature.Runtime
         private bool _resetPos;
         private float _resetPosDelta;
         private Rigidbody _rigidbody;
-        
+
+        public bool UseEdgeScrolling
+        {
+            get => useEdgeScrolling;
+            set => useEdgeScrolling = value;
+        }
+
         private void Awake()
         {
             followOffset = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
@@ -44,6 +52,7 @@ namespace CameraFeature.Runtime
 
         private void Start()
         {
+            _gameManager = GameManager.Instance;
             _cameraManager = CameraManager.Instance;
             _player = PlayerV2.Instance;
             followOffset.y = followOffsetMaxY;
@@ -56,6 +65,9 @@ namespace CameraFeature.Runtime
 
         private void Update()
         {
+            HandleCameraZoom_LowerY();
+            if (!_gameManager.IsTutorialOver || _gameManager.IsGamePause) return;
+            
             if (_player.m_isInThirdPerson?.Invoke() is true)
             {
                 MoveTopCameraWhileInterpolating();
@@ -63,13 +75,9 @@ namespace CameraFeature.Runtime
                 if (_player.m_isCameraBlendingOver?.Invoke() is false) return;
                 return;
             }
-
+            
             HandleCameraMovement();
             
-            if (useEdgeScrolling)
-            {
-                HandleCameraMovementEdgeScrolling();
-            }
             // if (useDragPan)
             // {
             //     HandleCameraMovementDragPan();
@@ -77,7 +85,6 @@ namespace CameraFeature.Runtime
 
             //HandleCameraZoom_FieldOfView();
             //HandleCameraZoom_MoveForward();
-            HandleCameraZoom_LowerY();
 
             ResetCameraPos();
         }
@@ -105,6 +112,31 @@ namespace CameraFeature.Runtime
         private void HandleCameraMovement()
         {
             Vector3 inputDir = new Vector3(0, 0, 0);
+            int edgeScrollSize = 20;
+
+            if (useEdgeScrolling)
+            {
+                if (Input.mousePosition.x < edgeScrollSize)
+                {
+                    inputDir.x -= edgeScrollingSpeed;
+                }
+
+                if (Input.mousePosition.y < edgeScrollSize)
+                {
+                    inputDir.z -= edgeScrollingSpeed;
+                }
+
+                if (Input.mousePosition.x > Screen.width - edgeScrollSize)
+                {
+                    inputDir.x += edgeScrollingSpeed;
+                }
+
+                if (Input.mousePosition.y > Screen.height - edgeScrollSize)
+                {
+                    inputDir.z += edgeScrollingSpeed;
+                }
+            }
+            
             if (Input.GetKey(KeyCode.Z)) inputDir.z = +1f;
             if (Input.GetKey(KeyCode.S)) inputDir.z = -1f;
             if (Input.GetKey(KeyCode.Q)) inputDir.x = -1f;
@@ -114,33 +146,33 @@ namespace CameraFeature.Runtime
             _rigidbody.velocity = Time.fixedDeltaTime * cameraMoveSpeed * moveDir;
         }
 
-        private void HandleCameraMovementEdgeScrolling()
-        {
-            Vector3 inputDir = new Vector3(0, 0, 0);
-            int edgeScrollSize = 20;
-            if (Input.mousePosition.x < edgeScrollSize)
-            {
-                inputDir.x -= edgeScrollingSpeed;
-            }
-
-            if (Input.mousePosition.y < edgeScrollSize)
-            {
-                inputDir.z -= edgeScrollingSpeed;
-            }
-
-            if (Input.mousePosition.x > Screen.width - edgeScrollSize)
-            {
-                inputDir.x += edgeScrollingSpeed;
-            }
-
-            if (Input.mousePosition.y > Screen.height - edgeScrollSize)
-            {
-                inputDir.z += edgeScrollingSpeed;
-            }
-
-            Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
-            _rigidbody.velocity = Time.fixedDeltaTime * cameraMoveSpeed * moveDir;
-        }
+        // private void HandleCameraMovementEdgeScrolling()
+        // {
+        //     Vector3 inputDir = new Vector3(0, 0, 0);
+        //     int edgeScrollSize = 20;
+        //     if (Input.mousePosition.x < edgeScrollSize)
+        //     {
+        //         inputDir.x -= edgeScrollingSpeed;
+        //     }
+        //
+        //     if (Input.mousePosition.y < edgeScrollSize)
+        //     {
+        //         inputDir.z -= edgeScrollingSpeed;
+        //     }
+        //
+        //     if (Input.mousePosition.x > Screen.width - edgeScrollSize)
+        //     {
+        //         inputDir.x += edgeScrollingSpeed;
+        //     }
+        //
+        //     if (Input.mousePosition.y > Screen.height - edgeScrollSize)
+        //     {
+        //         inputDir.z += edgeScrollingSpeed;
+        //     }
+        //
+        //     Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
+        //     _rigidbody.velocity = Time.fixedDeltaTime * cameraMoveSpeed * moveDir;
+        // }
 
         private void HandleCameraMovementDragPan()
         {

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 namespace GameManagerFeature.Runtime
@@ -5,6 +7,8 @@ namespace GameManagerFeature.Runtime
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
+
+        public Func<CanvasGroup> m_onShowTutorial;
         
         public Transform PlayerTransform
         {
@@ -30,22 +34,46 @@ namespace GameManagerFeature.Runtime
             set => _isGameEnd = value;
         }
 
+        public bool IsTutorialOver
+        {
+            get => _isTutorialOver;
+            set => _isTutorialOver = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
             else Destroy(gameObject);
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
             _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
             IsGamePause = true;
-            Time.timeScale = 0;
+            yield return new WaitForEndOfFrame();
+            StartCoroutine(OnShowTutorialEventHandler(m_onShowTutorial?.Invoke()));
         }
+
+        private IEnumerator OnShowTutorialEventHandler(CanvasGroup canvasGroup)
+        {
+            _timer = 0;
+            while (_timer < _durationBeforeShowingTutorial)
+            {
+                canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 1, _timer / _durationBeforeShowingTutorial);
+                _timer += Time.deltaTime;
+                yield return null;
+            }
+
+            IsTutorialOver = true;
+        }
+
+        [SerializeField] private float _durationBeforeShowingTutorial = 100f;
 
         private Transform _playerTransform;
         private bool _isGamePause;
+        private bool _isTutorialOver;
         private bool _isCutScenePlaying;
         private bool _isGameEnd;
+        private float _timer;
     }
 }
