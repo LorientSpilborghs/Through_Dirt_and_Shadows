@@ -1,5 +1,6 @@
 using FMOD.Studio;
 using FMODUnity;
+using GameManagerFeature.Runtime;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
@@ -11,11 +12,17 @@ namespace SoundManagerFeature.Runtime
         {
             _inGameMusicInstance = RuntimeManager.CreateInstance(_inGameMusic);
             _inGameMusicInstance.start();
+            GameManager.Instance.m_onGameOver += OnGameOverEventHandler;
         }
 
         private void OnDestroy()
         {
             _inGameMusicInstance.stop(STOP_MODE.IMMEDIATE);
+        }
+
+        private void OnGameOverEventHandler()
+        {
+            _inGameMusicInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
 
         [SerializeField] private EventReference _inGameMusic;

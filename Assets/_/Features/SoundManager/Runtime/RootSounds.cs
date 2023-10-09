@@ -1,6 +1,7 @@
 using System.Collections;
 using FMOD.Studio;
 using FMODUnity;
+using GameManagerFeature.Runtime;
 using PostProcessManagerFeature.Runtime;
 using RootFeature.Runtime;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace SoundManagerFeature.Runtime
             _growingRootSoundInstance = RuntimeManager.CreateInstance(_growingRootSound);
             PostProcessManager.Instance.m_onLowHealth += OnLowHealthEventHandler;
             PostProcessManager.Instance.m_onOverHealth += OnOverHealthEventHandler;
+            GameManager.Instance.m_onGameOver += OnGameOverEventHandler;
             _root = GetComponent<RootV2>();
             _root.m_onStartGrow = OnStartGrowEventHandler;
             _root.m_onEndGrow = OnEndGrowEventHandler;
@@ -30,6 +32,11 @@ namespace SoundManagerFeature.Runtime
         }
 
         private void OnEndGrowEventHandler()
+        {
+            _growingRootSoundInstance.stop(STOP_MODE.IMMEDIATE);
+        }
+
+        private void OnGameOverEventHandler()
         {
             _growingRootSoundInstance.stop(STOP_MODE.IMMEDIATE);
         }
