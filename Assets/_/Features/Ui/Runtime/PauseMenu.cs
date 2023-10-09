@@ -1,3 +1,4 @@
+using System.Collections;
 using CameraFeature.Runtime;
 using GameManagerFeature.Runtime;
 using PlayerRuntime;
@@ -40,18 +41,31 @@ namespace UIFeature.Runtime
         
         private void OnGameOverEventHandler()
         {
-            Time.timeScale = 0;
-            _gameManager.IsGamePause = true;
             _gameManager.IsGameEnd = true;
+            _gameManager.IsGamePause = true;
+            StartCoroutine(WaitForFadeIn());
+        }
+
+        private IEnumerator WaitForFadeIn()
+        {
+            yield return new WaitForSeconds(1f);
+            _playerUICanvasGroup.alpha = 0;
             _gameOverUI.SetActive(true);
+            StartCoroutine(WaitForFadeOut());
+        }
+
+        private IEnumerator WaitForFadeOut()
+        {
+            yield return new WaitForSeconds(1f);
+            Time.timeScale = 0;
         }
 
         private void Pause()
         {
             _uiManager.PauseMenuUI.SetActive(true);
-            Time.timeScale = 0;
             _gameManager.IsGamePause = true;
             _playerUICanvasGroup.alpha = 0;
+            Time.timeScale = 0;
         }
 
         public void Resume()

@@ -1,4 +1,5 @@
 using FMODUnity;
+using GameManagerFeature.Runtime;
 using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace SoundManagerFeature.Runtime
 
         private void Start()
         {
+            GameManager.Instance.m_onGameOver += OnGameOverEventHandler;
             ResourcesManager.Instance.m_onChangeMaxHealthTier += OnChangeMaxHealthTierEventHandler;
         }
 
@@ -24,7 +26,13 @@ namespace SoundManagerFeature.Runtime
             RuntimeManager.PlayOneShot(_soundOnTierChange);
         }
 
+        private void OnGameOverEventHandler()
+        {
+            RuntimeManager.PlayOneShot(_soundOnGameOver);
+        }
+
 
         [SerializeField] private EventReference _soundOnTierChange;
+        [SerializeField] private EventReference _soundOnGameOver;
     }
 }
