@@ -568,6 +568,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1365095235}
   m_SourcePrefab: {fileID: 100100000, guid: cf87215fbb4f7ff4bb167e8004d75ec3, type: 3}
+--- !u!1 &359322470 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8854567730996495931, guid: cbc2c6fd876f95c468e7cafdd1104cce,
+    type: 3}
+  m_PrefabInstance: {fileID: 5005960022303878128}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -3485,6 +3491,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 115046914}
     m_Modifications:
+    - target: {fileID: 4744626392714639364, guid: cbc2c6fd876f95c468e7cafdd1104cce,
+        type: 3}
+      propertyPath: _gameOverUI
+      value: 
+      objectReference: {fileID: 359322470}
     - target: {fileID: 4959925662984486455, guid: cbc2c6fd876f95c468e7cafdd1104cce,
         type: 3}
       propertyPath: m_AnchorMax.x

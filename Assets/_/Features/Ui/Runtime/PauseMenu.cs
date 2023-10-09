@@ -43,7 +43,7 @@ namespace UIFeature.Runtime
             Time.timeScale = 0;
             _gameManager.IsGamePause = true;
             _gameManager.IsGameEnd = true;
-            _gameOverCanvasGroup.alpha = 1;
+            _gameOverUI.SetActive(true);
         }
 
         private void Pause()
@@ -88,7 +88,7 @@ namespace UIFeature.Runtime
 
         [SerializeField] private CanvasGroup _playerUICanvasGroup;
         [SerializeField] private CanvasGroup _tutorialCanvasGroup;
-        [SerializeField] private CanvasGroup _gameOverCanvasGroup;
+        [SerializeField] private GameObject _gameOverUI;
 
         private CameraManager _cameraManager;
         private UIManager _uiManager;

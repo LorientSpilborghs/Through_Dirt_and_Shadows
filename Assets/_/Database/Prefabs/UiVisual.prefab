@@ -522,7 +522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerUICanvasGroup: {fileID: 2789356527337890077}
   _tutorialCanvasGroup: {fileID: 10259167060083943}
-  _gameOverCanvasGroup: {fileID: 6676298301441394970}
+  _gameOverUI: {fileID: 8854567730996495931}
 --- !u!223 &6653343266569370948
 Canvas:
   m_ObjectHideFlags: 0
@@ -3304,7 +3304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5615311863778644104
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4450,14 +4450,13 @@ GameObject:
   - component: {fileID: 8213817412696858748}
   - component: {fileID: 8850643659955061755}
   - component: {fileID: 212242827864550552}
-  - component: {fileID: 6676298301441394970}
   m_Layer: 5
   m_Name: GameOverMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8213817412696858748
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4517,18 +4516,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!225 &6676298301441394970
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8854567730996495931}
-  m_Enabled: 1
-  m_Alpha: 0
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &9129280692990067674
 GameObject:
   m_ObjectHideFlags: 0

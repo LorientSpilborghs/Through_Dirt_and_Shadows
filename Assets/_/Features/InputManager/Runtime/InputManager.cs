@@ -16,7 +16,8 @@ namespace InputManagerFeature.Runtime
         public Action m_onLeftMouseUp;
         public Action m_onRightMouseHold;
         public Action m_onRightMouseUp;
-        public Action m_onMiddleMouseDown;
+        public Action m_onMiddleMouseHold;
+        public Action m_onMiddleMouseUp;
         public Action m_onPositiveScrollDown;
         public Action m_onNegativeScrollDown;
         public Action m_onSpaceKeyDown;
@@ -51,6 +52,7 @@ namespace InputManagerFeature.Runtime
             OnRightMouseHold();
             OnRightMouseUp();
             OnMiddleMouseDown();
+            OnMiddleMouseUp();
             OnPositiveScrollDown();
             OnNegativeScrollDown();
             OnLeftMouseHold();
@@ -101,8 +103,14 @@ namespace InputManagerFeature.Runtime
 
         private void OnMiddleMouseDown()
         {
-            if (!Input.GetKeyDown(KeyCode.Mouse2)) return;
-            m_onMiddleMouseDown?.Invoke();
+            if (!Input.GetKey(KeyCode.Mouse2)) return;
+            m_onMiddleMouseHold?.Invoke();
+        }
+
+        private void OnMiddleMouseUp()
+        {
+            if (!Input.GetKeyUp(KeyCode.Mouse2)) return;
+            m_onMiddleMouseUp?.Invoke();
         }
 
         private void OnPositiveScrollDown()
