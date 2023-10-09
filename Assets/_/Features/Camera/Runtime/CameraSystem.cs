@@ -66,7 +66,7 @@ namespace CameraFeature.Runtime
         private void Update()
         {
             HandleCameraZoom_LowerY();
-            if (!_gameManager.IsTutorialOver || _gameManager.IsGamePause) return;
+            if (!_gameManager.IsTutorialOver || _gameManager.IsGamePause || _gameManager.IsGameEnd) return;
             
             if (_player.m_isInThirdPerson?.Invoke() is true)
             {

@@ -13,7 +13,8 @@ namespace UIFeature.Runtime
 
         private void Start()
         {
-            ResourcesManager.Instance.m_onChangeMaxHealthTier += UpgradeMaxHealthForTierTwo;
+            _resourcesManager = ResourcesManager.Instance;
+            _resourcesManager.m_onChangeMaxHealthTier += UpgradeMaxHealthForTierTwo;
         }
 
         public void SetHealth(float currentResources, float maxResources)
@@ -88,7 +89,8 @@ namespace UIFeature.Runtime
         
         [SerializeField] private float _redHealthDelayDuration = 10;
         [Space] [SerializeField] private GameObject[] _maxHealthBar;
-        
+
+        private ResourcesManager _resourcesManager;
         private Coroutine _delayRedHealthSlider;
         private float _timer;
         // private TextMeshProUGUI _text;

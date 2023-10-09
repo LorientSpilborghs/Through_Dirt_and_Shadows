@@ -9,6 +9,7 @@ namespace GameManagerFeature.Runtime
         public static GameManager Instance { get; private set; }
 
         public Func<CanvasGroup> m_onShowTutorial;
+        public Action m_onGameOver;
         
         public Transform PlayerTransform
         {

@@ -40,7 +40,7 @@ namespace InputManagerFeature.Runtime
 
         private void Update()
         {
-            if (!_gameManager.IsTutorialOver) return;
+            if (!_gameManager.IsTutorialOver || _gameManager.IsGamePause) return;
             OnEscapeKeyDown();
             if (_gameManager.IsGamePause) return;
             if (_gameManager.IsCutScenePlaying) return;

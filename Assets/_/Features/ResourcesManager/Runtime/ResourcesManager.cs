@@ -1,4 +1,5 @@
 using System;
+using GameManagerFeature.Runtime;
 using UnityEngine;
 
 namespace ResourcesManagerFeature.Runtime
@@ -44,11 +45,16 @@ namespace ResourcesManagerFeature.Runtime
         {
             CurrentResources = _baseResources;
             TotalUpcomingResources = CurrentResources;
+            _gameManager = GameManager.Instance;
         }
 
         public bool UseResources(float quantity)
         {
-            if (quantity > CurrentResources) return false;
+            if (quantity > CurrentResources)
+            {
+                CheckIfGameIsOver(CurrentResources, TotalUpcomingResources);
+                return false;
+            }
 
             CurrentResources -= quantity;
             TotalUpcomingResources -= quantity;
@@ -98,6 +104,15 @@ namespace ResourcesManagerFeature.Runtime
             _isTierFourUnlocked = true;
         }
 
+        private void CheckIfGameIsOver(float currentResources, float totalUpcomingResources)
+        {
+            if (currentResources < 1 && totalUpcomingResources < 1)
+            {
+                _gameManager.m_onGameOver?.Invoke();
+            }
+        }
+        
+
         [SerializeField] private float _baseResources = 250;
         [SerializeField] private float _maxResources = 500;
         [SerializeField] private int _resourcesCostDivider = 100;
@@ -109,7 +124,9 @@ namespace ResourcesManagerFeature.Runtime
         [SerializeField] private float _maxResourcesAtTierTwo = 1000;
         [SerializeField] private float _maxResourcesAtTierThree = 1500;
         [SerializeField] private float _maxResourcesAtTierFour = 2000;
-        
+
+
+        private GameManager _gameManager;
         private float _currentResources;
         private float _totalUpcomingResources;
         private bool _isTierTwoUnlocked;

@@ -82,6 +82,7 @@ namespace PlayerRuntime
 
         private void Start()
         {
+            _resourcesManager = ResourcesManager.Instance;
             InputManager.Instance.m_onMouseMove += OnMouseMoveEventHandler;
             InputManager.Instance.m_onLeftMouseDown += OnLeftMouseDownEventHandler;
             InputManager.Instance.m_onRightMouseHold += OnRightMouseHoldEventHandler;
@@ -160,7 +161,7 @@ namespace PlayerRuntime
             if (RootToModify.SpeedPercentage <= 0) return;
             if (!UseResourcesWhileGrowing(((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
                                      * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost)) 
-                                     / ResourcesManager.Instance.ResourcesCostDivider)) return;
+                                     / _resourcesManager.ResourcesCostDivider)) return;
             if (!IsInterpolating) RootToModify.StartGrowing();
             RootToModify.Grow(RootToModify, PointerPosition);
             m_onInterpolate?.Invoke((Vector3)RootToModify.Container.Spline[^1].Position);
@@ -226,7 +227,7 @@ namespace PlayerRuntime
             }
             else
             {
-                return ResourcesManager.Instance.UseResources(IsGettingCostReduction()) 
+                return _resourcesManager.UseResources(IsGettingCostReduction(CurrentClosestRoot, CurrentClosestKnotIndex)) 
                     ? AddNewRoot((Vector3)CurrentClosestKnot.Position) : null;
             }
         }
@@ -254,7 +255,7 @@ namespace PlayerRuntime
         {
             if (IsMaxDistanceBetweenKnots())
             {
-                if (ResourcesManager.Instance.UseResources(resourcesUsage))
+                if (_resourcesManager.UseResources(resourcesUsage))
                 {
                     m_onNewKnotInstantiate?.Invoke();
                     return true;
@@ -289,19 +290,19 @@ namespace PlayerRuntime
             return true;
         }
 
-        private int IsGettingCostReduction()
+        private int IsGettingCostReduction(RootV2 root, int closestKnotIndex)
         {
-            if (CurrentClosestKnotIndex < RootToModify.MinimumNumberOfKnotsForCostReduction)
+            if (closestKnotIndex < root.MinimumNumberOfKnotsForCostReduction)
             {
-                return ((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
-                       * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost)
-                       + RootToModify.SupplementalCostForNewRoot) / ResourcesManager.Instance.ResourcesCostDivider;
+                return ((closestKnotIndex - 1 + root.InitialGrowCost) 
+                       * (closestKnotIndex + root.InitialGrowCost)
+                       + root.SupplementalCostForNewRoot) / _resourcesManager.ResourcesCostDivider;
             }
             else
             {
-                return (((RootToModify.Container.Spline.Count - 1 + RootToModify.InitialGrowCost) 
-                       * (RootToModify.Container.Spline.Count + RootToModify.InitialGrowCost)
-                       + RootToModify.SupplementalCostForNewRoot) / ResourcesManager.Instance.ResourcesCostDivider) - RootToModify.CostReduction;
+                return (((closestKnotIndex - 1 + root.InitialGrowCost) 
+                       * (closestKnotIndex + root.InitialGrowCost)
+                       + root.SupplementalCostForNewRoot) / _resourcesManager.ResourcesCostDivider) - root.CostReduction;
             }
         }
         
@@ -314,7 +315,8 @@ namespace PlayerRuntime
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
         [Space]
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
-        [Space]
+
+        private ResourcesManager _resourcesManager;
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;
         private RootV2 _rootToModify;

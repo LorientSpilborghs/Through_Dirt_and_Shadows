@@ -16,11 +16,13 @@ namespace UIFeature.Runtime
             _cameraManager = CameraManager.Instance;
             _player.m_onPauseMenu += OnPauseMenuEventHandler;
             _gameManager.m_onShowTutorial += GetPlayerUICanvasGroup;
+            _gameManager.m_onGameOver += OnGameOverEventHandler;
         }
 
         private void OnDestroy()
         {
             _player.m_onPauseMenu -= OnPauseMenuEventHandler;
+            _gameManager.m_onShowTutorial -= GetPlayerUICanvasGroup;
         }
 
         private void OnPauseMenuEventHandler()
@@ -34,6 +36,14 @@ namespace UIFeature.Runtime
                     Resume();
                     break;
             }
+        }
+        
+        private void OnGameOverEventHandler()
+        {
+            Time.timeScale = 0;
+            _gameManager.IsGamePause = true;
+            _gameManager.IsGameEnd = true;
+            _gameOverCanvasGroup.alpha = 1;
         }
 
         private void Pause()
@@ -78,6 +88,7 @@ namespace UIFeature.Runtime
 
         [SerializeField] private CanvasGroup _playerUICanvasGroup;
         [SerializeField] private CanvasGroup _tutorialCanvasGroup;
+        [SerializeField] private CanvasGroup _gameOverCanvasGroup;
 
         private CameraManager _cameraManager;
         private UIManager _uiManager;
