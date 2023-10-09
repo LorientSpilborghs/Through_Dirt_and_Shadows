@@ -34,7 +34,7 @@ namespace ZoneFeature.Runtime
             var localScale = _instantiatedPrefab.transform.localScale;
             localScale = new Vector3(_sphereCollider.radius,
                 0, _sphereCollider.radius);
-            _instantiatedPrefab.transform.localScale = localScale;
+            _instantiatedPrefab.transform.localScale = localScale * 2;
             var position = _instantiatedPrefab.transform.position;
             _instantiatedPrefab.transform.SetPositionAndRotation(new Vector3(position.x, _purificationIndicatorHeight, position.z), Quaternion.identity);
             _instantiatedPrefab.gameObject.SetActive(false);

@@ -17,6 +17,7 @@ namespace InputManagerFeature.Runtime
         public Action m_onRightMouseHold;
         public Action m_onRightMouseUp;
         public Action m_onMiddleMouseDown;
+        public Action m_onNegativeScrollDown;
         public Action m_onSpaceKeyDown;
         public Action m_onEscapeKeyDown;
         public Action m_onTabKeyDown;
@@ -49,6 +50,7 @@ namespace InputManagerFeature.Runtime
             OnRightMouseHold();
             OnRightMouseUp();
             OnMiddleMouseDown();
+            OnNegativeScrollDown();
             OnLeftMouseHold();
             OnleftMouseUp();
             OnSpaceKeyDown();
@@ -99,6 +101,12 @@ namespace InputManagerFeature.Runtime
         {
             if (!Input.GetKeyDown(KeyCode.Mouse2)) return;
             m_onMiddleMouseDown?.Invoke();
+        }
+        
+        private void OnNegativeScrollDown()
+        {
+            if (Input.GetAxis("Mouse ScrollWheel") >= 0f) return;
+            m_onNegativeScrollDown?.Invoke();
         }
 
         private void OnLeftMouseHold()

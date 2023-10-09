@@ -86,7 +86,8 @@ namespace PlayerRuntime
             InputManager.Instance.m_onLeftMouseDown += OnLeftMouseDownEventHandler;
             InputManager.Instance.m_onRightMouseHold += OnRightMouseHoldEventHandler;
             InputManager.Instance.m_onRightMouseUp += OnRightMouseUpEventHandler;
-            InputManager.Instance.m_onMiddleMouseDown += OnSpaceKeyDownEventHandler;
+            // InputManager.Instance.m_onMiddleMouseDown += OnSpaceKeyDownEventHandler;
+            InputManager.Instance.m_onNegativeScrollDown += OnSpaceKeyDownEventHandler;
             InputManager.Instance.m_onSpaceKeyDown += OnSpaceKeyEventHandler;
             InputManager.Instance.m_onLeftMouseHold += OnMouseHoldEventHandler;
             InputManager.Instance.m_onLeftMouseUp += OnMouseUpEventHandler;
@@ -102,7 +103,8 @@ namespace PlayerRuntime
             InputManager.Instance.m_onLeftMouseDown -= OnLeftMouseDownEventHandler;
             InputManager.Instance.m_onRightMouseHold -= OnRightMouseHoldEventHandler;
             InputManager.Instance.m_onRightMouseUp -= OnRightMouseUpEventHandler;
-            InputManager.Instance.m_onMiddleMouseDown -= OnSpaceKeyDownEventHandler;
+            // InputManager.Instance.m_onMiddleMouseDown -= OnSpaceKeyDownEventHandler;
+            InputManager.Instance.m_onNegativeScrollDown -= OnSpaceKeyDownEventHandler;
             InputManager.Instance.m_onSpaceKeyDown -= OnSpaceKeyEventHandler;
             InputManager.Instance.m_onLeftMouseHold -= OnMouseHoldEventHandler;
             InputManager.Instance.m_onLeftMouseUp -= OnMouseUpEventHandler;
