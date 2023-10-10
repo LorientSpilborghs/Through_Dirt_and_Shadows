@@ -1,4 +1,3 @@
-using System;
 using Cinemachine;
 using GameManagerFeature.Runtime;
 using PlayerRuntime;
@@ -8,6 +7,18 @@ namespace CameraFeature.Runtime
 {
     public class CameraSystem : MonoBehaviour
     {
+        public bool UseEdgeScrolling
+        {
+            get => useEdgeScrolling;
+            set => useEdgeScrolling = value;
+        }
+
+        public bool UseDragPanMove
+        {
+            get => useDragPanMove;
+            set => useDragPanMove = value;
+        }
+        
         [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
         // [SerializeField] private bool useDragPan;
         [SerializeField] private float fieldOfViewMax = 50;
@@ -19,8 +30,10 @@ namespace CameraFeature.Runtime
         
         [Space] [Header("TDS Camera Option")]
         private bool useEdgeScrolling;
-        [SerializeField] private float cameraMoveSpeed;
-        [SerializeField] [Range(0,1)] private float edgeScrollingSpeed = 0.5f;
+        private bool useDragPanMove;
+        [SerializeField] private float _cameraMoveSpeed = 1000f;
+        [SerializeField] private float _edgeScrollingSpeed = 0.5f;
+        [SerializeField] private float _dragPanSpeed = 0.5f;
         [SerializeField] private float _timeToReset = 1.2f;
         [SerializeField] private float _rotationSpeedInTopView = 2;
         [SerializeField] private float _rotationSpeedInThirdPerson = 4;
@@ -28,7 +41,6 @@ namespace CameraFeature.Runtime
         private GameManager _gameManager;
         private CameraManager _cameraManager;
         private PlayerV2 _player;
-        private bool dragPanMoveActive;
         private Vector2 lastMousePosition;
         private float targetFieldOfView = 50;
         private Vector3 followOffset;
@@ -40,12 +52,6 @@ namespace CameraFeature.Runtime
         private float _resetPosDelta;
         private Rigidbody _rigidbody;
         private Vector3 _currentRigidbodyRotation;
-
-        public bool UseEdgeScrolling
-        {
-            get => useEdgeScrolling;
-            set => useEdgeScrolling = value;
-        }
 
         private void Awake()
         {
@@ -105,11 +111,6 @@ namespace CameraFeature.Runtime
             }
             
             HandleCameraMovement();
-            
-            // if (useDragPan)
-            // {
-            //     HandleCameraMovementDragPan();
-            // }
 
             //HandleCameraZoom_FieldOfView();
             //HandleCameraZoom_MoveForward();
@@ -141,27 +142,43 @@ namespace CameraFeature.Runtime
         {
             Vector3 inputDir = new Vector3(0, 0, 0);
             int edgeScrollSize = 20;
-
+            
             if (useEdgeScrolling)
             {
                 if (Input.mousePosition.x < edgeScrollSize)
                 {
-                    inputDir.x -= edgeScrollingSpeed;
+                    inputDir.x -= _edgeScrollingSpeed;
                 }
-
+            
                 if (Input.mousePosition.y < edgeScrollSize)
                 {
-                    inputDir.z -= edgeScrollingSpeed;
+                    inputDir.z -= _edgeScrollingSpeed;
                 }
-
+            
                 if (Input.mousePosition.x > Screen.width - edgeScrollSize)
                 {
-                    inputDir.x += edgeScrollingSpeed;
+                    inputDir.x += _edgeScrollingSpeed;
                 }
-
+            
                 if (Input.mousePosition.y > Screen.height - edgeScrollSize)
                 {
-                    inputDir.z += edgeScrollingSpeed;
+                    inputDir.z += _edgeScrollingSpeed;
+                }
+            }
+
+            if (useDragPanMove)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse2))
+                {
+                    lastMousePosition = Input.mousePosition;
+                }
+                
+                if (Input.GetKey(KeyCode.Mouse2))
+                {
+                    Vector2 mouseMovementDelta = (Vector2)Input.mousePosition - lastMousePosition;
+                    inputDir.x = -mouseMovementDelta.x * _dragPanSpeed;
+                    inputDir.z = -mouseMovementDelta.y * _dragPanSpeed;
+                    lastMousePosition = Input.mousePosition;
                 }
             }
             
@@ -171,7 +188,7 @@ namespace CameraFeature.Runtime
             if (Input.GetKey(KeyCode.D)) inputDir.x = +1f;
 
             Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
-            _rigidbody.velocity = Time.smoothDeltaTime * cameraMoveSpeed * moveDir;
+            _rigidbody.velocity = Time.smoothDeltaTime * _cameraMoveSpeed * moveDir;
         }
 
         // private void HandleCameraMovementEdgeScrolling()
@@ -207,24 +224,23 @@ namespace CameraFeature.Runtime
             Vector3 inputDir = new Vector3(0, 0, 0);
             if (Input.GetMouseButtonDown(1))
             {
-                dragPanMoveActive = true;
+                UseDragPanMove = true;
                 lastMousePosition = Input.mousePosition;
             }
-
+        
             if (Input.GetMouseButtonUp(1))
             {
-                dragPanMoveActive = false;
+                UseDragPanMove = false;
             }
-
-            if (dragPanMoveActive)
+        
+            if (UseDragPanMove)
             {
                 Vector2 mouseMovementDelta = (Vector2)Input.mousePosition - lastMousePosition;
-                float dragPanSpeed = 1f;
-                inputDir.x = mouseMovementDelta.x * dragPanSpeed;
-                inputDir.z = mouseMovementDelta.y * dragPanSpeed;
+                inputDir.x = mouseMovementDelta.x * _dragPanSpeed;
+                inputDir.z = mouseMovementDelta.y * _dragPanSpeed;
                 lastMousePosition = Input.mousePosition;
             }
-
+        
             Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
             float moveSpeed = 50f;
             transform.position += moveDir * (moveSpeed * Time.deltaTime);

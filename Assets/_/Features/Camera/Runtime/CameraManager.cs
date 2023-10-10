@@ -95,6 +95,11 @@ namespace CameraFeature.Runtime
         {
             CameraSystemField.UseEdgeScrolling = !CameraSystemField.UseEdgeScrolling;
         }
+        
+        public void ToggleDragPanMove()
+        {
+            CameraSystemField.UseDragPanMove = !CameraSystemField.UseDragPanMove;
+        }
 
         private IEnumerator WaitForPlayerToInitialize()
         {

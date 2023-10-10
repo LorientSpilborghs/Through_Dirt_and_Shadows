@@ -87,8 +87,6 @@ namespace PlayerRuntime
             InputManager.Instance.m_onLeftMouseDown += OnLeftMouseDownEventHandler;
             InputManager.Instance.m_onRightMouseHold += OnRightMouseHoldEventHandler;
             InputManager.Instance.m_onRightMouseUp += OnRightMouseUpEventHandler;
-            InputManager.Instance.m_onMiddleMouseHold += OnMiddleMouseDown;
-            InputManager.Instance.m_onMiddleMouseUp += OnMiddleMouseUpEventHandler;
             InputManager.Instance.m_onPositiveScrollDown += OnPositiveScrollDown;
             InputManager.Instance.m_onNegativeScrollDown += OnSpaceKeyDownEventHandler;
             InputManager.Instance.m_onSpaceKeyDown += OnSpaceKeyEventHandler;
@@ -106,8 +104,6 @@ namespace PlayerRuntime
             InputManager.Instance.m_onLeftMouseDown -= OnLeftMouseDownEventHandler;
             InputManager.Instance.m_onRightMouseHold -= OnRightMouseHoldEventHandler;
             InputManager.Instance.m_onRightMouseUp -= OnRightMouseUpEventHandler;
-            InputManager.Instance.m_onMiddleMouseHold -= OnMiddleMouseDown;
-            InputManager.Instance.m_onMiddleMouseUp -= OnMiddleMouseUpEventHandler;
             InputManager.Instance.m_onPositiveScrollDown -= OnPositiveScrollDown;
             InputManager.Instance.m_onNegativeScrollDown -= OnSpaceKeyDownEventHandler;
             InputManager.Instance.m_onSpaceKeyDown -= OnSpaceKeyEventHandler;
@@ -149,23 +145,19 @@ namespace PlayerRuntime
             m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
             RootToModify = GetTheRightRoot() ?? RootToModify;
         }
-
+        
         private void CameraRotate()
         {
             m_onCameraRotate?.Invoke(m_isInThirdPerson?.Invoke() is true);
         }
         
-        private void OnMiddleMouseDown()
-        {
-            CameraRotate();
-        }
         
         private void OnRightMouseHoldEventHandler()
         {
             CameraRotate();
         }
 
-        private void CameraRotateEnd()
+        private void CameraRotateAndDragEnd()
         {
             if (Cursor.visible || Cursor.lockState is CursorLockMode.None) return;
             Cursor.visible = true;
@@ -174,12 +166,7 @@ namespace PlayerRuntime
         
         private void OnRightMouseUpEventHandler()
         {
-            CameraRotateEnd();
-        }
-
-        private void OnMiddleMouseUpEventHandler()
-        {
-            CameraRotateEnd();
+            CameraRotateAndDragEnd();
         }
 
         private void OnSpaceKeyDownEventHandler()

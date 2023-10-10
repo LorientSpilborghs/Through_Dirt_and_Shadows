@@ -90,6 +90,7 @@ namespace UIFeature.Runtime
         public void QuitTutorial()
         {
             _cameraManager.ToggleEdgeScrolling();
+            _cameraManager.ToggleDragPanMove();
             _gameManager.IsTutorialOver = true;
             _gameManager.IsGamePause = false;
             _playerUICanvasGroup.alpha = 1;
