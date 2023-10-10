@@ -10,6 +10,8 @@ namespace GameManagerFeature.Runtime
 
         public Func<CanvasGroup> m_onShowTutorial;
         public Action m_onGameOver;
+        public Action m_onEndGame;
+        public Action m_onEndGameCinematic;
         
         public Transform PlayerTransform
         {

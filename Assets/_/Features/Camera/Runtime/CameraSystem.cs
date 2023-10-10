@@ -20,7 +20,6 @@ namespace CameraFeature.Runtime
         }
         
         [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
-        // [SerializeField] private bool useDragPan;
         [SerializeField] private float fieldOfViewMax = 50;
         [SerializeField] private float fieldOfViewMin = 10;
         [SerializeField] private float followOffsetMin = 5f;
@@ -51,12 +50,6 @@ namespace CameraFeature.Runtime
         private bool _resetPos;
         private float _resetPosDelta;
         private Rigidbody _rigidbody;
-        private Vector3 _currentRigidbodyRotation;
-
-        private void Awake()
-        {
-            followOffset = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
-        }
 
         private void Start()
         {
@@ -71,35 +64,8 @@ namespace CameraFeature.Runtime
             _rigidbody = GetComponent<Rigidbody>();
         }
 
-        // private void Update()
-        // {
-        //     HandleCameraZoom_LowerY();
-        //     if (!_gameManager.IsTutorialOver || _gameManager.IsGamePause || _gameManager.IsGameEnd) return;
-        //     
-        //     if (_player.m_isInThirdPerson?.Invoke() is true)
-        //     {
-        //         MoveTopCameraWhileInterpolating();
-        //         _resetPos = false;
-        //         if (_player.m_isCameraBlendingOver?.Invoke() is false) return;
-        //         return;
-        //     }
-        //     
-        //     HandleCameraMovement();
-        //     
-        //     // if (useDragPan)
-        //     // {
-        //     //     HandleCameraMovementDragPan();
-        //     // }
-        //
-        //     //HandleCameraZoom_FieldOfView();
-        //     //HandleCameraZoom_MoveForward();
-        //
-        //     ResetCameraPos();
-        // }
-
         private void LateUpdate()
         {
-            HandleCameraZoom_LowerY();
             if (!_gameManager.IsTutorialOver || _gameManager.IsGamePause || _gameManager.IsGameEnd) return;
             
             if (_player.m_isInThirdPerson?.Invoke() is true)
@@ -112,9 +78,6 @@ namespace CameraFeature.Runtime
             
             HandleCameraMovement();
 
-            //HandleCameraZoom_FieldOfView();
-            //HandleCameraZoom_MoveForward();
-
             ResetCameraPos();
         }
 
@@ -123,7 +86,6 @@ namespace CameraFeature.Runtime
             if (!_resetPos) return;
 
             _resetPosDelta += Time.deltaTime / _timeToReset;
-
             transform.position = Vector3.Lerp(_currentPosition, _basePosition, _resetPosDelta);
             transform.rotation = Quaternion.Lerp(_currentRotation, _baseRotation, _resetPosDelta);
 
@@ -132,6 +94,8 @@ namespace CameraFeature.Runtime
 
         private void OnResetCameraPosEventHandler()
         {
+            if (_resetPos) return;
+            
             _resetPosDelta = 0;
             _currentPosition = transform.position;
             _currentRotation = transform.rotation;
@@ -191,61 +155,6 @@ namespace CameraFeature.Runtime
             _rigidbody.velocity = Time.smoothDeltaTime * _cameraMoveSpeed * moveDir;
         }
 
-        // private void HandleCameraMovementEdgeScrolling()
-        // {
-        //     Vector3 inputDir = new Vector3(0, 0, 0);
-        //     int edgeScrollSize = 20;
-        //     if (Input.mousePosition.x < edgeScrollSize)
-        //     {
-        //         inputDir.x -= edgeScrollingSpeed;
-        //     }
-        //
-        //     if (Input.mousePosition.y < edgeScrollSize)
-        //     {
-        //         inputDir.z -= edgeScrollingSpeed;
-        //     }
-        //
-        //     if (Input.mousePosition.x > Screen.width - edgeScrollSize)
-        //     {
-        //         inputDir.x += edgeScrollingSpeed;
-        //     }
-        //
-        //     if (Input.mousePosition.y > Screen.height - edgeScrollSize)
-        //     {
-        //         inputDir.z += edgeScrollingSpeed;
-        //     }
-        //
-        //     Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
-        //     _rigidbody.velocity = Time.fixedDeltaTime * cameraMoveSpeed * moveDir;
-        // }
-
-        private void HandleCameraMovementDragPan()
-        {
-            Vector3 inputDir = new Vector3(0, 0, 0);
-            if (Input.GetMouseButtonDown(1))
-            {
-                UseDragPanMove = true;
-                lastMousePosition = Input.mousePosition;
-            }
-        
-            if (Input.GetMouseButtonUp(1))
-            {
-                UseDragPanMove = false;
-            }
-        
-            if (UseDragPanMove)
-            {
-                Vector2 mouseMovementDelta = (Vector2)Input.mousePosition - lastMousePosition;
-                inputDir.x = mouseMovementDelta.x * _dragPanSpeed;
-                inputDir.z = mouseMovementDelta.y * _dragPanSpeed;
-                lastMousePosition = Input.mousePosition;
-            }
-        
-            Vector3 moveDir = transform.forward * inputDir.z + transform.right * inputDir.x;
-            float moveSpeed = 50f;
-            transform.position += moveDir * (moveSpeed * Time.deltaTime);
-        }
-
         private void OnCameraRotateEventHandler(bool isInThirdPerson)
         {
             Transform transformToRotate = new RectTransform();
@@ -253,10 +162,6 @@ namespace CameraFeature.Runtime
             if (isInThirdPerson)
             {
                 transformToRotate = _cameraManager.FollowCameraAnchor.transform;
-                // float rotateDir = 0f;
-                // if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
-                // if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
-                // transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
                 transformToRotate.eulerAngles += new Vector3(0,Input.GetAxis("Mouse X") * _rotationSpeedInThirdPerson, 0);
                 transform.rotation = transformToRotate.rotation;
             }
@@ -264,15 +169,9 @@ namespace CameraFeature.Runtime
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                transformToRotate = transform;
-                // float rotateDir = 0f;
-                // if (Input.GetKey(KeyCode.E)) rotateDir = +1f;
-                // if (Input.GetKey(KeyCode.A)) rotateDir = -1f;
-                // transformToRotate.eulerAngles += new Vector3(0, rotateDir * _rotationSpeed * Time.deltaTime, 0);
-                // transformToRotate.eulerAngles += new Vector3(0,Input.GetAxis("Mouse X") * _rotationSpeedInTopView, 0);
                 Vector3 rotation = new Vector3(0,Input.GetAxis("Mouse X") * _rotationSpeedInTopView, 0);
-                _currentRigidbodyRotation += rotation;
-                _rigidbody.rotation = Quaternion.Euler(_currentRigidbodyRotation);
+                Vector3 newRotation = rotation + _rigidbody.rotation.eulerAngles;
+                _rigidbody.rotation = Quaternion.Euler(newRotation);
             }
         }
 
@@ -281,75 +180,6 @@ namespace CameraFeature.Runtime
             var followCameraAnchorTransform = _cameraManager.FollowCameraAnchor;
             transform.position = new Vector3(followCameraAnchorTransform.position.x,transform.position.y,followCameraAnchorTransform.position.z);
             transform.rotation = followCameraAnchorTransform.rotation;
-        }
-
-
-        private void HandleCameraZoom_FieldOfView()
-        {
-            if (Input.mouseScrollDelta.y > 0)
-            {
-                targetFieldOfView -= 5;
-            }
-
-            if (Input.mouseScrollDelta.y < 0)
-            {
-                targetFieldOfView += 5;
-            }
-
-            targetFieldOfView = Mathf.Clamp(targetFieldOfView, fieldOfViewMin, fieldOfViewMax);
-            float zoomSpeed = 10f;
-            cinemachineVirtualCamera.m_Lens.FieldOfView =
-                Mathf.Lerp(cinemachineVirtualCamera.m_Lens.FieldOfView, targetFieldOfView, Time.deltaTime * zoomSpeed);
-        }
-
-        private void HandleCameraZoom_MoveForward()
-        {
-            Vector3 zoomDir = followOffset.normalized;
-            float zoomAmount = 3f;
-            if (Input.mouseScrollDelta.y > 0)
-            {
-                followOffset -= zoomDir * zoomAmount;
-            }
-
-            if (Input.mouseScrollDelta.y < 0)
-            {
-                followOffset += zoomDir * zoomAmount;
-            }
-
-            if (followOffset.magnitude < followOffsetMin)
-            {
-                followOffset = zoomDir * followOffsetMin;
-            }
-
-            if (followOffset.magnitude > followOffsetMax)
-            {
-                followOffset = zoomDir * followOffsetMax;
-            }
-
-            float zoomSpeed = 10f;
-            cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
-                Vector3.Lerp(cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset,
-                    followOffset, Time.deltaTime * zoomSpeed);
-        }
-
-        private void HandleCameraZoom_LowerY()
-        {
-            float zoomAmount = 3f;
-            // if (Input.mouseScrollDelta.y > 0)
-            // {
-            //     followOffset.y -= zoomAmount;
-            // }
-            //
-            // if (Input.mouseScrollDelta.y < 0)
-            // {
-            //     followOffset.y += zoomAmount;
-            // }
-
-            followOffset.y = Mathf.Clamp(followOffset.y, followOffsetMinY, followOffsetMaxY);
-            float zoomSpeed = 10f;
-            cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
-                Vector3.Lerp(cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset,
-                    followOffset, Time.deltaTime * zoomSpeed);
         }
     }
 }

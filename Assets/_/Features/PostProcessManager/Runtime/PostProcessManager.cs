@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using GameManagerFeature.Runtime;
 using ResourcesManagerFeature.Runtime;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -23,13 +24,14 @@ namespace PostProcessManagerFeature.Runtime
         private void Start()
         {
             _resourcesManager = ResourcesManager.Instance;
-            // _resourcesManager.m_onResourcesChange += UpdateVignetteBasedOnHealth;
             _isFadeOut = true;
             _isTimeBetweenFadeOver = true;
         }
 
         private void Update()
         {
+            if (GameManager.Instance.IsGameEnd) return;
+            
             UpdateVignetteBasedOnHealth();
         }
 

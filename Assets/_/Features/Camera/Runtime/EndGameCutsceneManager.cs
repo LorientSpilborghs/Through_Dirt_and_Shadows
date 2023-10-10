@@ -1,36 +1,22 @@
-using System.Collections;
 using GameManagerFeature.Runtime;
 using UnityEngine;
-using UnityEngine.Playables;
-using ZoneFeature.Runtime;
 
 namespace CameraFeature.Runtime
 {
     public class EndGameCutsceneManager : MonoBehaviour
     {
-        private void Start()
+        private void OnEnable()
         {
-            _playableDirector = GetComponent<PlayableDirector>();
-            _globalPurification = GlobalPurification.Instance;
-            _gameManager = GameManager.Instance;
-            _globalPurification.m_onAreaPurified += EndGameCutScene;
+            _animator = GetComponent<Animator>();
+            GameManager.Instance.m_onEndGameCinematic += OnEnterZoneEndGameEventHandler;
         }
 
-        private void EndGameCutScene()
+        private void OnEnterZoneEndGameEventHandler()
         {
-            _playableDirector.Play();
-            _gameManager.IsCutScenePlaying = true;
-            StartCoroutine(WaitForCutSceneToEnd());
+            _animator.Play("EndGameCinematic");
         }
-
-        private IEnumerator WaitForCutSceneToEnd()
-        {
-            yield return new WaitForSeconds((float)_playableDirector.duration);
-            _gameManager.IsCutScenePlaying = false;
-        }
-
-        private PlayableDirector _playableDirector;
-        private GameManager _gameManager;
-        private GlobalPurification _globalPurification;
+        
+        
+        private Animator _animator;
     }
-} 
+}

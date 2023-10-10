@@ -25,7 +25,6 @@ namespace UIFeature.Runtime
             m_upcomingHealthSlider.value = currentResources;            
             m_redHealthSlider.maxValue = maxResources;
             m_redHealthSlider.value = currentResources;
-            // _text.text = $"{currentResources}";
         }
 
         public void UpdateHealth(float currentResources, float totalUpcomingResources)
@@ -43,7 +42,6 @@ namespace UIFeature.Runtime
                 StopCoroutine(_delayRedHealthSlider);
             }
             _delayRedHealthSlider = StartCoroutine(DelayRedHealthSlider());
-            // _text.text = $"{currentResources}";
         }
 
         private IEnumerator DelayRedHealthSlider()

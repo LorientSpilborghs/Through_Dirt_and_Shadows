@@ -18,6 +18,7 @@ namespace SoundManagerFeature.Runtime
         private void Start()
         {
             GameManager.Instance.m_onGameOver += OnGameOverEventHandler;
+            GameManager.Instance.m_onEndGameCinematic += OnGameEndEventHandler;
             ResourcesManager.Instance.m_onChangeMaxHealthTier += OnChangeMaxHealthTierEventHandler;
         }
 
@@ -31,8 +32,14 @@ namespace SoundManagerFeature.Runtime
             RuntimeManager.PlayOneShot(_soundOnGameOver);
         }
 
+        private void OnGameEndEventHandler()
+        {
+            RuntimeManager.PlayOneShot(_soundOnGameEnd);
+        }
+
 
         [SerializeField] private EventReference _soundOnTierChange;
         [SerializeField] private EventReference _soundOnGameOver;
+        [SerializeField] private EventReference _soundOnGameEnd;
     }
 }

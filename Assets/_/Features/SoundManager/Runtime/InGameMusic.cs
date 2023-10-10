@@ -12,15 +12,18 @@ namespace SoundManagerFeature.Runtime
         {
             _inGameMusicInstance = RuntimeManager.CreateInstance(_inGameMusic);
             _inGameMusicInstance.start();
-            GameManager.Instance.m_onGameOver += OnGameOverEventHandler;
+            GameManager.Instance.m_onGameOver += OnGameStopEventHandler;
+            GameManager.Instance.m_onEndGame += OnGameStopEventHandler;
         }
 
         private void OnDestroy()
         {
             _inGameMusicInstance.stop(STOP_MODE.IMMEDIATE);
+            GameManager.Instance.m_onGameOver -= OnGameStopEventHandler;
+            GameManager.Instance.m_onEndGame -= OnGameStopEventHandler;
         }
 
-        private void OnGameOverEventHandler()
+        private void OnGameStopEventHandler()
         {
             _inGameMusicInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }

@@ -18,12 +18,14 @@ namespace UIFeature.Runtime
             _player.m_onPauseMenu += OnPauseMenuEventHandler;
             _gameManager.m_onShowTutorial += GetPlayerUICanvasGroup;
             _gameManager.m_onGameOver += OnGameOverEventHandler;
+            _gameManager.m_onEndGame += OnEndGameEventHandler;
         }
 
         private void OnDestroy()
         {
             _player.m_onPauseMenu -= OnPauseMenuEventHandler;
             _gameManager.m_onShowTutorial -= GetPlayerUICanvasGroup;
+            _gameManager.m_onGameOver -= OnGameOverEventHandler;
         }
 
         private void OnPauseMenuEventHandler()
@@ -43,20 +45,36 @@ namespace UIFeature.Runtime
         {
             _gameManager.IsGameEnd = true;
             _gameManager.IsGamePause = true;
-            StartCoroutine(WaitForFadeIn());
+            _playerLost = true;
+            StartCoroutine(WaitForFadeIn(_gameOverUI));
         }
 
-        private IEnumerator WaitForFadeIn()
+        private void OnEndGameEventHandler()
         {
-            yield return new WaitForSeconds(1f);
+            _gameManager.IsGameEnd = true;
+            _gameManager.IsGamePause = true;
+            _enGameUI.SetActive(true);
+            _gameManager.m_onEndGameCinematic?.Invoke();
+            StartCoroutine(WaitForFadeIn(null));
+        }
+
+        private IEnumerator WaitForFadeIn(GameObject gameObject)
+        {
+            yield return new WaitForSeconds(_timeForFade);
             _playerUICanvasGroup.alpha = 0;
-            _gameOverUI.SetActive(true);
+            if (gameObject is not null)
+            {
+                gameObject.SetActive(true);
+            }
+            
+            if (!_playerLost) yield break;
+            
             StartCoroutine(WaitForFadeOut());
         }
 
         private IEnumerator WaitForFadeOut()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(_timeForFade);
             Time.timeScale = 0;
         }
 
@@ -104,10 +122,15 @@ namespace UIFeature.Runtime
         [SerializeField] private CanvasGroup _playerUICanvasGroup;
         [SerializeField] private CanvasGroup _tutorialCanvasGroup;
         [SerializeField] private GameObject _gameOverUI;
+        [SerializeField] private GameObject _enGameUI;
+
+        [Space] [Header("Option")] [SerializeField]
+        private float _timeForFade = 1;
 
         private CameraManager _cameraManager;
         private UIManager _uiManager;
         private GameManager _gameManager;
         private PlayerV2 _player;
+        private bool _playerLost;
     }
 }
