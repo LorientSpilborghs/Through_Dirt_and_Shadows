@@ -600,7 +600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa0410eb99231a47a70a9cf46fb71c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseResources: 50
+  _baseResources: 101
   _maxResources: 500
   _resourcesCostDivider: 800
   _purificationPercentageForTierTwo: 10
@@ -1616,7 +1616,7 @@ Transform:
   m_GameObject: {fileID: 4529346449832118140}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: -6.4347963}
+  m_LocalPosition: {x: -0.0000009536743, y: -5, z: -6.4347954}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1954,11 +1954,12 @@ MonoBehaviour:
   followOffsetMax: 50
   followOffsetMinY: 2
   followOffsetMaxY: 10
-  cameraMoveSpeed: 1000
-  edgeScrollingSpeed: 0.5
-  _timeToReset: 1.2
-  _rotationSpeedInTopView: 5
-  _rotationSpeedInThirdPerson: 5
+  _cameraMoveSpeed: 1000
+  _edgeScrollingSpeed: 0.5
+  _dragPanSpeed: 0.15
+  _timeToReset: 1
+  _rotationSpeedInTopView: 2.8
+  _rotationSpeedInThirdPerson: 2.8
 --- !u!135 &6526894737714670866
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2160,7 +2161,7 @@ Transform:
   m_GameObject: {fileID: 5400354353363712114}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: -6.4347963}
+  m_LocalPosition: {x: -0.0000009536743, y: -5, z: -6.4347954}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2624,7 +2625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 367de333427c604458c6bd10a5716f4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _neededPercentageToWin: 85
+  _neededPercentageToWin: 100
   _fogRevelerPrefab: {fileID: 0}
   _doorTransform: {fileID: 0}
   _finalDoorAnimator: {fileID: 0}
@@ -2907,19 +2908,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _globalVolume: {fileID: 0}
-  _vignetteMaxIntensityLow: 0.2
-  _vignetteMaxIntensityHigh: 0.2
-  _lerpDurationFadeIn: 1
-  _lerpDurationFadeOut: 1
-  _durationBetweenFade: 1
-  _lowHealthPercentage: 0
-  _highHealthPercentage: 0
+  _vignetteMaxIntensityLow: 0.4
+  _vignetteMaxIntensityHigh: 0.6
+  _lerpDurationFadeIn: 1.5
+  _lerpDurationFadeOut: 0.5
+  _durationBetweenFade: 0.1
+  _lowHealthPercentage: 0.2
+  _highHealthPercentage: 0.82
   _vignetteColorAtLowHealth:
-    m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 0, a: 0}
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 0, b: 0, a: 0}
   _vignetteColorAtHighHealth:
-    m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 0, a: 0}
+    m_OverrideState: 1
+    m_Value: {r: 0.15850139, g: 1, b: 0, a: 0}
 --- !u!1 &7533899130790275010
 GameObject:
   m_ObjectHideFlags: 0
