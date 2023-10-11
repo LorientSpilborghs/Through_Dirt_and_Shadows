@@ -52,13 +52,13 @@ namespace GameManagerFeature.Runtime
         private IEnumerator Start()
         {
             _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-            IsGamePause = true;
             yield return new WaitForEndOfFrame();
             StartCoroutine(OnShowTutorialEventHandler(m_onShowTutorial?.Invoke()));
         }
 
         private IEnumerator OnShowTutorialEventHandler(CanvasGroup canvasGroup)
         {
+            if (!_useTutorial) yield break;
             _timer = 0;
             while (_timer < _durationBeforeShowingTutorial)
             {
@@ -71,9 +71,10 @@ namespace GameManagerFeature.Runtime
         }
 
         [SerializeField] private float _durationBeforeShowingTutorial = 100f;
+        [SerializeField] private bool _useTutorial = true;
 
         private Transform _playerTransform;
-        private bool _isGamePause;
+        private bool _isGamePause = true;
         private bool _isTutorialOver;
         private bool _isCutScenePlaying;
         private bool _isGameEnd;

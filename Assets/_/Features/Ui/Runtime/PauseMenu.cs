@@ -16,9 +16,12 @@ namespace UIFeature.Runtime
             _uiManager = UIManager.Instance;
             _cameraManager = CameraManager.Instance;
             _player.m_onPauseMenu += OnPauseMenuEventHandler;
-            _gameManager.m_onShowTutorial += GetPlayerUICanvasGroup;
             _gameManager.m_onGameOver += OnGameOverEventHandler;
             _gameManager.m_onEndGame += OnEndGameEventHandler;
+            
+            if (_tutorialCanvasGroup.gameObject.activeInHierarchy) return;
+            _gameManager.m_onShowTutorial += GetPlayerUICanvasGroup;
+            QuitTutorial();
         }
 
         private void OnDestroy()
