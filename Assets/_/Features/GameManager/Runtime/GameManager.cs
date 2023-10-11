@@ -59,13 +59,13 @@ namespace GameManagerFeature.Runtime
         private IEnumerator Start()
         {
             _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+            if (!UseTutorial) yield return null;
             yield return new WaitForEndOfFrame();
             StartCoroutine(OnShowTutorialEventHandler(m_onShowTutorial?.Invoke()));
         }
 
         private IEnumerator OnShowTutorialEventHandler(CanvasGroup canvasGroup)
         {
-            if (!UseTutorial) yield break;
             _timer = 0;
             while (_timer < _durationBeforeShowingTutorial)
             {

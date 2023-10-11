@@ -98,7 +98,7 @@ namespace PlayerRuntime
             InputManager.Instance.m_onTabKeyDown += OnTabKeyDownEventHandler;
             InputManager.Instance.m_onReturnKeyDown += OnReturnKeyDownEventHandler;
             
-            RootToModify = AddNewRoot(Vector3.zero + Vector3.up * _heightOfTheRootAtStart);
+            RootToModify = AddNewRoot(_playerStartPosition.position + Vector3.up * _heightOfTheRootAtStart);
         }
 
         private void OnDestroy()
@@ -343,7 +343,8 @@ namespace PlayerRuntime
         
         [SerializeField] private GameObject _rootPrefab;
         [SerializeField] private FrontColliderBehaviour _frontColliderBehaviour;
-        [Space]
+        [Space] 
+        [SerializeField] private Transform _playerStartPosition;
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
 
         private ResourcesManager _resourcesManager;
