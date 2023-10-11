@@ -12,6 +12,7 @@ namespace GameManagerFeature.Runtime
         public Action m_onGameOver;
         public Action m_onEndGame;
         public Action m_onEndGameCinematic;
+        public Action m_onShowEnd; 
         
         public Transform PlayerTransform
         {
@@ -43,6 +44,12 @@ namespace GameManagerFeature.Runtime
             set => _isTutorialOver = value;
         }
 
+        public bool UseTutorial
+        {
+            get => _useTutorial;
+            set => _useTutorial = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -58,7 +65,7 @@ namespace GameManagerFeature.Runtime
 
         private IEnumerator OnShowTutorialEventHandler(CanvasGroup canvasGroup)
         {
-            if (!_useTutorial) yield break;
+            if (!UseTutorial) yield break;
             _timer = 0;
             while (_timer < _durationBeforeShowingTutorial)
             {
