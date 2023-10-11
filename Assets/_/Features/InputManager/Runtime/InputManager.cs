@@ -20,6 +20,7 @@ namespace InputManagerFeature.Runtime
         public Action m_onSpaceKeyDown;
         public Action m_onEscapeKeyDown;
         public Action m_onTabKeyDown;
+        public Action m_onReturnKeyDown;
 
         private void Awake()
         {
@@ -38,7 +39,9 @@ namespace InputManagerFeature.Runtime
         {
             if (!_gameManager.IsTutorialOver || _gameManager.IsGamePause) return;
             OnEscapeKeyDown();
+            
             if (_gameManager.IsGamePause) return;
+            
             if (_gameManager.IsCutScenePlaying) return;
             MouseWorldPosition();
             
@@ -51,6 +54,9 @@ namespace InputManagerFeature.Runtime
             OnLeftMouseUp();
             OnSpaceKeyDown();
             OnTabKeyDown();
+            
+            if (_gameManager.UseTutorial) return;
+            OnEnterKeyDown();
         }
 
         private void MouseWorldPosition()
@@ -121,6 +127,13 @@ namespace InputManagerFeature.Runtime
         {
             if (!Input.GetKeyDown(KeyCode.Tab)) return;
             m_onTabKeyDown?.Invoke();
+        }
+
+        private void OnEnterKeyDown()
+        {
+            if (!Input.GetKeyDown(KeyCode.Return)) return;
+            Debug.Log("aouch");
+            m_onReturnKeyDown?.Invoke();
         }
         
         

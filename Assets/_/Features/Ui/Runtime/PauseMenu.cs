@@ -16,11 +16,12 @@ namespace UIFeature.Runtime
             _uiManager = UIManager.Instance;
             _cameraManager = CameraManager.Instance;
             _player.m_onPauseMenu += OnPauseMenuEventHandler;
+            _gameManager.m_onShowTutorial += GetPlayerUICanvasGroup;
             _gameManager.m_onGameOver += OnGameOverEventHandler;
             _gameManager.m_onEndGame += OnEndGameEventHandler;
+            _gameManager.m_onShowEnd += OnShowEndEventHandler;
             
             if (_tutorialCanvasGroup.gameObject.activeInHierarchy) return;
-            _gameManager.m_onShowTutorial += GetPlayerUICanvasGroup;
             QuitTutorial();
         }
 
@@ -56,8 +57,16 @@ namespace UIFeature.Runtime
         {
             _gameManager.IsGameEnd = true;
             _gameManager.IsGamePause = true;
-            _enGameUI.SetActive(true);
+            _endGameUI.SetActive(true);
             _gameManager.m_onEndGameCinematic?.Invoke();
+            StartCoroutine(WaitForFadeIn(null));
+        }
+        
+        private void OnShowEndEventHandler()
+        {
+            _gameManager.IsGameEnd = true;
+            _gameManager.IsGamePause = true;
+            _showUI.SetActive(true);
             StartCoroutine(WaitForFadeIn(null));
         }
 
@@ -125,7 +134,8 @@ namespace UIFeature.Runtime
         [SerializeField] private CanvasGroup _playerUICanvasGroup;
         [SerializeField] private CanvasGroup _tutorialCanvasGroup;
         [SerializeField] private GameObject _gameOverUI;
-        [SerializeField] private GameObject _enGameUI;
+        [SerializeField] private GameObject _endGameUI;
+        [SerializeField] private GameObject _showUI;
 
         [Space] [Header("Option")] [SerializeField]
         private float _timeForFade = 1;

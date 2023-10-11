@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameManagerFeature.Runtime;
 using InputManagerFeature.Runtime;
 using ResourcesManagerFeature.Runtime;
 using RootFeature.Runtime;
@@ -83,6 +84,7 @@ namespace PlayerRuntime
         private void Start()
         {
             _resourcesManager = ResourcesManager.Instance;
+            _gameManager = GameManager.Instance;
             InputManager.Instance.m_onMouseMove += OnMouseMoveEventHandler;
             InputManager.Instance.m_onLeftMouseDown += OnLeftMouseDownEventHandler;
             InputManager.Instance.m_onRightMouseHold += OnRightMouseHoldEventHandler;
@@ -94,6 +96,7 @@ namespace PlayerRuntime
             InputManager.Instance.m_onLeftMouseUp += OnMouseUpEventHandler;
             InputManager.Instance.m_onEscapeKeyDown += OnEscapeKeyDownEventHandler;
             InputManager.Instance.m_onTabKeyDown += OnTabKeyDownEventHandler;
+            InputManager.Instance.m_onReturnKeyDown += OnReturnKeyDownEventHandler;
             
             RootToModify = AddNewRoot(Vector3.zero + Vector3.up * _heightOfTheRootAtStart);
         }
@@ -111,6 +114,7 @@ namespace PlayerRuntime
             InputManager.Instance.m_onLeftMouseUp -= OnMouseUpEventHandler;
             InputManager.Instance.m_onEscapeKeyDown -= OnEscapeKeyDownEventHandler;
             InputManager.Instance.m_onTabKeyDown -= OnTabKeyDownEventHandler;
+            InputManager.Instance.m_onReturnKeyDown -= OnReturnKeyDownEventHandler;
         }
         
         #endregion
@@ -212,6 +216,11 @@ namespace PlayerRuntime
         private void OnTabKeyDownEventHandler()
         {
             m_onUIShow?.Invoke();
+        }
+
+        private void OnReturnKeyDownEventHandler()
+        {
+            _gameManager.m_onShowEnd?.Invoke();
         }
         
         private RootV2 GetTheRightRoot(bool onlySetKnot = false)
@@ -338,6 +347,7 @@ namespace PlayerRuntime
         [SerializeField] private float _heightOfTheRootAtStart = 0.5f;
 
         private ResourcesManager _resourcesManager;
+        private GameManager _gameManager;
         private List<RootV2> _rootsList = new();
         private Vector3 _pointerPosition;
         private RootV2 _rootToModify;
