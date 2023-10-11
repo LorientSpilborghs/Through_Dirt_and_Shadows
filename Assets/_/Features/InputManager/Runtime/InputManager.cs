@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using GameManagerFeature.Runtime;
 using UnityEngine;
 
@@ -22,15 +21,12 @@ namespace InputManagerFeature.Runtime
         public Action m_onEscapeKeyDown;
         public Action m_onTabKeyDown;
 
-        public int FpsCount;
-
         private void Awake()
         {
             if (Instance == null) Instance = this;
             else Destroy(gameObject);
             
             _camera = Camera.main;
-            StartCoroutine(HandleFpsCounter(1));
         }
 
         private void Start()
@@ -55,18 +51,6 @@ namespace InputManagerFeature.Runtime
             OnLeftMouseUp();
             OnSpaceKeyDown();
             OnTabKeyDown();
-        }
-
-        private IEnumerator HandleFpsCounter(float secToWait)
-        {
-            yield return new WaitForSeconds(secToWait);
-            FpsCount = (int)(1f / Time.unscaledDeltaTime);
-            StartCoroutine(HandleFpsCounter(0.5f));
-        }
-
-        private void OnGUI()
-        {
-            GUILayout.Label($"<color=red>FPS {FpsCount}</color>");
         }
 
         private void MouseWorldPosition()
