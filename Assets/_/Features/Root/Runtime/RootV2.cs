@@ -190,6 +190,20 @@ namespace RootFeature.Runtime
             StartCoroutine(DelayBeforeSpeedChange());
         }
 
+        public void EnableDisableWarningUI(bool var)
+        {
+            if (var)
+            {
+                _rootWarningUI.gameObject.SetActive(true);
+                _environmentWarningUI.gameObject.SetActive(true);
+            }
+            else
+            {
+                _rootWarningUI.gameObject.SetActive(false);
+                _environmentWarningUI.gameObject.SetActive(false);
+            }
+        }
+
         private IEnumerator ChangeSpeed(float v_start, float v_end, float duration)
         {
             {

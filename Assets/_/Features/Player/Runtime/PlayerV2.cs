@@ -17,10 +17,10 @@ namespace PlayerRuntime
         public static PlayerV2 Instance { get; private set; }
 
         public Action<Vector3> m_onCameraBlendingStart;
+        public Action m_onCameraBlendingStop;
         public Action<Vector3> m_onInterpolate;
         public Action<bool> m_onCameraRotate;
         public Action m_onResetCameraPos;
-        public Action m_onCameraBlendingStop;
         public Action m_onNewKnotInstantiate;
         public Action m_onPauseMenu;
         public Action m_onUIShow;
@@ -85,12 +85,14 @@ namespace PlayerRuntime
         {
             _resourcesManager = ResourcesManager.Instance;
             _gameManager = GameManager.Instance;
+            m_onCameraBlendingStart += OnCameraBlendingStartEventHandler;
+            m_onCameraBlendingStop += OnCameraBlendingStopEventHandler;
             InputManager.Instance.m_onMouseMove += OnMouseMoveEventHandler;
             InputManager.Instance.m_onLeftMouseDown += OnLeftMouseDownEventHandler;
             InputManager.Instance.m_onRightMouseHold += OnRightMouseHoldEventHandler;
             InputManager.Instance.m_onRightMouseUp += OnRightMouseUpEventHandler;
-            InputManager.Instance.m_onPositiveScrollDown += OnPositiveScrollDown;
-            InputManager.Instance.m_onNegativeScrollDown += OnSpaceKeyDownEventHandler;
+            InputManager.Instance.m_onPositiveScrollDown += OnPositiveScrollDownEventHandler;
+            InputManager.Instance.m_onNegativeScrollDown += OnNegativeScrollDownEventHandler;
             InputManager.Instance.m_onSpaceKeyDown += OnSpaceKeyEventHandler;
             InputManager.Instance.m_onLeftMouseHold += OnMouseHoldEventHandler;
             InputManager.Instance.m_onLeftMouseUp += OnMouseUpEventHandler;
@@ -107,8 +109,8 @@ namespace PlayerRuntime
             InputManager.Instance.m_onLeftMouseDown -= OnLeftMouseDownEventHandler;
             InputManager.Instance.m_onRightMouseHold -= OnRightMouseHoldEventHandler;
             InputManager.Instance.m_onRightMouseUp -= OnRightMouseUpEventHandler;
-            InputManager.Instance.m_onPositiveScrollDown -= OnPositiveScrollDown;
-            InputManager.Instance.m_onNegativeScrollDown -= OnSpaceKeyDownEventHandler;
+            InputManager.Instance.m_onPositiveScrollDown -= OnPositiveScrollDownEventHandler;
+            InputManager.Instance.m_onNegativeScrollDown -= OnNegativeScrollDownEventHandler;
             InputManager.Instance.m_onSpaceKeyDown -= OnSpaceKeyEventHandler;
             InputManager.Instance.m_onLeftMouseHold -= OnMouseHoldEventHandler;
             InputManager.Instance.m_onLeftMouseUp -= OnMouseUpEventHandler;
@@ -138,7 +140,7 @@ namespace PlayerRuntime
             SelectRoot();
         }
         
-        private void OnPositiveScrollDown()
+        private void OnPositiveScrollDownEventHandler()
         {
             SelectRoot();
         }
@@ -146,8 +148,8 @@ namespace PlayerRuntime
         private void SelectRoot()
         {
             if (m_isCameraBlendingOver?.Invoke() is false || m_isInThirdPerson?.Invoke() is true) return;
-            m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
             RootToModify = GetTheRightRoot() ?? RootToModify;
+            m_onCameraBlendingStart?.Invoke(CurrentClosestKnot.Position);
         }
         
         private void CameraRotate()
@@ -173,7 +175,7 @@ namespace PlayerRuntime
             CameraRotateAndDragEnd();
         }
 
-        private void OnSpaceKeyDownEventHandler()
+        private void OnNegativeScrollDownEventHandler()
         {
             m_onCameraBlendingStop?.Invoke();
         }
@@ -220,6 +222,7 @@ namespace PlayerRuntime
 
         private void OnReturnKeyDownEventHandler()
         {
+            if (_gameManager.IsGameEnd) return;
             _gameManager.m_onShowEnd?.Invoke();
         }
         
@@ -299,6 +302,16 @@ namespace PlayerRuntime
             {
                 return true;
             }
+        }
+
+        private void OnCameraBlendingStartEventHandler(Vector3 pos)
+        {
+            RootToModify.EnableDisableWarningUI(true);
+        }
+        
+        private void OnCameraBlendingStopEventHandler()
+        {
+            RootToModify.EnableDisableWarningUI(false);
         }
         
         #endregion

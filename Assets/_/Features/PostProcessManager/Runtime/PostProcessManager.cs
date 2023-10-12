@@ -24,13 +24,14 @@ namespace PostProcessManagerFeature.Runtime
         private void Start()
         {
             _resourcesManager = ResourcesManager.Instance;
+            _gameManager = GameManager.Instance;
             _isFadeOut = true;
             _isTimeBetweenFadeOver = true;
         }
 
         private void Update()
         {
-            if (GameManager.Instance.IsGameEnd) return;
+            if (_gameManager.IsGameEnd) return;
             
             UpdateVignetteBasedOnHealth();
         }
@@ -136,6 +137,7 @@ namespace PostProcessManagerFeature.Runtime
         [SerializeField] private ColorParameter _vignetteColorAtLowHealth;
         [SerializeField] private ColorParameter _vignetteColorAtHighHealth;
 
+        private GameManager _gameManager;
         private ResourcesManager _resourcesManager;
         private Coroutine _vignetteLerpFadeIn;
         private Coroutine _vignetteLerpFadeOut;

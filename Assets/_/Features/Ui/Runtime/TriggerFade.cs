@@ -1,7 +1,5 @@
-using System.Collections;
 using GameManagerFeature.Runtime;
 using UnityEngine;
-using ZoneFeature.Runtime;
 
 namespace UIFeature.Runtime
 {
@@ -11,17 +9,15 @@ namespace UIFeature.Runtime
         {
             _animator = GetComponent<Animator>();
             _gameManager = GameManager.Instance;
-            _zoneEndGame = ZoneEndGame.Instance;
             _gameManager.m_onGameOver += ToggleFade;
-            // _zoneEndGame.m_onEnterZoneEndGame += ToggleFade;
         }
 
         private void ToggleFade()
         {
-            _animator.SetBool("Change", true);
+            _animator.SetTrigger("Change");
         }
-
-        private ZoneEndGame _zoneEndGame;
+        
+        
         private GameManager _gameManager;
         private Animator _animator;
     }

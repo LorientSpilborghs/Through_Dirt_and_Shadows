@@ -83,6 +83,8 @@ namespace UIFeature.Runtime
         
         private void UpdateGrowCostTextOnMouseOver(bool isLastKnotFromSpline)
         {
+            if (_player.IsInterpolating) return;
+            
             if (isLastKnotFromSpline)
             {
                 float value = (float)((_player.CurrentClosestSpline.Count - 1 + _player.CurrentClosestRoot.InitialGrowCost) *

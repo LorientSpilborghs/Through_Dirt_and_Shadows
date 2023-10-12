@@ -106,7 +106,7 @@ namespace ResourcesManagerFeature.Runtime
 
         private void CheckIfGameIsOver(float currentResources, float totalUpcomingResources)
         {
-            if (currentResources < 1 && totalUpcomingResources < 1 && !_gameManager.IsGameEnd)
+            if (currentResources < 1 && totalUpcomingResources < 1 && !_gameManager.PlayerLost)
             {
                 _gameManager.m_onGameOver?.Invoke();
             }

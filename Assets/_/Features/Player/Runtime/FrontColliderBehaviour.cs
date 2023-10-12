@@ -37,6 +37,9 @@ namespace PlayerRuntime
 
         private void WarningUIBehaviour(RaycastHit _raycastHit)
         {
+            if (!_player.RootToModify.RootWarningUI.gameObject.activeInHierarchy 
+                || !_player.RootToModify.EnvironmentWarningUI.gameObject.activeInHierarchy) return;
+            
             if (_isBlocked && _raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("Root"))
             {
                 _player.RootToModify.RootWarningUI.alpha = 1;

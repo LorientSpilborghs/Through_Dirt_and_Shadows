@@ -12,7 +12,8 @@ namespace GameManagerFeature.Runtime
         public Action m_onGameOver;
         public Action m_onEndGame;
         public Action m_onEndGameCinematic;
-        public Action m_onShowEnd; 
+        public Action m_onShowEnd;
+        public Action m_onStopAudio;
         
         public Transform PlayerTransform
         {
@@ -50,6 +51,12 @@ namespace GameManagerFeature.Runtime
             set => _useTutorial = value;
         }
 
+        public bool PlayerLost
+        {
+            get => _playerLost;
+            set => _playerLost = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -85,6 +92,7 @@ namespace GameManagerFeature.Runtime
         private bool _isTutorialOver;
         private bool _isCutScenePlaying;
         private bool _isGameEnd;
+        private bool _playerLost;
         private float _timer;
     }
 }

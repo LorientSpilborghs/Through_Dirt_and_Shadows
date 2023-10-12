@@ -47,16 +47,12 @@ namespace UIFeature.Runtime
         
         private void OnGameOverEventHandler()
         {
-            _gameManager.IsGameEnd = true;
-            _gameManager.IsGamePause = true;
-            _playerLost = true;
+            _gameManager.PlayerLost = true;
             StartCoroutine(WaitForFadeIn(_gameOverUI));
         }
 
         private void OnEndGameEventHandler()
         {
-            _gameManager.IsGameEnd = true;
-            _gameManager.IsGamePause = true;
             _endGameUI.SetActive(true);
             _gameManager.m_onEndGameCinematic?.Invoke();
             StartCoroutine(WaitForFadeIn(null));
@@ -64,8 +60,6 @@ namespace UIFeature.Runtime
         
         private void OnShowEndEventHandler()
         {
-            _gameManager.IsGameEnd = true;
-            _gameManager.IsGamePause = true;
             _showUI.SetActive(true);
             StartCoroutine(WaitForFadeIn(null));
         }
@@ -73,13 +67,13 @@ namespace UIFeature.Runtime
         private IEnumerator WaitForFadeIn(GameObject gameObject)
         {
             yield return new WaitForSeconds(_timeForFade);
+            _gameManager.IsGameEnd = true;
+            _gameManager.IsGamePause = true;
+            _gameManager.m_onStopAudio?.Invoke();
             _playerUICanvasGroup.alpha = 0;
-            if (gameObject is not null)
-            {
-                gameObject.SetActive(true);
-            }
-            
-            if (!_playerLost) yield break;
+            gameObject?.SetActive(true);
+
+            if (!_gameManager.PlayerLost) yield break;
             
             StartCoroutine(WaitForFadeOut());
         }
@@ -144,6 +138,5 @@ namespace UIFeature.Runtime
         private UIManager _uiManager;
         private GameManager _gameManager;
         private PlayerV2 _player;
-        private bool _playerLost;
     }
 }
