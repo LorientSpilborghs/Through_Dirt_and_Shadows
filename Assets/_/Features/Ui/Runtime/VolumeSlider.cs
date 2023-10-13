@@ -43,15 +43,19 @@ namespace UIFeature.Runtime
             {
                 case VolumeType.MASTER:
                     SettingsMenu.Instance.m_masterVolume = _volumeSlider.value;
+                    PlayerPrefs.SetFloat("masterVolume", _volumeSlider.value);
                     break;
                 case VolumeType.MUSIC:
                     SettingsMenu.Instance.m_musicVolume = _volumeSlider.value;
+                    PlayerPrefs.SetFloat("musicVolume", _volumeSlider.value);
                     break;
                 case VolumeType.AMBIENCE:
                     SettingsMenu.Instance.m_ambienceVolume = _volumeSlider.value;
+                    PlayerPrefs.SetFloat("ambienceVolume", _volumeSlider.value);
                     break;
                 case VolumeType.SFX:
                     SettingsMenu.Instance.m_sfxVolume = _volumeSlider.value;
+                    PlayerPrefs.SetFloat("sfxVolume", _volumeSlider.value);
                     break;
             }
         }

@@ -47,7 +47,6 @@ namespace CameraFeature.Runtime
         private Quaternion _baseRotation;
         private Vector3 _currentPosition;
         private Quaternion _currentRotation;
-        private bool _resetPos;
         private float _resetPosDelta;
         private Rigidbody _rigidbody;
 
@@ -71,36 +70,39 @@ namespace CameraFeature.Runtime
             if (_player.m_isInThirdPerson?.Invoke() is true)
             {
                 MoveTopCameraWhileInterpolating();
-                _resetPos = false;
+                _gameManager.IsResettingPosition = false;
                 if (_player.m_isCameraBlendingOver?.Invoke() is false) return;
                 return;
             }
-            
-            HandleCameraMovement();
 
+            if (!_gameManager.IsResettingPosition)
+            {
+                HandleCameraMovement();
+            }
+            
             ResetCameraPos();
         }
 
         private void ResetCameraPos()
         {
-            if (!_resetPos) return;
+            if (!_gameManager.IsResettingPosition) return;
 
             _resetPosDelta += Time.deltaTime / _timeToReset;
             _rigidbody.position = Vector3.Lerp(_currentPosition, _basePosition, _resetPosDelta);
             _rigidbody.rotation = Quaternion.Lerp(_currentRotation, _baseRotation, _resetPosDelta);
 
             if (_resetPosDelta < 1) return; 
-            _resetPos = false;
+            _gameManager.IsResettingPosition = false;
         }
 
         private void OnResetCameraPosEventHandler()
         {
-            if (_resetPos) return;
+            if (_gameManager.IsResettingPosition) return;
             
             _resetPosDelta = 0;
             _currentPosition = _rigidbody.position;
             _currentRotation = _rigidbody.rotation;
-            _resetPos = true;
+            _gameManager.IsResettingPosition = true;
         }
         
         private void HandleCameraMovement()

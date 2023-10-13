@@ -40,9 +40,8 @@ namespace InputManagerFeature.Runtime
             if (!_gameManager.IsTutorialOver || _gameManager.IsGamePause) return;
             OnEscapeKeyDown();
             
-            if (_gameManager.IsGamePause) return;
+            if (_gameManager.IsGamePause || _gameManager.IsCutScenePlaying || _gameManager.IsResettingPosition) return;
             
-            if (_gameManager.IsCutScenePlaying) return;
             MouseWorldPosition();
             
             OnLeftMouseDown();

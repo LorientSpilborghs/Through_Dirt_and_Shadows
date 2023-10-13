@@ -17,6 +17,13 @@ namespace UIFeature.Runtime
         {
             if (Instance == null) Instance = this;
             else Destroy(gameObject);
+
+            m_masterVolume = PlayerPrefs.GetFloat("masterVolume");
+            m_musicVolume = PlayerPrefs.GetFloat("musicVolume");
+            m_ambienceVolume = PlayerPrefs.GetFloat("ambienceVolume");
+            m_sfxVolume = PlayerPrefs.GetFloat("sfxVolume");
+            
+            DontDestroyOnLoad(this);
             
             _masterBus = RuntimeManager.GetBus("bus:/");
             _musicBus = RuntimeManager.GetBus("bus:/Music");

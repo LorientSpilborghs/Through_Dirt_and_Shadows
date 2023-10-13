@@ -57,6 +57,12 @@ namespace GameManagerFeature.Runtime
             set => _playerLost = value;
         }
 
+        public bool IsResettingPosition
+        {
+            get => _isResettingPosition;
+            set => _isResettingPosition = value;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -91,6 +97,7 @@ namespace GameManagerFeature.Runtime
         private bool _isGamePause = true;
         private bool _isTutorialOver;
         private bool _isCutScenePlaying;
+        private bool _isResettingPosition;
         private bool _isGameEnd;
         private bool _playerLost;
         private float _timer;

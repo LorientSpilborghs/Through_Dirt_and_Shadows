@@ -4,6 +4,11 @@ namespace CursorManagerFeature.Runtime
 {
     public class CursorManager : MonoBehaviour
     {
+        private void Awake()
+        {
+            DontDestroyOnLoad(this);
+        }
+
         private void Start()
         {
             if (_cursorTexture == null) return;
