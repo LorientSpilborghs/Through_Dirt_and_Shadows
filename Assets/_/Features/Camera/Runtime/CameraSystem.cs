@@ -56,12 +56,12 @@ namespace CameraFeature.Runtime
             _gameManager = GameManager.Instance;
             _cameraManager = CameraManager.Instance;
             _player = PlayerV2.Instance;
+            _rigidbody = GetComponent<Rigidbody>();
             followOffset.y = followOffsetMaxY;
-            _basePosition = transform.position;
-            _baseRotation = transform.rotation;
+            _basePosition = _rigidbody.position;
+            _baseRotation = _rigidbody.rotation;
             _player.m_onResetCameraPos += OnResetCameraPosEventHandler;
             _player.m_onCameraRotate += OnCameraRotateEventHandler;
-            _rigidbody = GetComponent<Rigidbody>();
         }
 
         private void LateUpdate()
@@ -86,10 +86,11 @@ namespace CameraFeature.Runtime
             if (!_resetPos) return;
 
             _resetPosDelta += Time.deltaTime / _timeToReset;
-            transform.position = Vector3.Lerp(_currentPosition, _basePosition, _resetPosDelta);
-            transform.rotation = Quaternion.Lerp(_currentRotation, _baseRotation, _resetPosDelta);
+            _rigidbody.position = Vector3.Lerp(_currentPosition, _basePosition, _resetPosDelta);
+            _rigidbody.rotation = Quaternion.Lerp(_currentRotation, _baseRotation, _resetPosDelta);
 
-            if (_resetPosDelta >= 1) _resetPos = false;
+            if (_resetPosDelta < 1) return; 
+            _resetPos = false;
         }
 
         private void OnResetCameraPosEventHandler()
@@ -97,8 +98,8 @@ namespace CameraFeature.Runtime
             if (_resetPos) return;
             
             _resetPosDelta = 0;
-            _currentPosition = transform.position;
-            _currentRotation = transform.rotation;
+            _currentPosition = _rigidbody.position;
+            _currentRotation = _rigidbody.rotation;
             _resetPos = true;
         }
         
