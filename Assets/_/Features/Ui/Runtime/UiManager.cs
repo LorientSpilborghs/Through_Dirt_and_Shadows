@@ -41,7 +41,7 @@ namespace UIFeature.Runtime
             _resourcesManager = ResourcesManager.Instance;
             _player.m_onNewKnotSelected += UpdateGrowCostTextOnMouseOver;
             _player.m_onUIShow += OnUIShowEventHandler;
-            _resourcesManager.m_onResourcesChange += UpdateGrowCostTextOnMouseHold;
+            _player.m_onNewKnotInstantiate += UpdateGrowCostTextOnMouseHold;
             _resourcesManager.m_onResourcesChange += UpdateHealthText;
             StartCoroutine(WaitForInitialize());
         }
@@ -145,6 +145,7 @@ namespace UIFeature.Runtime
                 {
                     _growCost.fontSize = (value / _growCostToReachLimit) * _maxTextFontSize;
                 }
+                Debug.Log(_growCost.fontSize);
             }
         }
 
