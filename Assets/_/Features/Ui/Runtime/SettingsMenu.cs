@@ -18,10 +18,41 @@ namespace UIFeature.Runtime
             if (Instance == null) Instance = this;
             else Destroy(gameObject);
 
-            m_masterVolume = PlayerPrefs.GetFloat("masterVolume");
-            m_musicVolume = PlayerPrefs.GetFloat("musicVolume");
-            m_ambienceVolume = PlayerPrefs.GetFloat("ambienceVolume");
-            m_sfxVolume = PlayerPrefs.GetFloat("sfxVolume");
+            if (PlayerPrefs.HasKey("masterVolume"))
+            {
+                m_masterVolume = PlayerPrefs.GetFloat("masterVolume");
+            }
+            else
+            {
+                m_masterVolume = 1;
+            }
+
+            if (PlayerPrefs.HasKey("musicVolume"))
+            {
+                m_musicVolume = PlayerPrefs.GetFloat("musicVolume");
+            }
+            else
+            {
+                m_musicVolume = 1;
+            }
+
+            if (PlayerPrefs.HasKey("ambienceVolume"))
+            {
+                m_ambienceVolume = PlayerPrefs.GetFloat("ambienceVolume");
+            }
+            else
+            {
+                m_ambienceVolume = 1;
+            }
+
+            if (PlayerPrefs.HasKey("sfxVolume"))
+            {
+                m_sfxVolume = PlayerPrefs.GetFloat("sfxVolume");
+            }
+            else
+            {
+                m_sfxVolume = 1;
+            }
             
             DontDestroyOnLoad(this);
             
